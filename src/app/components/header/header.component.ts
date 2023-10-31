@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +12,17 @@ export class HeaderComponent {
   // Temporary input value
   inputValue: string = 'Bali';
 
+  //toggle hamburger menu
+  mobileMenuOpen = false;
+
   // You can set the value dynamically based on your application logic
   // For example, in a method or an event handler
   updateInputValue() {
     this.inputValue = 'New Value';
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    console.log('kepencet gan. Valuenya: ' + this.mobileMenuOpen);
   }
 }
