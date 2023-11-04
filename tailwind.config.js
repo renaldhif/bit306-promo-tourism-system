@@ -5,15 +5,23 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens:{
+        xs: '320px',
+      },
       colors:{
+        // base colors
         primary: '#007DFC',
         darkPrimary: '#0069D9',
         secondary: '#DEE8FF',
-        whiteBackground: '#ffffff',
 
+        // additional colors
+        darkGrey: '#6b7280',
+        whiteBackground: '#ffffff',
+        backgroundHover: '#f3f4f6',
         border: '#DDE2E4',
-        backgroundHover: 'bg-gray-100',
-        iconFill: '#A0AEC0',
+
+        // text colors
+        textPrimary: '#374151',
       },
     },
   },
