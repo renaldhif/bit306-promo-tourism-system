@@ -8,6 +8,7 @@ import { FooterComponent } from './components/landing-page/footer/footer.compone
 import { MainComponent } from './components/landing-page/main/main.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -17,10 +18,11 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     MainComponent,
     HeaderComponent,
     FooterComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

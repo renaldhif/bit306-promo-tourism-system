@@ -2,7 +2,7 @@
 <div class="bg-white">
   <div class="flex justify-center h-screen">
       <div class="hidden bg-cover lg:block lg:w-2/3">
-          <img src="../../../assets/icons/bg-petronas.webp" alt="background" class="object-cover w-full h-full">
+          <img src="../../../assets/images/bg-petronas.webp" alt="background" class="object-cover w-full h-full">
       </div>
 
       <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6 bg-whiteBackground">
@@ -42,10 +42,11 @@
                   </form>
 
                   <p class="mt-6 text-sm text-gray-400">
-                    Don't have an account yet? <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Sign up here</a>
+                    Don't have an account yet? <a routerLink="/register" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Sign up here</a>
                   </p>
               </div>
           </div>
       </div>
   </div>
 </div>
+<router-outlet></router-outlet>
