@@ -9,6 +9,7 @@ import { MainComponent } from './components/landing-page/main/main.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ErrorNotfoundComponent } from './components/error-notfound/error-notfound.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RegisterComponent } from './components/register/register.component';
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
+    ErrorNotfoundComponent,
   ],
   imports: [
     BrowserModule,
