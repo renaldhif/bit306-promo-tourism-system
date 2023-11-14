@@ -1,0 +1,104 @@
+<app-sidebar></app-sidebar>
+<div class="relative md:ml-64 bg-blueGray-100">
+  <app-header-stats></app-header-stats>
+  <div class="px-4 md:px-10 mx-auto w-full -m-24">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-whiteBackground">
+      <div class="rounded-t mb-0 px-4 py-3 border-0">
+        <div class="flex flex-wrap items-center">
+          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+            <h3 class="font-semibold text-lg"> Merchant List </h3>
+          </div>
+        </div>
+      </div>
+      <div class="block w-full overflow-x-auto px-4 pb-2">
+        <!-- Merchant table -->
+        <table datatable [dtOptions]="dtOptions" class="row-border items-center w-full bg-transparent border-collapse py-5">
+          <thead>
+            <tr>
+              <!-- ID -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" >
+                ID
+              </th>
+              <!-- Merchant Details -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Merchant
+              </th>
+              <!-- Description -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Description
+              </th>
+              <!-- Status -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Status
+              </th>
+              <!-- Created At -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Created At
+              </th>
+              <!-- Action: Show only status pending -->
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor = "let item of merchantsDummy">
+              <!-- ID -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold items-center justify-center">
+                {{ item.id }}
+              </td>
+              <!-- Merchant -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <p class="font-semibold mb-2">{{ item.name }}</p>
+                <p>{{ item.phone }}</p>
+                <p>{{ item.email }}</p>
+              </td>
+              <!-- Description -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4">
+                {{ item.description }}
+              </td>
+              <!-- Status -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 uppercase">
+                <p [class]="
+                  item.status === 'verified' ? 'bg-green-100 px-4 py-1 rounded-xl text-green-700 text-center' :
+                  item.status === 'pending' ? 'bg-orange-100 px-4 py-1 rounded-xl text-orange-700 text-center' :
+                  'bg-red-100 px-4 py-1 rounded-xl text-red-700 text-center'"
+                >
+                  {{ item.status }}
+                </p>
+              </td>
+              <!-- Created At -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                {{ item.created_at | date: 'dd/MM/yyyy HH:mm'}}
+              </td>
+              <!-- Action: Show only status pending -->
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <!-- Accept Button -->
+                <button
+                  (click)="onAcceptMerchant()"
+                  *ngIf="item.status === 'pending'"
+                  class="bg-green-400 text-white hover:bg-green-500 active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
+                  type="button"
+                  style="transition: all 0.15s ease 0s;"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <!-- Reject Button -->
+                <button
+                  (click)="onRejectMerchant()"
+                  *ngIf="item.status === 'pending'"
+                  class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
+                  type="button"
+                  style="transition: all 0.15s ease 0s;"
+                >
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
