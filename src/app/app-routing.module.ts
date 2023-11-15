@@ -7,6 +7,10 @@ import { ErrorNotfoundComponent } from './views/error-notfound/error-notfound.co
 import { AdminComponent } from './views/admin/admin.component';
 import { DashboardComponent } from './views/admin/dashboard/dashboard.component';
 import { MerchantListComponent } from './views/admin/merchant-list/merchant-list.component';
+import { MerchantComponent } from './views/merchant/merchant/merchant.component';
+import { MerchantDashboardComponent } from './views/merchant/merchant-dashboard/merchant-dashboard.component';
+import { ProductsComponent } from './views/merchant/products/products.component';
+import { AnalyticsComponent } from './views/merchant/analytics/analytics.component';
 
 const routes: Routes = [
   {
@@ -26,6 +30,20 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: DashboardComponent },
       { path: 'merchant-list', component: MerchantListComponent },
+    ],
+  },
+
+  // Merchant Routes
+  {
+    path: 'merchant',
+    component: AdminComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      { path: 'dashboard', component: MerchantDashboardComponent },
+      { path: 'products', component: ProductsComponent },
+      { path: 'products/:id', component: ProductsComponent}, // mungkin bisa pake ini?
+      { path: 'product-detail', component: ProductsComponent },
+      { path: 'analytics', component: AnalyticsComponent },
     ],
   },
 

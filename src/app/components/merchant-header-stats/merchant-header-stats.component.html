@@ -1,0 +1,57 @@
+<!-- Header Section -->
+<nav class="w-full z-10 bg-blue-600 p-4 flex justify-between items-center">
+  <p class="text-2xl md:text-2xl lg:text-3xl ml-8 md:ml-14 lg:ml-14 text-white">Welcome {{ name }}</p>
+  <!-- Logout Button -->
+  <button
+    class="bg-whiteBackground text-primary active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:bg-backgroundHover outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+    (click)="logout()"
+  >
+    <i class="fa fa-sign-out mr-2"></i> Logout
+</button>
+</nav>
+
+<!-- Cards Section -->
+<div class="relative bg-gradient-to-b from-blue-600 to-blue-300 md:pt-12 lg:pt-4 pb-32">
+  <div class="px-4 md:px-10 mx-auto w-full">
+    <!-- Card Stats -->
+    <div class="w-full bg-transparent p-4 sm:flex-row sm:flex-nowrap sm:justify-start lg:flex">
+      <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+        <app-card-stats
+          statSubtitle="Products"
+          statTitle="5"
+          statIconName="fa fa-map"
+          statIconColor="bg-primary"
+        >
+        </app-card-stats>
+      </div>
+      <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+        <app-card-stats
+          statSubtitle="Verified Merchants"
+          statTitle="2"
+          statIconName="fa fa-check-circle"
+          statIconColor="bg-green-400"
+        >
+        </app-card-stats>
+      </div>
+      <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+        <app-card-stats
+          statSubtitle="Pending Merchants"
+          statTitle="2"
+          statIconName="fa fa-info-circle"
+          statIconColor="bg-orange-400"
+        >
+        </app-card-stats>
+      </div>
+      <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+        <app-card-stats
+          statSubtitle="Rejected Merchants"
+          statTitle="1"
+          statIconName="fa fa-user-times"
+          statIconColor="bg-red-400"
+        >
+        </app-card-stats>
+      </div>
+    </div>
+  </div>
+</div>
+
