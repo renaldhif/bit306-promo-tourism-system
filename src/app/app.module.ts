@@ -8,6 +8,7 @@ import { FooterComponent } from './components/landing-page/footer/footer.compone
 import { MainComponent } from './components/landing-page/main/main.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorNotfoundComponent } from './views/error-notfound/error-notfound.component';
 import { AdminComponent } from './views/admin/admin.component';
@@ -25,6 +26,7 @@ import { ProductDetailComponent } from './views/merchant/product-detail/product-
 import { AnalyticsComponent } from './views/merchant/analytics/analytics.component';
 import { MerchantSidebarComponent } from './components/merchant-sidebar/merchant-sidebar.component';
 import { MerchantHeaderStatsComponent } from './components/merchant-header-stats/merchant-header-stats.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +54,7 @@ import { MerchantHeaderStatsComponent } from './components/merchant-header-stats
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     DataTablesModule,
     SweetAlert2Module.forRoot(),
   ],
