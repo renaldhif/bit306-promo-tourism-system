@@ -8,6 +8,7 @@ import { FooterComponent } from './components/landing-page/footer/footer.compone
 import { MainComponent } from './components/landing-page/main/main.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorNotfoundComponent } from './views/error-notfound/error-notfound.component';
 import { AdminComponent } from './views/admin/admin.component';
@@ -18,6 +19,7 @@ import { MerchantListComponent } from './views/admin/merchant-list/merchant-list
 import { DashboardComponent } from './views/admin/dashboard/dashboard.component';
 import { DataTablesModule } from 'angular-datatables';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     DataTablesModule,
     SweetAlert2Module.forRoot(),
   ],
