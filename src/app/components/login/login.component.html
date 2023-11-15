@@ -1,73 +1,43 @@
 <div class="bg-white">
-    <div class="flex justify-center h-screen">
-      <div class="hidden bg-cover lg:block lg:w-2/3">
-          <img src="../../../assets/images/bg-petronas.webp" alt="background" class="object-cover w-full h-full">
-      </div>
-      <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6 bg-whiteBackground">
-        <div class="flex-1 py-14 px-10 border border-border rounded-lg shadow-lg lg:shadow-none lg:border-none lg:p-0">
-          <div class="flex items-center justify-center pb-5">
-            <img src="../../../assets/icons/logo-placeholder-large.svg" alt="petronas-background">
-          </div>
-          <div class="mt-8">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-              <div>
-                <label for="email" class="block mb-2 text-sm text-gray-600">Email Address</label>
-                <input formControlName="email" id="email" placeholder="user@example.com" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md">
+  <div class="flex justify-center h-screen">
+    <div class="hidden bg-cover lg:block lg:w-2/3">
+      <img src="../../../assets/images/bg-petronas.webp" alt="background" class="object-cover w-full h-full">
+    </div>
+    <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6 bg-whiteBackground">
+      <div class="flex-1 py-14 px-10 border border-border rounded-lg shadow-lg lg:shadow-none lg:border-none lg:p-0">
+        <div class="flex items-center justify-center pb-5">
+          <img src="../../../assets/icons/logo-placeholder-large.svg" alt="petronas-background">
+        </div>
+        <div class="mt-8">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div>
+              <label for="email" class="block mb-2 text-sm text-gray-600">Email Address</label>
+              <input formControlName="email" id="email" placeholder="user@example.com" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md">
+            </div>
+            <div class="mt-6">
+              <div class="flex justify-between mb-2">
+                <label for="password" class="text-sm text-gray-600">Password</label>
               </div>
-              <div class="mt-6">
-                <div class="flex justify-between mb-2">
-                  <label for="password" class="text-sm text-gray-600">Password</label>
-                </div>
-                <input formControlName="password" id="password" type="password" placeholder="Your Password" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md">
+              <input formControlName="password" id="password" type="password" placeholder="Your Password" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md">
+            </div>
+            <div class="mt-2">
+              <div class="flex justify-end mb-2">
+                <a href="#" class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password?</a>
               </div>
-              <div class="mt-2">
-                <div class="flex justify-end mb-2">
-                  <a href="#" class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password?</a>
-                </div>
-              </div>
-              <div class="mt-8">
-                  <form>
-                      <div>
-                          <label for="email" class="block mb-2 text-sm text-gray-600">Email Address</label>
-                          <input type="email" name="email" id="email" placeholder="user@example.com" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md " />
-                      </div>
-
-                      <div class="mt-6">
-                          <div class="flex justify-between mb-2">
-                              <label for="password" class="text-sm text-gray-600">Password</label>
-                          </div>
-                          <input type="password" name="password" id="password" placeholder="Your Password" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md " />
-                      </div>
-
-                      <div class="mt-2">
-                        <div class="flex justify-end mb-2">
-                          <a href="#" class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password?</a>
-                      </div>
-
-                      </div>
-
-                      <div class="mt-6">
-                        <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                          Login
-                        </button>
-                      </div>
-
-                  </form>
-
-                  <p class="mt-6 text-sm text-gray-400">
-                    Don't have an account yet? <a routerLink="/register" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Sign up here</a>
-                  </p>
-              </div>
-              <p class="mt-6 text-sm text-gray-400 text-danger" 
-              *ngIf="loginForm.invalid && buttonClicked">Login failed. Invalid email or password.</p>
-            </form>
-            <p class="mt-6 text-sm text-gray-400">
-              Don't have an account yet? <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Sign up here</a>
-            </p>
-          </div>
+            </div>
+            <div class="mt-6">
+              <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                Login
+              </button>
+            </div>
+            <!-- <p class="mt-6 text-sm text-red-500"
+            *ngIf="loginForm.invalid && buttonClicked">Login failed. Invalid email or password.</p> -->
+          </form>
+          <p class="mt-6 text-sm text-gray-400">
+            Don't have an account yet? <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Sign up here</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
 </div>
-<router-outlet></router-outlet>
