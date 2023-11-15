@@ -8,6 +8,7 @@ import { FooterComponent } from './components/landing-page/footer/footer.compone
 import { MainComponent } from './components/landing-page/main/main.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
