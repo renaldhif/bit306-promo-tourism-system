@@ -18,6 +18,13 @@ import { MerchantListComponent } from './views/admin/merchant-list/merchant-list
 import { DashboardComponent } from './views/admin/dashboard/dashboard.component';
 import { DataTablesModule } from 'angular-datatables';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MerchantComponent } from './views/merchant/merchant/merchant.component';
+import { MerchantDashboardComponent } from './views/merchant/merchant-dashboard/merchant-dashboard.component';
+import { ProductsComponent } from './views/merchant/products/products.component';
+import { ProductDetailComponent } from './views/merchant/product-detail/product-detail.component';
+import { AnalyticsComponent } from './views/merchant/analytics/analytics.component';
+import { MerchantSidebarComponent } from './components/merchant-sidebar/merchant-sidebar.component';
+import { MerchantHeaderStatsComponent } from './components/merchant-header-stats/merchant-header-stats.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +41,13 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     CardStatsComponent,
     MerchantListComponent,
     DashboardComponent,
+    MerchantComponent,
+    MerchantDashboardComponent,
+    ProductsComponent,
+    ProductDetailComponent,
+    AnalyticsComponent,
+    MerchantSidebarComponent,
+    MerchantHeaderStatsComponent,
   ],
   imports: [
     BrowserModule,
