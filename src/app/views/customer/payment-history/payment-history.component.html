@@ -1,5 +1,6 @@
-<div class="px-4 md:px-10 mx-auto w-full -m-24 mt-8 container">
-  <h3 class="font-semibold text-lg my-3"> Transaction History </h3>
+<app-header></app-header>
+<div class="px-4 md:px-10 mx-auto w-full -m-24 mt-8 mb-10 container">
+  <h3 class="font-semibold text-lg my-3"> Payment History </h3>
 
   <!-- Filter Buttons -->
   <div class="flex-row justify-between">
@@ -93,14 +94,15 @@
             </button>
           </ng-container>
 
-          <!-- Hide the button for Cancelled status -->
-          <ng-container *ngIf="item.status === 'Failed'">
-            <!-- Add any additional styles or content for the failed status if needed -->
-          </ng-container>
+            <!-- Hide the button for Cancelled status -->
+            <ng-container *ngIf="item.status === 'Failed'">
+              <!-- Add any additional styles or content for the failed status if needed -->
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
 </div>
+
+<app-footer></app-footer>

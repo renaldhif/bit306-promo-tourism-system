@@ -45,7 +45,7 @@
         <li class="items-center">
           <a
             [routerLink]="['/merchant/dashboard']"
-            class="text-xs uppercase py-3 font-bold block"
+            class="text-sm uppercase py-3 font-bold block"
             routerLinkActive
             #merchantDashboard="routerLinkActive"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -60,15 +60,14 @@
               [ngClass]="
                 merchantDashboard.isActive ? 'opacity-75' : 'text-blueGray-300'
               "
-            ></i>
-            Dashboard
+            ></i>Dashboard
           </a>
         </li>
 
         <li class="items-center">
           <a
             [routerLink]="['/merchant/products']"
-            class="text-xs uppercase py-3 font-bold block"
+            class="text-sm uppercase py-3 font-bold block"
             routerLinkActive
             #products="routerLinkActive"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -91,7 +90,7 @@
         <li class="items-center">
           <a
             [routerLink]="['/merchant/analytics']"
-            class="text-xs uppercase py-3 font-bold block"
+            class="text-sm uppercase py-3 font-bold block"
             routerLinkActive
             #analytics="routerLinkActive"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -106,8 +105,7 @@
               [ngClass]="
                 analytics.isActive ? 'opacity-75' : 'text-blueGray-300'
               "
-            ></i>
-            Analytics report
+            ></i>Analytics report
           </a>
         </li>
 
