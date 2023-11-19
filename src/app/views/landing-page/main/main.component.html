@@ -6,7 +6,7 @@
     <!-- Card -->
     <div *ngFor="let item of productsDummy" class="flex-none">
       <div class="card border rounded overflow-hidden m-4 shadow-md w-64">
-        <a routerLink="/customer">
+        <a (click)="goToProductDetail(item.id)">
           <img
             src="{{ item.image }}"
             alt="product {{ item.id }} photo"

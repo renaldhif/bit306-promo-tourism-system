@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,6 +8,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent {
+
+  constructor(private router:Router) {}
 
   productsDummy = [
     {
@@ -80,6 +83,10 @@ export class MainComponent {
       },
     },
   ];
+
+  goToProductDetail (productID: number) {
+    this.router.navigate(['/product', productID]);
+  }
 
   buyNow (productID: number) {
     Swal.fire({
