@@ -1,0 +1,33 @@
+<section class="bg-white">
+  <div class="container min-h-screen lg:py-12 mx-auto lg:flex lg:items-center lg:gap-12">
+    <div class="relative w-full mt-12 lg:w-1/2 lg:mt-0">
+      <img class="w-full lg:mx-auto" src="../../../../assets/images/join-merchant.jpg" alt="Join merchant illustration">
+      <p class="text-xs text-darkGrey text-center">
+        <a href="https://www.freepik.com/free-vector/tourism-travel-booking-ticket-composition-with-human-characters-tourists-bunch-suitcases-vector-illustration_23580168.htm#query=vector%20travel%20merchant&position=4&from_view=search&track=ais&uuid=7d0a65bf-0fad-4253-b439-7abb2b4058bf"
+          target="_blank"
+        >
+          Image by macrovector
+        </a> on Freepik
+      </p>
+    </div>
+
+    <div class="wf-ull lg:w-1/2 mt-20 lg:mt-0">
+      <h1 class="text-5xl font-extrabold mb-4">Unlock Opportunities as a Merchant</h1>
+      <p class="text-lg text-center lg:text-left mb-8">
+        Join our platform and showcase your unique offerings to a global audience. Boost your business and connect with travelers around the world.
+      </p>
+
+      <div class="flex items-center mt-6 gap-x-3">
+        <a routerLink="/register" [queryParams]="{ role: 'merchant' }">
+          <button
+            type="button"
+            class="bg-primary text-white py-3 px-6 rounded-full text-lg font-semibold shadow-md hover:bg-darkPrimary transition duration-300"
+          >
+            Join Now
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<router-outlet></router-outlet>
