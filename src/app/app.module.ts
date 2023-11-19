@@ -29,6 +29,7 @@ import { MerchantHeaderStatsComponent } from './components/merchant-header-stats
 import { PaymentHistoryComponent } from './views/customer/payment-history/payment-history.component';
 import { CustomerComponent } from './views/customer/customer.component';
 import { JoinMerchantComponent } from './views/join-merchant/join-merchant.component';
+import { ProductComponent } from './views/product/product.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { JoinMerchantComponent } from './views/join-merchant/join-merchant.compo
     PaymentHistoryComponent,
     CustomerComponent,
     JoinMerchantComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,

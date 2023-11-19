@@ -14,6 +14,7 @@ import { AnalyticsComponent } from './views/merchant/analytics/analytics.compone
 import { CustomerComponent } from './views/customer/customer.component';
 import { PaymentHistoryComponent } from './views/customer/payment-history/payment-history.component';
 import { JoinMerchantComponent } from './views/join-merchant/join-merchant.component';
+import { ProductComponent } from './views/product/product.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'join-merchant', component: JoinMerchantComponent},
+  { path: 'product/:id', component: ProductComponent},
 
   // Admin Routes
   {
