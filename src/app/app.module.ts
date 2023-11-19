@@ -3,13 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/landing-page/header/header.component';
-import { FooterComponent } from './components/landing-page/footer/footer.component';
-import { MainComponent } from './components/landing-page/main/main.component';
-import { LoginComponent } from './components/login/login.component';
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { HeaderComponent } from './views/landing-page/header/header.component';
+import { FooterComponent } from './views/landing-page/footer/footer.component';
+import { MainComponent } from './views/landing-page/main/main.component';
+import { LoginComponent } from './views/login/login.component';
+import { LandingPageComponent } from './views/landing-page/landing-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './components/register/register.component';
+import { RegisterComponent } from './views/register/register.component';
 import { ErrorNotfoundComponent } from './views/error-notfound/error-notfound.component';
 import { AdminComponent } from './views/admin/admin.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -26,6 +26,9 @@ import { ProductDetailComponent } from './views/merchant/product-detail/product-
 import { AnalyticsComponent } from './views/merchant/analytics/analytics.component';
 import { MerchantSidebarComponent } from './components/merchant-sidebar/merchant-sidebar.component';
 import { MerchantHeaderStatsComponent } from './components/merchant-header-stats/merchant-header-stats.component';
+import { PaymentHistoryComponent } from './views/customer/payment-history/payment-history.component';
+import { CustomerComponent } from './views/customer/customer.component';
+import { JoinMerchantComponent } from './views/join-merchant/join-merchant.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,9 @@ import { MerchantHeaderStatsComponent } from './components/merchant-header-stats
     AnalyticsComponent,
     MerchantSidebarComponent,
     MerchantHeaderStatsComponent,
+    PaymentHistoryComponent,
+    CustomerComponent,
+    JoinMerchantComponent,
   ],
   imports: [
     BrowserModule,
