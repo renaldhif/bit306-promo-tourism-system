@@ -75,14 +75,24 @@
         </div>
 
         <!-- Action Container -->
-        <div class="flex flex-row mt-4 md:ml-auto md:mt-0 items-center justify-center">
+        <div class="flex flex-col mt-4 md:ml-auto md:mt-0 items-center justify-center gap-y-5">
           <ng-container *ngIf="item.status === 'Paid'">
+            <!-- View Invoice -->
             <button
               class="w-36 h-11 lg:ml-4 border border-primary hover:bg-slate-400 text-white font-bold py-2 px-4 rounded-xl"
               (click)="printInvoice(item.id)"
             >
               <p class="text-primary">View Invoice</p>
             </button>
+
+            <!-- Add review -->
+            <button
+              class="w-36 h-11 ml-4 bg-primary hover:bg-slate-400 text-white font-bold py-2 px-4 rounded-xl"
+              (click)="addReview(item.id)"
+            >
+              <p class="text-white">Add Review</p>
+            </button>
+
           </ng-container>
 
           <ng-container *ngIf="item.status === 'Waiting'">
