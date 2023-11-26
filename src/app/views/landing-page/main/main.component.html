@@ -1,23 +1,45 @@
 <div class="px-4 md:px-10 mx-auto w-full -m-24 mt-8 mb-10 container">
   <h3 class="font-semibold text-lg my-3">Explore the world with minimum budget!</h3>
 
+  <!-- !? SECTION 1 -->
+
   <!-- Card Container -->
   <div class="flex overflow-x-auto p-4">
     <!-- Card -->
-    <div *ngFor="let item of productsDummy" class="flex-none">
+    <div *ngFor="let item of productList" class="flex-none">
       <div class="card border rounded overflow-hidden m-4 shadow-md w-64">
-        <a (click)="goToProductDetail(item.id)">
+        <a (click)="goToProductDetail(item.id)" class="card">
           <img
             src="{{ item.image }}"
             alt="product {{ item.id }} photo"
             class="card-cover w-full h-40 object-cover"
           />
-          <div class="p-4">
-            <h2 class="card-title text-md mb-1">{{ item.title }}</h2>
+
+          <!-- Content Container -->
+          <div class="p-4 h-56">
+            <!-- TITLE -->
+            <h2 class="card-title text-md mb-1 line-clamp-2">{{ item.title }}</h2>
+            <!-- CATEGORY -->
+            <p class="text-sm text-darkGrey mb-2">{{ item.category }}</p>
+            <!-- Location -->
+            <div class="flex mb-2">
+              <i class="fa fa-map-marker text-primary text-sm"></i>
+              <p class="ml-2 text-sm text-darkGrey mr-1">{{ item.location }}</p>
+            </div>
+            <!-- RATING -->
+            <div class="flex mb-2">
+              <p class="text-sm text-darkGrey mr-1">{{ item.rating }}</p>
+              <i class="fa fa-star text-yellow-400 text-sm"></i>
+            </div>
+            <!-- MERCHANT -->
+            <p class="text-sm text-darkGrey mb-3">{{ item.merchant.name }}</p>
+
+            <!-- PRICE -->
             <p class="card-price text-md font-bold mb-4">{{ item.price | currency:'MYR ' }}</p>
-            <p class="text-sm text-darkGrey">{{ item.merchant.name }}</p>
+
           </div>
         </a>
+
 
         <!-- Button Container -->
         <div class="w-[90%] mx-auto">
@@ -29,5 +51,7 @@
       </div>
     </div>
   </div>
+
+  <!-- !? SECTION 2 -->
 </div>
 

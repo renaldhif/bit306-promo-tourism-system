@@ -1,34 +1,152 @@
 <app-header></app-header>
 
-<div class="flex container mx-auto my-10">
-  <!-- Image Container (1/2 width) -->
-  <div class="flex w-2/5 justify-center items-start">
-    <img src="{{ product.image }}" alt="Product Photo" class="w-[348px] h-[348px] object-cover rounded-lg">
+<div class="container mx-auto my-10 lg:flex">
+  <!-- !? IMAGE CONTAINER (1/3 width) -->
+  <div class="w-full md:w-1/3 lg:w-1/3 justify-center items-start lg:flex">
+    <img src="{{ product.image }}" alt="Product Photo" class="w-[400px] h-[400px] object-cover rounded-lg">
   </div>
 
-  <!-- Detail Containers (1/2 width) -->
-  <div class="ml-8 w-3/5">
-    <h1 class="text-2xl font-semibold">{{ product.title }}</h1>
-    <p class="my-4 text-lg text-gray-700">{{ product.description }}</p>
+  <!-- !? DETAIL CONTAINER (1/3 width) -->
+  <div class="w-full md:w-1/3 lg:w-1/3 ml-0 md:ml-8 lg:mx-8 justify-center items-start mt-5 md:mt-0">
 
+    <!-- Title -->
+    <h1 class="text-2xl font-semibold">{{ product.title }}</h1>
+
+    <!-- Location -->
+    <div class="flex my-3 items-center justify-start">
+      <i class="fa fa-map-marker text-primary "></i>
+      <p class="ml-2 text-gray-500 mr-1">{{ product.location }}</p>
+    </div>
+
+    <!-- Rating -->
+    <div class="flex my-2 items-center justify-start">
+      <p class="mr-2 text-gray-500">Rating: </p>
+      <p class="mr-1">{{ product.rating }}</p>
+      <i class="fa fa-star text-yellow-400"></i>
+      <p class="ml-4 text-slate-400">{{ product.ratingQty ? '(' + product.ratingQty + ')' : '' }}</p>
+    </div>
+
+    <!-- category -->
+    <div class="flex my-2 gap-x-2">
+      <p class="text-gray-500">Category: </p>
+      <p>{{ product.category }}</p>
+    </div>
+
+    <!-- Trip Days -->
+    <div class="flex my-2 gap-x-2">
+      <p class="text-gray-500">Trip days: </p>
+      <p>{{ product.tripDays }} Days</p>
+    </div>
+
+    <!-- Description -->
+    <div class="mt-2">
+      <p class="text-gray-500">Description: </p>
+      <p>{{ product.description }}</p>
+    </div>
+
+    <!-- Destinations -->
+    <p class="mt-4 text-primary font-semibold">Itinerary: </p>
+    <ul>
+      <li *ngFor="let key of destinationsKeys">
+        <p class="text-darkGrey my-2">
+          <strong>{{ 'Destination ' + key.slice(11) }}:</strong>
+          <span class="text-black ml-2">{{ product.destinations[key] }}</span>
+        </p>
+      </li>
+    </ul>
+
+    <!-- What's Included -->
+    <p class="mt-4 text-primary font-semibold">What's included? </p>
+    <ul>
+      <li *ngFor="let include of includes">
+        <p class="my-2">
+          <i class="fa fa-check text-primary mr-2"></i>
+          {{ include }}
+        </p>
+      </li>
+    </ul>
+
+    <!-- Divider -->
     <div class="mt-8">
       <hr>
     </div>
 
     <!-- Detail Merchant Container -->
     <div>
+      <!-- merchant name -->
       <h2 class="mt-3 text-lg font-semibold text-gray-600">{{ product.merchant.name }}</h2>
+      <!-- description -->
       <p class="mt-2 text-textPrimary">{{ product.merchant.description }}</p>
     </div>
 
-    <!-- Buy Now Button -->
-    <div class="mt-8 flex items-center">
-      <p class="text-3xl font-bold text-primary mr-10">{{ product.price | currency:'MYR ' }}</p>
-      <button class="bg-primary text-white py-3 px-7 rounded-full text-lg font-semibold shadow-md hover:bg-darkPrimary transition duration-300">
-        Buy Now
-      </button>
+  </div>
+
+  <!-- !? CHECKOUT CONTAINER (1/3 width) -->
+  <div class="w-full md:w-1/3 lg:w-1/3 justify-center items-start mt-5 md:mt-0 lg:flex">
+    <!-- Card container -->
+    <div class="w-full border border-gray-300 rounded-lg shadow-md lg:w-3/4">
+      <!-- Title -->
+      <div class="ml-5 my-4 text-xl font-semibold text-gray-600">Checkout</div>
+      <hr>
+
+      <!-- Content container -->
+      <div class="m-5">
+        <!-- Minus btn -->
+        <div class="flex items-center justify-center space-x-8 my-8">
+          <button class="px-3 py-2 bg-white border border-gray-300 shadow-sm rounded-lg focus:outline-none"
+            (click)="decrementQuantity()">
+            <i class="fa fa-minus"></i>
+          </button>
+          <!-- QTY -->
+          <span class="text-xl font-semibold">{{ quantity }}</span>
+          <!-- Plus btn -->
+          <button class="px-3 py-2 bg-white border border-gray-300 shadow-sm rounded-lg focus:outline-none"
+            (click)="incrementQuantity()">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+
+        <!-- Total Price -->
+        <div class="mt-4 text-lg font-semibold ">Total Price:</div>
+        <div class="mt-2 text-3xl font-bold text-primary">{{ product.price * quantity | currency:'MYR ' }}</div>
+
+        <!-- Buy Now Button -->
+        <button
+          class="mt-7 w-full bg-primary text-white py-3 px-7 rounded-lg text-lg font-semibold shadow-md hover:bg-darkPrimary transition duration-300"
+          (click)="checkoutNow()"
+        >
+          Checkout Now
+        </button>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Reviews -->
+<div class="container mx-auto">
+  <h2 class="text-2xl font-semibold text-primary mb-4">Reviews ({{ reviews.length }})</h2>
+  <div *ngFor="let review of reviews" class="bg-white shadow-lg rounded-lg overflow-hidden w-full mx-auto mb-4 border border-gray-300">
+    <!-- Review Card Container -->
+    <div class="p-4">
+      <!-- Customer Full Name -->
+      <p class="text-lg font-semibold text-primary mb-2">{{ review.user.name }}</p>
+
+      <!-- Star Rating -->
+      <div class="flex items-center mb-2">
+        <i class="fa fa-star text-yellow-400"></i>
+        <p class="ml-2 text-gray-500">{{ review.rating }}</p>
+      </div>
+
+      <!-- Review Text -->
+      <p class="text-gray-700 leading-6">
+        {{ review.comment }}
+      </p>
+
+      <!-- Date Created (You can add the date property to your review objects) -->
+      <p class="text-gray-500 text-sm mt-2">Posted on {{ review.dateCreated | date: 'longDate' }}</p>
+    </div>
+  </div>
+</div>
+
 
 <app-footer></app-footer>
