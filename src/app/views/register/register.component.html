@@ -15,56 +15,21 @@
 
         <div class="my-10 lg:my-0 h-full justify-center items-center">
           <h1 class="text-2xl font-semibold text-gray-800">
-            {{ isMerchantSelected ? 'Embark on a Business Journey' : 'Adventure Begins Here' }}
+            {{ userRole === 'merchant' ? 'Embark on a Business Journey' : 'Adventure Begins Here' }}
           </h1>
           <p class="mt-4 text-gray-500">
-            {{ isMerchantSelected
+            {{ userRole === 'merchant'
                 ? 'Become a Merchant Now and Unlock a World of Opportunities, Seamless Transactions, and Global Visibility for Your Unique Offerings.'
                 : 'Register Now and Open the Door to Boundless Adventures, Incredible Destinations, and Unforgettable Experiences.'
             }}
           </p>
 
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-8 md:grid-cols-2">
-            <!-- Account types -->
-            <!-- <div class="lg:mt-6">
-              <h1 class="text-gray-500">Select type of account</h1>
-              <div class="my-3 md:flex md:items-center md:-mx-2"> -->
-                <!-- Customer -->
-                <!-- <button
-                  type="button"
-                  [class]="isCustomerSelected
-                    ?
-                      'flex justify-center w-full px-6 py-3 mt-4 text-white bg-blue-500 rounded-lg md:mt-0 md:w-auto md:mx-2 focus:outline-none'
-                    :
-                      'flex justify-center w-full px-6 py-3 mt-4 text-blue-500 border border-blue-500 rounded-lg md:mt-0 md:w-auto md:mx-2 focus:outline-none'"
-                  (click)="toggleCustomer()">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                  </svg>
-                  <span class="mx-2"> Customer </span>
-                </button> -->
-
-                <!-- Merchant -->
-                <!-- <button
-                  type="button"
-                  [class]="isMerchantSelected
-                    ?
-                      'flex justify-center w-full px-6 py-3 mt-4 text-white bg-blue-500 rounded-lg md:mt-0 md:w-auto md:mx-2 focus:outline-none'
-                    :
-                      'flex justify-center w-full px-6 py-3 mt-4 text-blue-500 border border-blue-500 rounded-lg md:mt-0 md:w-auto md:mx-2 focus:outline-none'"
-                  (click)="toggleMerchant()">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"fill="none"viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                  </svg>
-                  <span class="mx-2"> Merchant </span>
-                </button>
-              </div>
-            </div> -->
+          <form [formGroup]="selectedForm" (ngSubmit)="onSubmit()" class="mt-8 md:grid-cols-2">
 
             <div>
-              <label class="block mt-4 text-sm text-gray-600">{{ isMerchantSelected ? 'Merchant' : 'Full' }} Name</label>
+              <label class="block mt-4 text-sm text-gray-600">{{ userRole === 'merchant' ? 'Merchant' : 'Full' }} Name</label>
               <input
-                formControlName="name"
+                formControlName="fullname"
                 type="text"
                 placeholder="John Doe"
                 class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -74,7 +39,7 @@
             <div>
               <label class="block mt-4 text-sm text-gray-600">Phone number</label>
               <input
-                formControlName="phone"
+                formControlName="phoneNum"
                 type="tel"
                 maxlength="13"
                 placeholder="08123456789"
@@ -94,62 +59,104 @@
               />
             </div>
 
-            <div>
-              <label class="block mt-4 text-sm text-gray-600">Password</label>
-              <div class="relative">
-                <input
-                  formControlName="password"
-                  [type]="passwordFieldType"
-                  placeholder="Enter your password"
-                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                />
-                <button
-                  type="button"
-                  class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer box-border"
-                  (click)="togglePasswordVisibility()"
-                >
-                  <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
-                  <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
-                </button>
+            <div *ngIf="userRole === 'customer'">
+              <div>
+                <label class="block mt-4 text-sm text-gray-600">Password</label>
+                <div class="relative">
+                  <input
+                    formControlName="password"
+                    [type]="passwordFieldType"
+                    placeholder="Enter your password"
+                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer box-border"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
+                    <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label class="block mt-4 text-sm text-gray-600">Confirm password</label>
-              <div class="relative">
-                <input
-                  formControlName="repassword"
-                  [type]="repasswordFieldType"
-                  placeholder="Confirm your password"
-                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                />
-                <button
-                  type="button"
-                  class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer"
-                  (click)="toggleRepasswordVisibility()"
-                >
-                  <i *ngIf="repasswordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
-                  <i *ngIf="repasswordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
-                </button>
+            <div *ngIf="userRole === 'customer'">
+              <div>
+                <label class="block mt-4 text-sm text-gray-600">Confirm password</label>
+                <div class="relative">
+                  <input
+                    formControlName="repassword"
+                    [type]="repasswordFieldType"
+                    placeholder="Confirm your password"
+                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer"
+                    (click)="toggleRepasswordVisibility()"
+                  >
+                    <i *ngIf="repasswordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
+                    <i *ngIf="repasswordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <!-- Additional Description field for Merchant -->
-            <div *ngIf="isMerchantSelected">
-              <label class="block mt-4 text-sm text-gray-600">Merchant Description</label>
-              <textarea
-                formControlName="merchantDescription"
-                [(ngModel)]="merchantDescription"
-                placeholder="Enter merchant description"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              ></textarea>
-            </div>
-
-            <button
+              <button
               class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
             >
               Register
             </button>
+            </div>
+            
+
+            <!-- Inside the merchant block -->
+            <div *ngIf="userRole === 'merchant'">
+              <label class="block mt-4 text-sm text-gray-600">Merchant Description</label>
+              <textarea
+                formControlName="merchantDescription"
+                placeholder="Enter merchant description"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              ></textarea>
+
+              <button *ngIf="!showAdditionalFields" type="button" (click)="toggleAdditionalFields()" class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                Show Additional Fields
+              </button>
+
+            <!-- Additional form fields for document upload -->
+            <div *ngIf="showAdditionalFields">
+              <label class="block mt-4 text-sm text-gray-600">Upload Document</label>
+              <input
+                formControlName="document"
+                type="file"
+                accept=".pdf, .doc, .docx"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+
+              <label class="block mt-4 text-sm text-gray-600">Filename</label>
+              <input
+                formControlName="filename"
+                type="text"
+                placeholder="Enter filename"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+
+              <label class="block mt-4 text-sm text-gray-600">Description</label>
+              <textarea
+                formControlName="description"
+                placeholder="Enter description"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              ></textarea>
+              <button 
+              type = "button" (click) = "onSubmit()"
+              class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+            >
+              Register
+            </button>
+              </div>
+          </div>
+
+
+          
             <p class="mt-6 text-sm text-gray-400">
               Already have an account yet?
               <a
