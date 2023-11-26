@@ -13,7 +13,9 @@ export class HeaderComponent {
   inputValue: string = 'Bali';
 
   //toggle hamburger menu
-  mobileMenuOpen = false;
+  mobileMenuOpen:boolean = false;
+  // toggle category menu
+  isCategoryMenuOpen: boolean = false;
 
   // You can set the value dynamically based on your application logic
   // For example, in a method or an event handler
@@ -24,5 +26,13 @@ export class HeaderComponent {
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
     console.log('kepencet gan. Valuenya: ' + this.mobileMenuOpen);
+  }
+
+  toggleCategoryMenu() {
+    this.isCategoryMenuOpen = !this.isCategoryMenuOpen;
+  }
+
+  closeCategoryMenu() {
+    this.isCategoryMenuOpen = false;
   }
 }

@@ -201,8 +201,6 @@
           </a>
         </div>
 
-
-
         <!-- HIDE THIS SECTION IF AUTH IS SUCCESS -->
         <a routerLink="/login">
           <div class="hidden lg:flex ml-2 cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover">
@@ -297,30 +295,33 @@
     </div>
 
     <!-- Inner Second Nav -->
-    <div class="hidden mt-4 lg:flex items-center justify-center">
-      <div class="flex gap-x-8">
-        <span
-          class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover"
-          >Anjing</span
+    <div class="hidden mt-4 lg:flex items-center justify-center gap-x-5">
+      <div class="relative" (click)="toggleCategoryMenu()">
+        <!-- Category Menu Trigger -->
+        <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">
+          Category <span><i class="ml-2 fa fa-chevron-down text-primary"></i></span>
+        </span>
+
+        <!-- Category Dropdown Menu -->
+        <div
+          class="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded-md py-2 z-10"
+          [ngClass]="{ 'hidden': !isCategoryMenuOpen }"
+          (clickOutside)="closeCategoryMenu()"
         >
-        <span
-          class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover"
-          >Babi</span
-        >
-        <span
-          class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover"
-          >Cicak</span
-        >
-        <span
-          class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover"
-          >Dugong</span
-        >
-        <span
-          class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover"
-          >Gorila</span
-        >
+
+          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Package Tour</a>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Cruise</a>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Attractions & Entertainment</a>
+        </div>
       </div>
+
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Discover (temp)</span>
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Trending packages</span>
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Why Choose Us?</span>
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">About Us</span>
     </div>
+
+
   </div>
 </div>
 
