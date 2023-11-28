@@ -1,0 +1,125 @@
+<app-merchant-sidebar></app-merchant-sidebar>
+<div class="py-4 lg:py-6 bg-primary">
+  <h1 class="text-3xl font-semibold ml-8 lg:mb-4 lg:ml-72  text-white">Add a Product</h1>
+</div>
+<div class="container mx-auto mt-12 lg:mx-auto">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="lg:ml-60 mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-400">
+    <!-- Title -->
+    <label class="block mb-2">Title</label>
+    <input formControlName="title" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary" />
+
+    <!-- Location -->
+    <label class="block mt-6 mb-2">Location</label>
+    <input formControlName="location" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary" />
+
+    <!-- Trip Duration -->
+    <label class="block mt-6 mb-2">Trip Duration</label>
+    <input formControlName="tripDuration" type="number" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary" />
+
+    <!-- Description -->
+    <label class="block mt-6 mb-2">Description</label>
+    <textarea formControlName="description" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary"></textarea>
+
+    <!-- Destinations -->
+    <div formArrayName="destination" class="mt-6">
+      <label class="block mb-2">Destination</label>
+      <button type="button" (click)="addDestinationItem()" class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+        <span><i class="fa fa-plus mr-3"></i></span>Add Destinations
+      </button>
+      <div
+        *ngFor="let item of destination.controls; let i = index"
+        class="flex items-center mt-4"
+      >
+        <input
+          [formControlName]="i"
+          type="text"
+          placeholder="Input destination (e.g. Petronas Twin Tower)"
+          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary"
+        />
+        <button
+          type="button"
+          (click)="removeDestinationItem(i)"
+          class="px-3 py-2 bg-red-500 text-white rounded-lg ml-2">
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- What's Included -->
+    <div formArrayName="whatsIncluded" class="mt-6">
+      <label class="block mb-2">What's Included</label>
+      <button
+        type="button"
+        (click)="addWhatsIncludedItem()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+        <span><i class="fa fa-plus mr-3"></i></span>Add What's Included Items
+      </button>
+      <div *ngFor="let item of whatsIncluded.controls; let i = index"
+        class="flex items-center mt-4"
+      >
+        <input
+          [formControlName]="i"
+          type="text"
+          placeholder="Input what's included (e.g. Tour guide)"
+          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary"
+        />
+        <button
+          type="button"
+          (click)="removeWhatsIncludedItem(i)"
+          class="px-3 py-2 bg-red-500 text-white rounded-lg ml-2">
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- Price -->
+    <!-- <label class="block mt-6 mb-2">Price in MYR</label>
+    <div class="mb-2 relative">
+      <input formControlName="price" type="number" class="w-full px-3 py-2 pl-10 border rounded-lg focus:outline-none focus:border-primary" />
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
+        MR
+      </span>
+    </div> -->
+
+    <div>
+      <label class="block mt-6 mb-2">Price in MYR</label>
+      <div class="flex items-center mt-2">
+        <p class="py-2.5 px-3 text-gray-500 bg-gray-100 border border-r-0 rtl:rounded-r-lg rtl:rounded-l-none rtl:border-l-0 rtl:border-r rounded-l-lg">MR</p>
+        <input formControlName="price" type="number" placeholder="100" class="block w-full rounded-l-none rtl:rounded-l-lg rtl:rounded-r-none placeholder-gray-400/70  rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="mt-6 mb-2">
+      <label class="block mb-2">Category</label>
+      <select formControlName="category" class="w-full p-3 border rounded-lg focus:outline-none focus:border-primary">
+        <option value="" disabled selected>Select Category...</option>
+        <option value="Tour Package">Tour Package</option>
+        <option value="Cruise">Cruise</option>
+        <option value="Attractions & Entertainments">Attractions & Entertainments</option>
+      </select>
+    </div>
+
+
+    <!-- Image: LINK -->
+    <!-- <label class="block mt-6 mb-2">Image URL</label>
+    <input formControlName="image" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary" /> -->
+
+    <!-- Image -->
+    <label class="mt-4 block">Choose Photo</label>
+    <div class="mt-2 mb-2">
+      <input
+        formControlName="image"
+        type="file"
+        accept="image/*"
+        class="cursor-pointer block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-400" />
+    </div>
+
+    <button
+      type="submit"
+      class="mt-6 bg-primary text-white p-3 rounded-lg hover:bg-darkPrimary transition duration-300 w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+    >
+      Submit
+    </button>
+  </form>
+</div>
