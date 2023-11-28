@@ -35,66 +35,76 @@
               <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                 Created At
               </th>
-              <!-- Action: Show only status pending -->
+              <!-- Actions -->
               <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-
+                Actions
               </th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor = "let item of merchantsDummy">
+            <tr *ngFor = "let merchant of merchantsDummy">
               <!-- ID -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold items-center justify-center">
-                {{ item.id }}
+                {{ merchant.id }}
               </td>
               <!-- Merchant -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <p class="font-semibold mb-2">{{ item.name }}</p>
-                <p>{{ item.phone }}</p>
-                <p>{{ item.email }}</p>
+                <p class="font-semibold mb-2">{{ merchant.name }}</p>
+                <p>{{ merchant.phone }}</p>
+                <p>{{ merchant.email }}</p>
               </td>
               <!-- Description -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4">
-                {{ item.description }}
+                {{ merchant.description }}
               </td>
               <!-- Status -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 uppercase">
                 <p [class]="
-                  item.status === 'verified' ? 'bg-green-100 px-4 py-1 rounded-xl text-green-700 text-center' :
-                  item.status === 'pending' ? 'bg-orange-100 px-4 py-1 rounded-xl text-orange-700 text-center' :
+                  merchant.status === 'verified' ? 'bg-green-100 px-4 py-1 rounded-xl text-green-700 text-center' :
+                  merchant.status === 'pending' ? 'bg-orange-100 px-4 py-1 rounded-xl text-orange-700 text-center' :
                   'bg-red-100 px-4 py-1 rounded-xl text-red-700 text-center'"
                 >
-                  {{ item.status }}
+                  {{ merchant.status }}
                 </p>
               </td>
               <!-- Created At -->
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                {{ item.created_at | date: 'dd/MM/yyyy HH:mm'}}
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 justify-center items-center">
+                {{ merchant.created_at | date: 'dd/MM/yyyy HH:mm'}}
               </td>
               <!-- Action: Show only status pending -->
-              <td
-                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <!-- Accept Button -->
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 justify-center items-center">
+                <div class="flex justify-center items-center">
+                  <!-- Merchant Detail Button -->
                 <button
-                  (click)="onAcceptMerchant()"
-                  *ngIf="item.status === 'pending'"
-                  class="bg-green-400 text-white hover:bg-green-500 active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
-                  type="button"
-                  style="transition: all 0.15s ease 0s;"
-                >
-                  <i class="fa fa-check"></i>
-                </button>
-                <!-- Reject Button -->
-                <button
-                  (click)="onRejectMerchant()"
-                  *ngIf="item.status === 'pending'"
-                  class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
-                  type="button"
-                  style="transition: all 0.15s ease 0s;"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
+                (click)="onShowMerchantDetail(merchant.id)"
+                class="bg-blue-400 text-white hover:bg-blue-500 active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
+                type="button"
+                style="transition: all 0.15s ease 0s;"
+              >
+                <i class="fa fa-info"></i>
+              </button>
+              <!-- Accept Button -->
+              <button
+                (click)="onAcceptMerchant()"
+                *ngIf="merchant.status === 'pending'"
+                class="bg-green-400 text-white hover:bg-green-500 active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
+                type="button"
+                style="transition: all 0.15s ease 0s;"
+              >
+                <i class="fa fa-check"></i>
+              </button>
+              <!-- Reject Button -->
+              <button
+                (click)="onRejectMerchant()"
+                *ngIf="merchant.status === 'pending'"
+                class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
+                type="button"
+                style="transition: all 0.15s ease 0s;"
+              >
+                <i class="fa fa-times"></i>
+              </button>
+                </div>
               </td>
             </tr>
           </tbody>

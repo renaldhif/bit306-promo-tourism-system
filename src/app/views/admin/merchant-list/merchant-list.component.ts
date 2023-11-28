@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { MerchantService } from 'src/app/service/merchant-service';
 
 @Component({
   selector: 'app-merchant-list',
@@ -9,69 +11,23 @@ import Swal from 'sweetalert2';
 export class MerchantListComponent {
 
   dtOptions: DataTables.Settings = {};
+  merchantsDummy: any[] = [];
+
+  constructor(private router:Router, private merchantService: MerchantService){}
 
   ngOnInit(): void {
+    this.merchantsDummy = this.merchantService.getAllMerchants();
     this.dtOptions = {
       pagingType: 'full_numbers'
     };
   }
 
-  // dummy data for merchants
-  merchantsDummy = [
-    {
-      id: 1,
-      type: 'merchant',
-      name: 'Bali Agung Tours',
-      description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-      phone: '08123456789',
-      email: 'baliagungtours@gmail.com',
-      status: 'verified',
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 2,
-      type: 'merchant',
-      name: 'Jakartours',
-      description: 'Jakartours is a local tour operator in Jakarta. Lorem Ipsum dolor sit amet.',
-      phone: '081222343345',
-      email: 'jakartours@gmail.com',
-      status: 'verified',
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 3,
-      type: 'merchant',
-      name: 'Jelajah Bandung',
-      description: 'Bandungtours is a local tour operator in Bandung. Lorem Ipsum dolor sit amet.',
-      phone: '085799998888',
-      email: 'jelajahbandung@gmail.com',
-      status: 'pending',
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 4,
-      type: 'merchant',
-      name: 'Explore Sumatera',
-      description: ' Explore sumatera is a local tour operator in Sumatera. Lorem Ipsum dolor sit amet.',
-      phone: '08123456789',
-      email: 'exploresumatera@gmail.com',
-      status: 'pending',
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 5,
-      type: 'merchant',
-      name: 'Bali Agung Tours 2',
-      description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-      phone: '085169696969',
-      email: 'baliagungtours2@gmail.com',
-      status: 'rejected',
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-  ];
-
-
   // Swal
+  onShowMerchantDetail = (merchantID: number) => {
+    this.router.navigate(['/admin/view-merchant-detail', merchantID]);
+  }
+
+
   onAcceptMerchant = () => {
     Swal.fire({
       title: 'Accept merchant?',

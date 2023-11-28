@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProductService } from 'src/app/service/product-service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -8,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class ProductsComponent {
 
+  constructor(private router: Router, private productService: ProductService) {}
   dtOptions: DataTables.Settings = {};
 
   ngOnInit(): void {
@@ -16,90 +19,8 @@ export class ProductsComponent {
     };
   }
 
-  // dummy data for products
-  productsDummy = [
-    {
-      id: 1,
-      name: '7 Days 6 Nights Bali & Lombok',
-      description: 'With this 7 days 6 nights Bali & Lombok tour package, you will visit the most popular tourist destinations in Bali and Lombok. These two islands are the most popular tourist destinations in Indonesia that are often visited by tourists from all over the world. In Bali, you will visit Kuta Beach, Tanah Lot Temple, Uluwatu Temple, Ubud, Kintamani, and Tegalalang. Meanwhile, in Lombok, you will visit Gili Trawangan, Gili Meno, and Gili Air.',
-      price: 123456789,
-      status: 'active',
-      merchant : {
-        id: 1,
-        name: 'Bali Agung Tours',
-        description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-        phone: '08123456789',
-        email: 'baliagungtours@gmail.com',
-        status: 'verified',
-      },
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 1,
-      name: '7 Days 6 Nights Bali & Lombok',
-      description: 'With this 7 days 6 nights Bali & Lombok tour package, you will visit the most popular tourist destinations in Bali and Lombok. These two islands are the most popular tourist destinations in Indonesia that are often visited by tourists from all over the world. In Bali, you will visit Kuta Beach, Tanah Lot Temple, Uluwatu Temple, Ubud, Kintamani, and Tegalalang. Meanwhile, in Lombok, you will visit Gili Trawangan, Gili Meno, and Gili Air.',
-      price: 2000000,
-      status: 'active',
-      merchant : {
-        id: 1,
-        name: 'Bali Agung Tours',
-        description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-        phone: '08123456789',
-        email: 'baliagungtours@gmail.com',
-        status: 'verified',
-      },
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 1,
-      name: '7 Days 6 Nights Bali & Lombok',
-      description: 'With this 7 days 6 nights Bali & Lombok tour package, you will visit the most popular tourist destinations in Bali and Lombok. These two islands are the most popular tourist destinations in Indonesia that are often visited by tourists from all over the world. In Bali, you will visit Kuta Beach, Tanah Lot Temple, Uluwatu Temple, Ubud, Kintamani, and Tegalalang. Meanwhile, in Lombok, you will visit Gili Trawangan, Gili Meno, and Gili Air.',
-      price: 4500000,
-      status: 'active',
-      merchant : {
-        id: 1,
-        name: 'Bali Agung Tours',
-        description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-        phone: '08123456789',
-        email: 'baliagungtours@gmail.com',
-        status: 'verified',
-      },
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 1,
-      name: '7 Days 6 Nights Bali & Lombok',
-      description: 'With this 7 days 6 nights Bali & Lombok tour package, you will visit the most popular tourist destinations in Bali and Lombok. These two islands are the most popular tourist destinations in Indonesia that are often visited by tourists from all over the world. In Bali, you will visit Kuta Beach, Tanah Lot Temple, Uluwatu Temple, Ubud, Kintamani, and Tegalalang. Meanwhile, in Lombok, you will visit Gili Trawangan, Gili Meno, and Gili Air.',
-      price: 2000000,
-      status: 'active',
-      merchant : {
-        id: 1,
-        name: 'Bali Agung Tours',
-        description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-        phone: '08123456789',
-        email: 'baliagungtours@gmail.com',
-        status: 'verified',
-      },
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-    {
-      id: 1,
-      name: '7 Days 6 Nights Bali & Lombok',
-      description: 'With this 7 days 6 nights Bali & Lombok tour package, you will visit the most popular tourist destinations in Bali and Lombok. These two islands are the most popular tourist destinations in Indonesia that are often visited by tourists from all over the world. In Bali, you will visit Kuta Beach, Tanah Lot Temple, Uluwatu Temple, Ubud, Kintamani, and Tegalalang. Meanwhile, in Lombok, you will visit Gili Trawangan, Gili Meno, and Gili Air.',
-      price: 2000000,
-      status: 'active',
-      merchant : {
-        id: 1,
-        name: 'Bali Agung Tours',
-        description: 'Bali Agung Tours is a local tour operator in Bali. Lorem Ipsum dolor sit amet.',
-        phone: '08123456789',
-        email: 'baliagungtours@gmail.com',
-        status: 'verified',
-      },
-      created_at: '2023-11-12T19:58:56+08:00',
-    },
-  ];
-
+  // data from productService
+  products = this.productService.getAllProducts();
 
   // Swal
   onAddProduct = () => {
@@ -110,20 +31,26 @@ export class ProductsComponent {
     })
   }
 
-  onViewInfoProduct = () => {
-    Swal.fire({
-      title: 'View info product?',
-      text: 'Directing to view info product page or modal? Coming soon :)',
-      confirmButtonColor: '#4ade80'
-    })
+  onViewInfoProduct = (productId: number) => {
+    // Swal.fire({
+    //   title: 'View info product?',
+    //   text: 'Directing to view info product page or modal? Coming soon :)',
+    //   confirmButtonColor: '#4ade80'
+    // })
+
+    // direct to view info product page
+    this.router.navigate(['/merchant/view-product-detail', productId]);
   }
 
-  onEditProduct = () => {
-    Swal.fire({
-      title: 'Edit Product?',
-      text: 'Directing to edit product page or modal? Coming soon :)',
-      confirmButtonColor: '#4ade80'
-    })
+  onEditProduct = (productId: number) => {
+    // Swal.fire({
+    //   title: 'Edit Product?',
+    //   text: 'Directing to edit product page or modal? Coming soon :)',
+    //   confirmButtonColor: '#4ade80'
+    // })
+
+    // direct to edit product page and pass the item.id
+    this.router.navigate(['/merchant/edit-product', productId]);
   }
 
   onDeleteProduct = () => {
