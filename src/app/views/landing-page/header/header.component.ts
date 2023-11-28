@@ -30,9 +30,13 @@ export class HeaderComponent {
 
   toggleCategoryMenu() {
     this.isCategoryMenuOpen = !this.isCategoryMenuOpen;
+    console.log('toggleCateogry Masuk');
+
   }
 
   closeCategoryMenu() {
     this.isCategoryMenuOpen = false;
+    console.log('closeCategory masuk gaaann');
+
   }
 }
