@@ -30,6 +30,9 @@ import { PaymentHistoryComponent } from './views/customer/payment-history/paymen
 import { CustomerComponent } from './views/customer/customer.component';
 import { JoinMerchantComponent } from './views/join-merchant/join-merchant.component';
 import { ProductComponent } from './views/product/product.component';
+import { AddProductComponent } from './views/merchant/add-product/add-product.component';
+import { EditProductComponent } from './views/merchant/edit-product/edit-product.component';
+import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/view-merchant-detail.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,9 @@ import { ProductComponent } from './views/product/product.component';
     CustomerComponent,
     JoinMerchantComponent,
     ProductComponent,
+    AddProductComponent,
+    EditProductComponent,
+    ViewMerchantDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,10 @@ import { CustomerComponent } from './views/customer/customer.component';
 import { PaymentHistoryComponent } from './views/customer/payment-history/payment-history.component';
 import { JoinMerchantComponent } from './views/join-merchant/join-merchant.component';
 import { ProductComponent } from './views/product/product.component';
+import { AddProductComponent } from './views/merchant/add-product/add-product.component';
+import { EditProductComponent } from './views/merchant/edit-product/edit-product.component';
+import { ProductDetailComponent } from './views/merchant/product-detail/product-detail.component';
+import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/view-merchant-detail.component';
 
 const routes: Routes = [
   {
@@ -36,6 +40,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: DashboardComponent },
       { path: 'merchant-list', component: MerchantListComponent },
+      { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent}
     ],
   },
 
@@ -47,8 +52,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: MerchantDashboardComponent },
       { path: 'products', component: ProductsComponent },
-      { path: 'products/:id', component: ProductsComponent}, // mungkin bisa pake ini?
-      { path: 'product-detail', component: ProductsComponent },
+      { path: 'add-product', component: AddProductComponent },
+      { path: 'edit-product/:id', component: EditProductComponent },
+      { path: 'view-product-detail/:id', component: ProductDetailComponent },
       { path: 'analytics', component: AnalyticsComponent },
     ],
   },
