@@ -1,0 +1,66 @@
+<app-sidebar></app-sidebar>
+<!-- Header -->
+<div class="py-4 lg:py-6 bg-primary flex items-center">
+  <div class="flex items-center justify-center text-white ml-8 py-2  lg:ml-72">
+    <a routerLink="/admin/merchant-list">
+      <i class="fa fa-arrow-left mr-10 fa-lg"></i>
+    </a>
+    <h1 class="text-3xl font-semibold ml-4 lg:ml-2 text-white">Merchant Details</h1>
+  </div>
+</div>
+
+<!-- Merchant Container -->
+<div class="flex flex-col lg:flex-row lg:ml-72 mx-auto mt-8 container bg-white border border-gray-400 w-3/4 shadow-md rounded-md">
+  <div class="p-4 lg:ml-4 lg:mt-4">
+    <h1 class="text-2xl font-semibold text-center lg:text-left mb-4">
+      {{ merchant.name }}
+    </h1>
+
+    <div class="flex flex-col gap-y-3">
+      <!-- ID -->
+    <div class="lg:flex">
+      <p class="text-darkGrey font-semibold mr-2">ID:</p>
+      <p class="text-left lg:text-left">{{ merchant.id }}</p>
+    </div>
+
+    <!-- Email -->
+    <div class="lg:flex">
+      <p class="text-darkGrey font-semibold mr-2">Email:</p>
+      <p class="text-left lg:text-left">{{ merchant.email }}</p>
+    </div>
+
+    <!-- Address: -->
+    <div class="lg:flex">
+      <p class="text-darkGrey font-semibold mr-2">Address:</p>
+      <p class="text-left lg:text-left">{{ merchant.address }}</p>
+    </div>
+
+    <!-- Phone: -->
+    <div class="lg:flex">
+      <p class="text-darkGrey font-semibold mr-2">Phone:</p>
+      <p class="text-left lg:text-left">{{ merchant.phone }}</p>
+    </div>
+
+    <!-- Status: -->
+    <div class="lg:flex justify-start items-center">
+      <p class="text-darkGrey font-semibold mr-2">Status:</p>
+      <p [class]="
+        merchant.status === 'verified'
+        ? 'bg-green-100 px-4 py-1 rounded-xl text-green-700 text-center w-24'
+        : merchant.status === 'pending'
+        ? 'bg-orange-100 px-4 py-1 rounded-xl text-orange-700 text-center w-24'
+        :'bg-red-100 px-4 py-1 rounded-xl text-red-700 text-center w-24'"
+      >
+      {{ merchant.status }}
+    </p>
+    </div>
+
+    <!-- Description: -->
+    <div class="lg:flex">
+      <p class="text-darkGrey font-semibold mr-2">Description:</p>
+      <p class="text-left">{{ merchant.description }}</p>
+    </div>
+    </div>
+
+  </div>
+</div>
