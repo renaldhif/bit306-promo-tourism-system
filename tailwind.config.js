@@ -13,6 +13,14 @@ export const theme = {
       darkPrimary: '#0069D9',
       secondary: '#DEE8FF',
 
+      // warning
+      warningBackground: '#FEFCE8',
+      warningTitle: '#844D0F',
+      warningSubtitle: '#A16207',
+      warningBorder: '#F7C948',
+      warningIcon: '#FACC14',
+
+
       // additional colors
       lightPrimaryBackground: '#3097FF',
       darkGrey: '#6b7280',
