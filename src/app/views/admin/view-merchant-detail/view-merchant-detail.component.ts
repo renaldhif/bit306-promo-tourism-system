@@ -23,4 +23,8 @@ export class ViewMerchantDetailComponent {
     }
   }
 
+  viewMerchantFile = () => {
+    window.open(this.merchant.document, '_blank');
+  }
+
 }
