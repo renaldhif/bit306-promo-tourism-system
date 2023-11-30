@@ -32,21 +32,21 @@
     </div>
 
   <!-- Transaction Card -->
-  <div *ngFor="let item of paymentsDummy"
+  <div *ngFor="let payment of paymentsDummy"
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-100 border border-slate-300"
   >
   <!-- Header Container -->
     <div class="rounded-t mb-0 px-4 py-3 flex flex-row justify-between items-center border border-b-gray-200 bg-slate-100 lg:justify-start lg:items-start">
-      <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ item.paymentID }}</h2>
-      <h2 class="text-sm text-gray-500 mx-6">{{ item.date | date }}</h2>
+      <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment.id }}</h2>
+      <h2 class="text-sm text-gray-500 mx-6">{{ payment.date_created | date }}</h2>
       <div
         class="border rounded-lg h-6 w-20 flex items-center justify-center"
         [ngClass]="
-          item.status === 'Paid' ? 'bg-green-100 border-green-300 text-green-700' :
-          item.status === 'Failed' ? 'bg-red-100 border-red-300 text-red-700' :
+          payment.status === 'Paid' ? 'bg-green-100 border-green-300 text-green-700' :
+          payment.status === 'Failed' ? 'bg-red-100 border-red-300 text-red-700' :
           'bg-yellow-100 border-yellow-300 text-orange-500'"
       >
-        <p class="text-sm">{{ item.status }}</p>
+        <p class="text-sm">{{ payment.status }}</p>
       </div>
     </div>
 
@@ -60,8 +60,8 @@
         <div class="flex flex-row justify-center items-center ml-8 lg:ml-0">
           <div class="flex-shrink-0 h-32 w-32 bg-slate-400 rounded-lg mr-8">
             <img
-              src="{{ item.product.image }}"
-              alt="Product {{ item.id }} photo"
+              src="{{ payment.product.image }}"
+              alt="Product {{ payment.id }} photo"
               class="h-full w-full object-cover rounded-lg"
             >
           </div>
@@ -69,43 +69,42 @@
 
         <!-- Product Detail Container -->
         <div class="mt-4 md:mt-0">
-          <h2 class="font-semibold text-lg text-textPrimary">{{ item.product.name }}</h2>
-          <h2 class="mt-2 text-sm text-gray-500">{{ item.product.description }}</h2>
-          <h2 class="mt-4 text-sm font-bold text-gray-600">{{ item.product.price | currency:'MYR ' }}</h2>
+          <h2 class="font-semibold text-lg text-textPrimary">{{ payment.product.title }}</h2>
+          <h2 class="mt-2 text-sm text-gray-500">{{ payment.product.description }}</h2>
+          <h2 class="mt-4 text-sm font-bold text-gray-600">{{ payment.product.price | currency:'MYR ' }}</h2>
         </div>
 
         <!-- Action Container -->
         <div class="flex flex-col mt-4 md:ml-auto md:mt-0 items-center justify-center gap-y-5">
-          <ng-container *ngIf="item.status === 'Paid'">
-            <!-- View Invoice -->
-            <button
-              class="w-36 h-11 lg:ml-4 border border-primary hover:bg-slate-400 text-white font-bold py-2 px-4 rounded-xl"
-              (click)="printInvoice(item.id)"
-            >
-              <p class="text-primary">View Invoice</p>
-            </button>
-
+          <!-- View Details -->
+          <button
+          class="w-36 h-11 lg:ml-4 border border-primary text-white font-bold py-2 px-4 rounded-xl"
+          (click)="viewDetail(payment.id)"
+        >
+          <p class="text-primary">View Detail</p>
+        </button>
+          <ng-container *ngIf="payment.status === 'Paid'">
             <!-- Add review -->
             <button
-              class="w-36 h-11 ml-4 bg-primary hover:bg-slate-400 text-white font-bold py-2 px-4 rounded-xl"
-              (click)="addReview(item.id)"
+              class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
+              (click)="addReview(payment.id)"
             >
               <p class="text-white">Add Review</p>
             </button>
 
           </ng-container>
 
-          <ng-container *ngIf="item.status === 'Waiting'">
+          <ng-container *ngIf="payment.status === 'Waiting'">
             <button
-              class="w-36 h-11 ml-4 bg-primary hover:bg-slate-400 text-white font-bold py-2 px-4 rounded-xl"
-              (click)="payNow(item.id)"
+              class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
+              (click)="payNow(payment.id)"
             >
               <p class="text-white">Pay Now</p>
             </button>
           </ng-container>
 
             <!-- Hide the button for Cancelled status -->
-            <ng-container *ngIf="item.status === 'Failed'">
+            <ng-container *ngIf="payment.status === 'Failed'">
               <!-- Add any additional styles or content for the failed status if needed -->
             </ng-container>
           </div>
