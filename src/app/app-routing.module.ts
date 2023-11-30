@@ -19,6 +19,9 @@ import { AddProductComponent } from './views/merchant/add-product/add-product.co
 import { EditProductComponent } from './views/merchant/edit-product/edit-product.component';
 import { ProductDetailComponent } from './views/merchant/product-detail/product-detail.component';
 import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/view-merchant-detail.component';
+import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { CheckoutComponent } from './views/customer/checkout/checkout.component';
+import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
 
 const routes: Routes = [
   {
@@ -30,6 +33,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'join-merchant', component: JoinMerchantComponent},
+  { path: 'change-password', component: ChangePasswordComponent },
   { path: 'product/:id', component: ProductComponent},
 
   // Admin Routes
@@ -65,7 +69,10 @@ const routes: Routes = [
     component: CustomerComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      { path: 'dashboard', component: LandingPageComponent },
       { path: 'payment-history', component: PaymentHistoryComponent },
+      { path: 'payment-history-detail/:id', component: PaymentHistoryDetailComponent},
+      { path: 'checkout/:id', component: CheckoutComponent }
     ],
   },
 

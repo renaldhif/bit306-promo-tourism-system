@@ -33,6 +33,9 @@ import { ProductComponent } from './views/product/product.component';
 import { AddProductComponent } from './views/merchant/add-product/add-product.component';
 import { EditProductComponent } from './views/merchant/edit-product/edit-product.component';
 import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/view-merchant-detail.component';
+import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { CheckoutComponent } from './views/customer/checkout/checkout.component';
+import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,9 @@ import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/
     AddProductComponent,
     EditProductComponent,
     ViewMerchantDetailComponent,
+    ChangePasswordComponent,
+    CheckoutComponent,
+    PaymentHistoryDetailComponent,
   ],
   imports: [
     BrowserModule,
