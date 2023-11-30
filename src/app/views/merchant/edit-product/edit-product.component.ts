@@ -75,7 +75,7 @@ export class EditProductComponent {
     // Handle form submission
     Swal.fire({
       title: 'Success!',
-      text: 'Your product has been edited with: ' + JSON.stringify(this.productForm.value, null, 2),
+      text: 'Your product has been edited with data DEBUG: ' + JSON.stringify(this.productForm.value, null, 2),
       icon: 'success',
       confirmButtonText: 'Ok'
     })

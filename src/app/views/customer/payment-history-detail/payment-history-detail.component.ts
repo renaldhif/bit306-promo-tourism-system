@@ -21,7 +21,7 @@ export class PaymentHistoryDetailComponent {
       this.paymentDetails = this.paymentService.getPaymentById(this.paymentId);
     }
 
-    console.log('=========');
+    console.log('=====DEBUG=====');
     console.log(JSON.stringify(this.paymentDetails, null, 2));
     // Check if payment and its properties are defined before accessing them
     if (this.paymentDetails?.product) {

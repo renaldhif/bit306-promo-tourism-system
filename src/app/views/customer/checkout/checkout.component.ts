@@ -74,7 +74,7 @@ export class CheckoutComponent {
       const formData = this.checkoutForm.value;
       Swal.fire({
         title: 'Success',
-        text: 'Your order has been placed with data: ' + JSON.stringify(formData, null,2 ),
+        text: 'Your order has been placed with data DEBUG: ' + JSON.stringify(formData, null,2 ),
         icon: 'success',
         confirmButtonText: 'OK'
       }).then

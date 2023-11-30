@@ -24,6 +24,11 @@ export class LoginComponent {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
+  goToRegister() {
+    // query params role customer
+    this.router.navigate(['/register'], { queryParams: { role: 'customer' } });
+  }
+
   buttonClicked = false;
 
   onSubmit() {
