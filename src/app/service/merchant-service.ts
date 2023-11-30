@@ -16,6 +16,9 @@ export class MerchantService {
         email: 'jogjawisata@gmail,com',
         description: 'Yogyakarta Wisata Jaya is a travel agent that provides tour packages to Yogyakarta. We have been in this business for more than 10 years.',
         status: 'pending',
+        document: 'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+        documentName: 'Yogyakarta Wisata Jaya.pdf',
+        documentDescription: 'Company Profile Yogyakarta Wisata Jaya',
         created_at: '2023-11-22T11:43:25.000Z'
       },
       {
@@ -26,6 +29,9 @@ export class MerchantService {
         email: 'fantastictour@gmail,com',
         description: 'Fantastic Tour is a travel agent that provides tour packages to Jakarta. We have been in this business for more than 10 years.',
         status: 'verified',
+        document: 'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+        documentName: 'Fantastic Tour.pdf',
+        documentDescription: 'Company Profile Fantastic Tour',
         created_at: '2023-11-22T11:43:25.000Z',
       },
       {
@@ -36,6 +42,9 @@ export class MerchantService {
         email: 'baj@gmail.com',
         description: 'Bali Wisata Jaya is a travel agent that provides tour packages to Bali. We have been in this business for more than 10 years.',
         status: 'rejected',
+        document: 'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+        documentName: 'Bali Wisata Jaya.pdf',
+        documentDescription: 'Company Profile Bali Wisata Jaya',
         created_at: '2023-11-22T11:43:25.000Z',
       },
       {
@@ -46,6 +55,9 @@ export class MerchantService {
         email: 'fantastictour@gmail,com',
         description: 'Fantastic Tour is a travel agent that provides tour packages across Asia. We have been in this business for more than 10 years.',
         status: 'pending',
+        document: 'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+        documentName: 'Fantastic Tour.pdf',
+        documentDescription: 'Company Profile Fantastic Tour',
         created_at: '2023-11-22T11:43:25.000Z',
       },
       {
@@ -56,6 +68,9 @@ export class MerchantService {
         email: 'fantastictour@gmail,com',
         description: 'Fantastic Tour is a travel agent that provides tour packages across Asia. We have been in this business for more than 10 years.',
         status: 'verified',
+        document: 'https://s2.q4cdn.com/175719177/files/doc_presentations/Placeholder-PDF.pdf',
+        documentName: 'Fantastic Tour.pdf',
+        documentDescription: 'Company Profile Fantastic Tour',
         created_at: '2023-11-22T11:43:25.000Z',
       },
   ];

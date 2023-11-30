@@ -261,4 +261,30 @@ export class ProductService {
     return this.productsDummy.find((product) => product.id == id);
   }
 
+  // simplified product object for user orders
+  getUserOrderProduct(productId: number | null) {
+    const product = this.getProductById(productId);
+
+    if (product) {
+      return {
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        category: product.category,
+        location: product.location,
+        image: product.image,
+        merchant: {
+          id: product.merchant.id,
+          name: product.merchant.name,
+          phone: product.merchant.phone,
+          email: product.merchant.email,
+        }
+      };
+    }
+    // Return null if the product is not found
+    return null;
+  }
+
+
 }
