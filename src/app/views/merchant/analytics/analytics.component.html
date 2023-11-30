@@ -1,6 +1,23 @@
-<p class="ml-72">Analytics works!</p>
 <app-merchant-sidebar></app-merchant-sidebar>
 
 <div class="relative md:ml-64 bg-blueGray-100">
-  <h1>Test</h1>
+  <h2 class="text-start text-2xl font-bold mt-5 ml-5">Analytics</h2>
+
+  <!-- Revenue -->
+  <div class="w-1/2 mx-auto my-10">
+    <p class="text-center text-xl font-bold">Revenues</p>
+    <canvas id="revenueChart"></canvas>
+  </div>
+
+  <!-- Products -->
+  <div class="w-1/2 mx-auto my-10">
+    <p class="text-center text-xl font-bold">Products</p>
+    <canvas id="productsChart"></canvas>
+  </div>
+
+  <!-- Orders -->
+  <div class="w-1/2 mx-auto my-10">
+    <p class="text-center text-xl font-bold">Orders</p>
+    <canvas id="ordersChart"></canvas>
+  </div>
 </div>
