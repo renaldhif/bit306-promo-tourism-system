@@ -22,6 +22,7 @@ import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
 import { CheckoutComponent } from './views/customer/checkout/checkout.component';
 import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
+import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
 
 const routes: Routes = [
   {
@@ -44,7 +45,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: DashboardComponent },
       { path: 'merchant-list', component: MerchantListComponent },
-      { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent}
+      { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent},
+      { path: 'analytics', component: AdminAnalyticsComponent}
     ],
   },
 

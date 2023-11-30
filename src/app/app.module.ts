@@ -36,6 +36,7 @@ import { ViewMerchantDetailComponent } from './views/admin/view-merchant-detail/
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
 import { CheckoutComponent } from './views/customer/checkout/checkout.component';
 import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
+import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { PaymentHistoryDetailComponent } from './views/customer/payment-history-
     ChangePasswordComponent,
     CheckoutComponent,
     PaymentHistoryDetailComponent,
+    AdminAnalyticsComponent,
   ],
   imports: [
     BrowserModule,
