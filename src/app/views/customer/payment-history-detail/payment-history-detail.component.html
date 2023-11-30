@@ -108,6 +108,8 @@
       <div class="w-2/3">
         <h2 class="text-xl font-semibold mb-2.5">{{ paymentDetails.product.title }}</h2>
 
+        <p class="font-semibold mb-2.5">{{ paymentDetails.product.price | currency:'MYR ':'symbol' }}</p>
+
         <p class="text-gray-600 mb-2.5">{{ paymentDetails.product.description }}</p>
 
         <p class="text-gray-600 mb-2.5 mr-2">
