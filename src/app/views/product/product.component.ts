@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/service/product-service';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-product',
@@ -17,7 +18,7 @@ export class ProductComponent {
   reviews: any[] = [];
   includes: string[] = [];
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {
+  constructor(private route: ActivatedRoute, private router:Router, private productService: ProductService) {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.productId = idParam ? parseInt(idParam, 10) : null;
   }
@@ -52,13 +53,16 @@ export class ProductComponent {
     }
   }
 
-  checkoutNow() {
-    Swal.fire({
-      title: 'Success!',
-      text: `Successfully checkout with ${this.quantity} item(s)`,
-      icon: 'success',
-      confirmButtonText: 'OK',
-      denyButtonText: 'Cancel',
+  checkoutNow(productID: number) {
+    // might not appropriate to use query parameters here to pass the quantity
+    // later we will use a service or state management to store the quantity
+    const queryParams = {
+      quantity: this.quantity,
+    };
+
+    // Navigate to /customer/checkout/{productID} with query parameters
+    this.router.navigate(['/customer/checkout', productID], {
+      queryParams,
     });
   }
 
