@@ -96,7 +96,7 @@ export class RegisterComponent {
             icon: 'error',
             confirmButtonText: 'OK',
           });
-        } 
+        }
         else {
           this.error = 'Registration failed. Please check your inputs for the merchant.';
           Swal.fire({
@@ -115,10 +115,10 @@ export class RegisterComponent {
   onSubmit() {
     console.log('Register button pressed');
     console.log('Is the form valid?' + this.selectedForm.valid);
-  
+
     if (this.selectedForm.valid) {
       const inputValues = { ...this.selectedForm.value };
-  
+
       // Check if email already exists
       const isEmailExists = this.dummyUsers.some((user) => user.email === this.selectedForm.value.email);
       if (isEmailExists) {
@@ -131,11 +131,11 @@ export class RegisterComponent {
         });
         return;
       }
-  
+
       console.log('Register form values', inputValues);
       Swal.fire({
         title: 'Success!',
-        text: `You have successfully registered!\n ${JSON.stringify(inputValues, null, 2)}`,
+        text: `You have successfully registered with data DEBUG!\n ${JSON.stringify(inputValues, null, 2)}`,
         icon: 'success',
         confirmButtonText: 'OK',
       }).then((result) => {
@@ -199,7 +199,7 @@ export class RegisterComponent {
             icon: 'error',
             confirmButtonText: 'OK',
           });
-        } 
+        }
         else {
           this.error = 'Registration failed. Please check your inputs for the merchant.';
           Swal.fire({
@@ -212,5 +212,5 @@ export class RegisterComponent {
       }
     }
   }
-  
+
 }

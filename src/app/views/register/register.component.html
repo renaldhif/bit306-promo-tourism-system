@@ -1,79 +1,62 @@
 <section class="bg-white">
-  <div class="flex justify-center min-h-screen">
+  <div class="flex justify-center">
     <!-- Left background photo -->
-    <div class="hidden bg-cover lg:block lg:w-2/5">
-      <img src="../../../assets/images/bg-temple.webp" alt="background photo" class="object-cover w-full h-full"/>
+    <div class="hidden lg:block lg:w-2/5 min-h-screen bg-cover bg-center bg-no-repeat"
+      style="background-image: url('../../../../assets/images/bg-temple.webp');"
+    >
     </div>
 
     <!-- Register Content -->
-    <div class="flex mt-8 w-full max-w-3xl p-8 lg:mx-auto lg:px-10 lg:w-3/5">
+    <div class="flex w-full max-w-3xl p-8 lg:mx-auto lg:px-10 lg:w-3/5">
       <div class="w-full">
 
-        <div class="flex justify-center items-start pb-5 my-10 lg:my-20">
-          <img src="../../../assets/icons/logo-placeholder-large.svg" alt="petronas-background" >
+        <div class="flex justify-center items-center pb-5 my-10 lg:w-3/5 mx-auto">
+          <img src="../../../assets/icons/ic_logo.png" alt="logo">
         </div>
 
-        <div class="my-10 lg:my-0 h-full justify-center items-center">
+        <div class="my-10 lg:my-0 justify-center items-center">
           <h1 class="text-2xl font-semibold text-gray-800">
             {{ userRole === 'merchant' ? 'Embark on a Business Journey' : 'Adventure Begins Here' }}
           </h1>
           <p class="mt-4 text-gray-500">
             {{ userRole === 'merchant'
-                ? 'Become a Merchant Now and Unlock a World of Opportunities, Seamless Transactions, and Global Visibility for Your Unique Offerings.'
-                : 'Register Now and Open the Door to Boundless Adventures, Incredible Destinations, and Unforgettable Experiences.'
+            ? 'Become a Merchant Now and Unlock a World of Opportunities, Seamless Transactions, and Global Visibility
+            for Your Unique Offerings.'
+            : 'Register Now and Open the Door to Boundless Adventures, Incredible Destinations, and Unforgettable
+            Experiences.'
             }}
           </p>
 
           <form [formGroup]="selectedForm" (ngSubmit)="onSubmit()" class="mt-8 md:grid-cols-2">
 
             <div>
-              <label class="block mt-4 text-sm text-gray-600">{{ userRole === 'merchant' ? 'Merchant' : 'Full' }} Name</label>
-              <input
-                formControlName="fullname"
-                type="text"
-                placeholder="John Doe"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
+              <label class="block mt-4 text-sm text-gray-600">{{ userRole === 'merchant' ? 'Merchant' : 'Full' }}
+                Name</label>
+              <input formControlName="fullname" type="text" placeholder="John Doe"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
             </div>
 
             <div>
               <label class="block mt-4 text-sm text-gray-600">Phone number</label>
-              <input
-                formControlName="phoneNum"
-                type="tel"
-                maxlength="13"
-                placeholder="08123456789"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
+              <input formControlName="phoneNum" type="tel" maxlength="13" placeholder="08123456789"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
             </div>
 
             <div>
-              <label class="block mt-4 text-sm text-gray-600"
-                >Email address</label
-              >
-              <input
-                formControlName="email"
-                type="email"
-                placeholder="johndoe@example.com"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
+              <label class="block mt-4 text-sm text-gray-600">Email address</label>
+              <input formControlName="email" type="email" placeholder="johndoe@example.com"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
             </div>
 
             <div *ngIf="userRole === 'customer'">
               <div>
                 <label class="block mt-4 text-sm text-gray-600">Password</label>
                 <div class="relative">
-                  <input
-                    formControlName="password"
-                    [type]="passwordFieldType"
-                    placeholder="Enter your password"
-                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                  />
-                  <button
-                    type="button"
+                  <input formControlName="password" [type]="passwordFieldType" placeholder="Enter your password"
+                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                  <button type="button"
                     class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer box-border"
-                    (click)="togglePasswordVisibility()"
-                  >
+                    (click)="togglePasswordVisibility()">
                     <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
                     <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
                   </button>
@@ -85,85 +68,57 @@
               <div>
                 <label class="block mt-4 text-sm text-gray-600">Confirm password</label>
                 <div class="relative">
-                  <input
-                    formControlName="repassword"
-                    [type]="repasswordFieldType"
-                    placeholder="Confirm your password"
-                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                  />
-                  <button
-                    type="button"
-                    class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer"
-                    (click)="toggleRepasswordVisibility()"
-                  >
+                  <input formControlName="repassword" [type]="repasswordFieldType" placeholder="Confirm your password"
+                    class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                  <button type="button" class="absolute inset-y-0 right-0 mr-5 flex items-center cursor-pointer"
+                    (click)="toggleRepasswordVisibility()">
                     <i *ngIf="repasswordFieldType === 'password'" class="fa fa-eye text-gray-400"></i>
                     <i *ngIf="repasswordFieldType === 'text'" class="fa fa-eye-slash text-gray-400"></i>
                   </button>
                 </div>
               </div>
               <button
-              class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-            >
-              Register
-            </button>
+                class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                Register
+              </button>
             </div>
-            
+
 
             <!-- Inside the merchant block -->
             <div *ngIf="userRole === 'merchant'">
               <label class="block mt-4 text-sm text-gray-600">Merchant Description</label>
-              <textarea
-                formControlName="merchantDescription"
-                placeholder="Enter merchant description"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              ></textarea>
+              <textarea formControlName="merchantDescription" placeholder="Enter merchant description"
+                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"></textarea>
 
-              <button *ngIf="!showAdditionalFields" type="button" (click)="toggleAdditionalFields()" class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+              <button *ngIf="!showAdditionalFields" type="button" (click)="toggleAdditionalFields()"
+                class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                 Show Additional Fields
               </button>
 
-            <!-- Additional form fields for document upload -->
-            <div *ngIf="showAdditionalFields">
-              <label class="block mt-4 text-sm text-gray-600">Upload Document</label>
-              <input
-                formControlName="document"
-                type="file"
-                accept=".pdf, .doc, .docx"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
+              <!-- Additional form fields for document upload -->
+              <div *ngIf="showAdditionalFields">
+                <label class="block mt-4 text-sm text-gray-600">Upload Document</label>
+                <input formControlName="document" type="file" accept=".pdf, .doc, .docx"
+                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
 
-              <label class="block mt-4 text-sm text-gray-600">Filename</label>
-              <input
-                formControlName="filename"
-                type="text"
-                placeholder="Enter filename"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
+                <label class="block mt-4 text-sm text-gray-600">Filename</label>
+                <input formControlName="filename" type="text" placeholder="Enter filename"
+                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
 
-              <label class="block mt-4 text-sm text-gray-600">Description</label>
-              <textarea
-                formControlName="description"
-                placeholder="Enter description"
-                class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              ></textarea>
-              <button 
-              type = "button" (click) = "onSubmit()"
-              class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-            >
-              Register
-            </button>
+                <label class="block mt-4 text-sm text-gray-600">Description</label>
+                <textarea formControlName="description" placeholder="Enter description"
+                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"></textarea>
+                <button type="button" (click)="onSubmit()"
+                  class="w-full mt-8 px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                  Register
+                </button>
               </div>
-          </div>
+            </div>
 
-
-          
             <p class="mt-6 text-sm text-gray-400">
               Already have an account yet?
-              <a
-                routerLink="/login"
-                class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold"
-                >Login here</a
-              >
+              <a routerLink="/login"
+                class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Login here</a>
             </p>
           </form>
         </div>
