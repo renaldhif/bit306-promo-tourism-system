@@ -1,36 +1,30 @@
-<nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
-  <div class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto z-10">
+<nav
+  class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+  <div
+    class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto z-10">
     <!-- Toggler -->
     <button
       class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-      type="button"
-      (click)="toggleCollapseShow('bg-white m-2 py-3 px-6')"
-    >
+      type="button" (click)="toggleCollapseShow('bg-white m-2 py-3 px-6')">
       <i class="fa fa-bars"></i>
     </button>
     <!-- Brand -->
     <img src="../../../assets/icons/ic_logo.png" alt="Logo">
 
     <!-- Collapse -->
-    <div
-      class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none
+    <div class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none
       shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
-      [ngClass]="collapseShow"
-    >
-    <!-- Collapse header -->
-      <div
-        class="md:min-w-full md:hidden block pb-4 mb-4 lg:border-b lg:border-solid lg:border-blueGray-200"
-      >
+      [ngClass]="collapseShow">
+      <!-- Collapse header -->
+      <div class="md:min-w-full md:hidden block pb-4 mb-4 lg:border-b lg:border-solid lg:border-blueGray-200">
         <div class="flex flex-wrap">
           <div class="w-6/12">
             <img src="../../../assets/icons/ic_logo.png" alt="Logo">
           </div>
           <div class="w-6/12 flex justify-end">
-            <button
-              type="button"
+            <button type="button"
               class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-              (click)="toggleCollapseShow('hidden')"
-            >
+              (click)="toggleCollapseShow('hidden')">
               <i class="fa fa-times"></i>
             </button>
           </div>
@@ -42,51 +36,51 @@
 
       <!-- Navigation -->
       <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+        <!-- Dashboard -->
         <li class="items-center">
-          <a
-            [routerLink]="['/admin/dashboard']"
-            class="text-xs uppercase py-3 font-bold block"
-            routerLinkActive
-            #adminDashboard="routerLinkActive"
-            [routerLinkActiveOptions]="{ exact: true }"
-            [ngClass]="
+          <a [routerLink]="['/admin/dashboard']" class="text-sm uppercase py-3 font-bold block" routerLinkActive
+            #adminDashboard="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }" [ngClass]="
               adminDashboard.isActive
                 ? 'text-primary hover:text-darkPrimary'
                 : 'text-blueGray-700 hover:text-blueGray-500'
-            "
-          >
-            <i
-              class="fa fa-tv mr-2 text-sm"
-              [ngClass]="
+            ">
+            <i class="fa fa-tv mr-2 text-sm" [ngClass]="
                 adminDashboard.isActive ? 'opacity-75' : 'text-blueGray-300'
-              "
-            ></i>
+              "></i>
             Dashboard
           </a>
         </li>
 
+        <!-- Merchant Registration -->
         <li class="items-center">
-          <a
-            [routerLink]="['/admin/merchant-list']"
-            class="text-xs uppercase py-3 font-bold block"
-            routerLinkActive
-            #merchantList="routerLinkActive"
-            [routerLinkActiveOptions]="{ exact: true }"
-            [ngClass]="
+          <a [routerLink]="['/admin/merchant-list']" class="text-sm uppercase py-3 font-bold block" routerLinkActive
+            #merchantList="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }" [ngClass]="
               merchantList.isActive
                 ? 'text-primary hover:text-darkPrimary'
                 : 'text-blueGray-700 hover:text-blueGray-500'
-            "
-          >
-            <i
-              class="fa fa-table mr-2 text-sm"
-              [ngClass]="
+            ">
+            <i class="fa fa-table mr-2 text-sm" [ngClass]="
                 merchantList.isActive ? 'opacity-75' : 'text-blueGray-300'
-              "
-            ></i>
-            Merchant Registration
+              "></i>
+            Merchant List
           </a>
         </li>
+
+        <!-- Analytics -->
+        <li class="items-center">
+          <a [routerLink]="['/admin/analytics']" class="text-sm uppercase py-3 font-bold block" routerLinkActive
+            #adminAnalytics="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }" [ngClass]="
+              adminAnalytics.isActive
+                ? 'text-primary hover:text-darkPrimary'
+                : 'text-blueGray-700 hover:text-blueGray-500'
+            ">
+            <i
+            class="fa fa-bar-chart mr-2 text-sm"
+            [ngClass]="
+              adminAnalytics.isActive ? 'opacity-75' : 'text-blueGray-300'
+            "
+          ></i>Analytics report
+          </a>
 
       </ul>
     </div>
