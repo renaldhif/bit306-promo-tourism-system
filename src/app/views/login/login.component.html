@@ -6,7 +6,7 @@
     <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6 bg-whiteBackground">
       <div class="flex-1 py-14 px-10 border border-border rounded-lg shadow-lg lg:shadow-none lg:border-none lg:p-0">
         <div class="flex items-center justify-center pb-5">
-          <img src="../../../assets/icons/logo-placeholder-large.svg" alt="petronas-background">
+          <img src="../../../assets/icons/ic_logo.png" width="300" alt="logo">
         </div>
         <div class="mt-8">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -55,7 +55,10 @@
           </form>
           <p class="mt-6 text-sm text-gray-400">
             Don't have an account yet?
-            <a routerLink="/register" class="text-blue-500 focus:outline-none focus:underline hover:underline font-semibold">Register here</a>
+            <a
+              (click)="goToRegister()"
+              class="focus:outline-none focus:underline hover:underline font-semibold text-primary"
+            >Register here</a>
           </p>
         </div>
       </div>
