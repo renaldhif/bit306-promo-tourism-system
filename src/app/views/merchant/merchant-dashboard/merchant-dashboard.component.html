@@ -2,6 +2,21 @@
 <div class="relative md:ml-64 bg-blueGray-100">
   <app-merchant-header-stats></app-merchant-header-stats>
   <div class="px-4 md:px-10 mx-auto w-full -m-24">
-    <!-- <app-merchant-list></app-merchant-list> -->
+    <!-- Alert to navigate to change password for initial register -->
+    <div
+      class="mb-3 w-full items-center rounded-lg bg-warning-100 px-6 py-3 text-base text-warning-800 mt-36 bg-warningBackground border border-warningBorder"
+    >
+      <div class="flex mb-2">
+        <span class="mr-2 text-warningIcon">
+          <i class="fa fa-exclamation-triangle"></i>
+        </span>
+        <p class="text-warningTitle font-semibold">Guard Your Business Hub</p>
+      </div>
+      <p class="text-warningSubtitle">
+        Elevate Your Account Security with a New Password!
+        <a routerLink="/change-password" class="text-warningText underline font-semibold">Click here</a>
+        to change your password.
+      </p>
+    </div>
   </div>
 </div>
