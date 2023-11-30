@@ -59,11 +59,8 @@ export class MainComponent {
     this.router.navigate(['/product', productID]);
   }
 
-  buyNow (productID: number) {
-    Swal.fire({
-      title: 'Navigate to payment page',
-      text: `Item ${productID}`,
-    });
+  checkOutNow (productID: number) {
+    this.router.navigate(['/customer/checkout', productID]);
   }
 
 }
