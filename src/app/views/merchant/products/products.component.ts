@@ -24,31 +24,16 @@ export class ProductsComponent {
 
   // Swal
   onAddProduct = () => {
-    Swal.fire({
-      title: 'Add product?',
-      text: 'Coming soon :)',
-      confirmButtonColor: '#4ade80'
-    })
+    // direct to add product page
+    this.router.navigate(['/merchant/add-product']);
   }
 
   onViewInfoProduct = (productId: number) => {
-    // Swal.fire({
-    //   title: 'View info product?',
-    //   text: 'Directing to view info product page or modal? Coming soon :)',
-    //   confirmButtonColor: '#4ade80'
-    // })
-
     // direct to view info product page
     this.router.navigate(['/merchant/view-product-detail', productId]);
   }
 
   onEditProduct = (productId: number) => {
-    // Swal.fire({
-    //   title: 'Edit Product?',
-    //   text: 'Directing to edit product page or modal? Coming soon :)',
-    //   confirmButtonColor: '#4ade80'
-    // })
-
     // direct to edit product page and pass the item.id
     this.router.navigate(['/merchant/edit-product', productId]);
   }
