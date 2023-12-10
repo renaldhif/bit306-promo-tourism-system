@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-// Routes will go here
+// TEST ENDPOINTS ONLY!
 app.get('/', (req, res) => {
   res.send('Hello from Express!');
 });
@@ -30,6 +30,12 @@ app.post('/api/test', (req, res) => {
   console.log(req.body); // Log the request body to the console
   res.json({ message: 'POST request received', data: req.body });
 });
+
+// Below is the real endpoint for the routes
+
+// Auth
+import authRoutes from "./routes/authRoutes.js";
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
