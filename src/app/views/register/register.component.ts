@@ -29,6 +29,7 @@ export class RegisterComponent {
       phoneNum: ['', Validators.required],
       password: ['', [Validators.required]],
       repassword: ['', [Validators.required]],
+      userRole: ['customer'],
     });
 
     // Merchant registration form
@@ -36,6 +37,7 @@ export class RegisterComponent {
       fullname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNum: ['', Validators.required],
+      userRole: ['merchant'],
       merchantDescription: ['', Validators.required],
       document: [''],
       filename: [''],
