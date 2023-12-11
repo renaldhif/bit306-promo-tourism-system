@@ -1,9 +1,11 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/UsersModel.js';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
+//* REGISTER
 router.post('/register', async (req, res) => {
   try {
     // Check if the user already exists
@@ -45,5 +47,34 @@ router.post('/register', async (req, res) => {
 
   }
 });
+
+//* LOGIN
+router.post('/login', async (req, res) => {
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    // Compare password
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ message: 'Invalid password' });
+    }
+
+    // Create and assign a token
+    const token = jwt.sign(
+      { _id: user._id, role: user.userRole },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
+    res.header('auth-token', token).json({ message: 'Logged in successfully', token: token });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 export default router;
