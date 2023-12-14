@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../app/service/auth.service';
+import { UserService } from '../../../app/service/user.service';
 
 @Component({
   selector: 'app-header-stats',
@@ -8,7 +11,33 @@ import Swal from 'sweetalert2';
 })
 export class HeaderStatsComponent {
 
-  name = 'Tourism Ministry Officer';
+  userDetails: any;
+  name: string = 'Tourism Ministry Officer';
+  isLoggedIn: boolean = this.authService.isLoggedIn();
+
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    const userId = this.authService.getUserId();
+    console.log('User ID from header-stats.component.ts: ' + userId);
+    if (userId) {
+      this.userService.getUserDetails(userId).subscribe({
+        next: (data) => {
+          console.log('====isLoggedIn ADMIN OFFICER===');
+          console.log('Is logged in? ' + this.isLoggedIn);
+          console.log('\n==============');
+          this.userDetails = data;
+          console.log('User details from ADMIN OFFICER header-stats.component.ts ' + JSON.stringify(this.userDetails, null, 2));
+          console.log('==========');
+          this.name = this.userDetails.fullname;
+          console.log('Fullname from ADMIN OFFICER header-stats.component.ts: ' + this.name);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
+  }
 
   // logout
   logout = () => {
@@ -22,16 +51,11 @@ export class HeaderStatsComponent {
       confirmButtonText: 'Yes, logout!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Logout',
-          text: "You have been logged out successfully!",
-          icon: 'success',
-          confirmButtonColor: '#4ade80',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = '/login';
-          }
-        })
+        this.authService.logout();
+        console.log('Logout executed from ADMIN OFFICER header-stats.component.ts');
+        console.log('\n======');
+        console.log('navigate to login');
+        this.router.navigate(['/login']);
       }
     })
   }

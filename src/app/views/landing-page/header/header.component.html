@@ -130,8 +130,7 @@
         <div *ngIf="isLoggedIn">
           <div
             class="hidden lg:flex ml-2 cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover"
-            (click)="logout()"
-            >
+            (click)="logout()">
             <div class="w-7 h-7 flex items-center justify-center bg-secondary text-primary rounded-full">
               <i class="fa fa-sign-out flex items-center justify-center"></i>
             </div>
@@ -148,13 +147,23 @@
       [class.hidden]="!mobileMenuOpen">
       <ul class="py-2">
         <!-- Sign In -->
-        <li class="p-2">
+        <li class="p-2" *ngIf="!isLoggedIn">
           <a routerLink="login" class="block text-sm text-textPrimary hover:text-primary">Login</a>
         </li>
         <!-- Register -->
-        <li class="p-2">
+        <li class="p-2" *ngIf="!isLoggedIn">
           <a href="#" class="block text-sm text-textPrimary hover:text-primary">Register</a>
         </li>
+
+        <!-- Customer Name -->
+        <li class="p-2" *ngIf="isLoggedIn">
+          <span class="text-sm font-medium">{{ fullname }}</span>
+        </li>
+        <!-- Logout -->
+        <li class="p-2" *ngIf="isLoggedIn" (click)="logout()">
+          <span class="text-sm font-medium">Logout</span>
+        </li>
+
         <!-- Divider -->
         <li class="border-b border-border"></li>
         <!-- Menu 1 -->
