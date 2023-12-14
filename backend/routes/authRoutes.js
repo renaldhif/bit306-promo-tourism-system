@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/UsersModel.js';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const router = express.Router();
 
@@ -82,5 +83,34 @@ router.post('/login', async (req, res) => {
   }
 });
 
+//* CHANGE PASSWORD
+
+// POST request to initiate password reset
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Find the user by email
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    if (user.userRole === 'merchant') {
+      user.isMerchantChangedPassword = true;
+    }
+
+    // Save the updated user
+    await user.save();
+
+    res.status(200).json({ message: 'Password has been reset successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 export default router;

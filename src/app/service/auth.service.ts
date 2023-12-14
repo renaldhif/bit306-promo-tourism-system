@@ -54,4 +54,9 @@ export class AuthService {
     localStorage.removeItem('role');
     localStorage.removeItem('userId');
   }
+
+  // reset password
+  resetPassword(email: string, newPassword: string) {
+    return this.http.post<any>(`${this.apiUrl}/api/auth/reset-password`, { email, newPassword });
+  }
 }
