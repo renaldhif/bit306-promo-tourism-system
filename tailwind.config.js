@@ -20,6 +20,13 @@ export const theme = {
       warningBorder: '#F7C948',
       warningIcon: '#FACC14',
 
+      // success
+      successBackground: '#F0FFF4',
+      successTitle: '#22543D',
+      successSubtitle: '#2F855A',
+      successBorder: '#38A169',
+      successIcon: '#51CF66',
+
 
       // additional colors
       lightPrimaryBackground: '#3097FF',
