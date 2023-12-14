@@ -37,5 +37,10 @@ app.post('/api/test', (req, res) => {
 import authRoutes from "./routes/authRoutes.js";
 app.use('/api/auth', authRoutes);
 
+// User
+import userRoutes from "./routes/userRoutes.js";
+app.use('/api/user', userRoutes);
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

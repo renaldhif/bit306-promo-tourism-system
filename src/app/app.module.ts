@@ -37,6 +37,7 @@ import { ChangePasswordComponent } from './views/change-password/change-password
 import { CheckoutComponent } from './views/customer/checkout/checkout.component';
 import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
 import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-ana
     ReactiveFormsModule,
     DataTablesModule,
     SweetAlert2Module.forRoot(),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
