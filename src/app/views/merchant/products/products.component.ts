@@ -9,25 +9,35 @@ import Swal from 'sweetalert2';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
+  dtOptions: DataTables.Settings = {};
+
+  products: any[] = [];  // Initialize products as an array
 
   constructor(private router: Router, private productService: ProductService) {}
-  dtOptions: DataTables.Settings = {};
+
 
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers'
     };
+
+    // Fetch products from the service
+    this.productService.getAllProducts().subscribe(
+      (products: any[]) => {
+        this.products = products;
+      },
+      error => {
+        console.error('Error fetching products:', error);
+        // Handle the error, e.g., show an error message to the user
+      }
+    );
   }
-
-  // data from productService
-  products = this.productService.getAllProducts();
-
   // Swal
   onAddProduct = () => {
     // direct to add product page
     this.router.navigate(['/merchant/add-product']);
   }
-
+  
   onViewInfoProduct = (productId: number) => {
     // direct to view info product page
     this.router.navigate(['/merchant/view-product-detail', productId]);
