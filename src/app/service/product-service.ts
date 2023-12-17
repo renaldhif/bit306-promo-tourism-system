@@ -1,10 +1,20 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, catchError, map } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 
 export class ProductService {
+
+  private apiUrl = "http://localhost:3000/api/products";
+
+  //========== NEED TO CHANGE THIS ==========
+  private merchantApiUrl = "http://localhost:3000/api/merchants";
+
+
+  constructor(private http: HttpClient) {}
 
   // Will be replaced with actual API call
     productsDummy = [
@@ -251,39 +261,91 @@ export class ProductService {
       },
   ];
 
-  constructor() {}
+  // constructor() {}
 
-  getAllProducts() {
-    return this.productsDummy;
+  // getAllProducts() {
+  //   return this.productsDummy;
+  // }
+
+  // getProductById(id: Number | null) {
+  //   return this.productsDummy.find((product) => product.id == id);
+  // }
+
+  // // simplified product object for user orders
+  // getUserOrderProduct(productId: number | null) {
+  //   const product = this.getProductById(productId);
+
+  //   if (product) {
+  //     return {
+  //       id: product.id,
+  //       title: product.title,
+  //       description: product.description,
+  //       price: product.price,
+  //       category: product.category,
+  //       location: product.location,
+  //       image: product.image,
+  //       merchant: {
+  //         id: product.merchant.id,
+  //         name: product.merchant.name,
+  //         phone: product.merchant.phone,
+  //         email: product.merchant.email,
+  //       }
+  //     };
+  //   }
+  //   // Return null if the product is not found
+  //   return null;
+  // }
+
+// ProductService
+
+// getAllProducts(): Observable<any[]> {
+//   return this.http.get<any[]>(this.apiUrl)
+//     .pipe(
+//       catchError(error => {
+//         console.error('Error fetching products:', error);
+//         // Handle the error, e.g., return an empty array or re-throw the error
+//         return [];
+//       })
+//     );
+// }
+
+getAllProducts(): Observable<any[]> {
+  return this.http.get<any[]>(this.apiUrl).pipe(
+    map((products: any[]) => products.map(product => ({
+      ...product,
+      merchant: this.fetchMerchantData(product.merchant),
+    }))),
+    catchError(error => {
+      console.error('Error fetching products:', error);
+      throw error;
+    })
+  );
+}
+
+private fetchMerchantData(merchantId: string): Observable<any> {
+  const merchantUrl = `${this.merchantApiUrl}/${merchantId}`;
+  return this.http.get<any>(merchantUrl);
+}
+
+
+  getProductById(id: number | null): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  getProductById(id: Number | null) {
-    return this.productsDummy.find((product) => product.id == id);
+  createProduct(productData: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, productData);
   }
 
-  // simplified product object for user orders
-  getUserOrderProduct(productId: number | null) {
-    const product = this.getProductById(productId);
+  updateProduct(id: number, updatedProductData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, updatedProductData);
+  }
 
-    if (product) {
-      return {
-        id: product.id,
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        location: product.location,
-        image: product.image,
-        merchant: {
-          id: product.merchant.id,
-          name: product.merchant.name,
-          phone: product.merchant.phone,
-          email: product.merchant.email,
-        }
-      };
-    }
-    // Return null if the product is not found
-    return null;
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getUserOrderProduct(productId: number | null): Observable<any | null> {
+    return this.http.get<any>(`${this.apiUrl}/${productId}`);
   }
 
 

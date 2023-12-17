@@ -37,9 +37,11 @@ app.post('/api/test', (req, res) => {
 import authRoutes from "./routes/authRoutes.js";
 app.use('/api/auth', authRoutes);
 
-// User
 import userRoutes from "./routes/userRoutes.js";
 app.use('/api/user', userRoutes);
+
+import productRoutes from "./routes/productRoutes.js";
+app.use('/api/', productRoutes);
 
 
 const PORT = process.env.PORT || 3000;
