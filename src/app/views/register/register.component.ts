@@ -72,16 +72,16 @@ export class RegisterComponent {
   }
 
   toggleAdditionalFields() {
-    if(this.userRole === 'merchant'){
-      if(this.selectedForm.get('fullname')?.valid && this.selectedForm.get('email')?.valid && this.selectedForm.get('phoneNum')?.valid && this.selectedForm.get('merchantDescription')?.valid){
+    if (this.userRole === 'merchant') {
+      if (this.selectedForm.get('fullname')?.valid && this.selectedForm.get('email')?.valid && this.selectedForm.get('phoneNum')?.valid && this.selectedForm.get('merchantDescription')?.valid) {
         this.showAdditionalFields = !this.showAdditionalFields;
-        if(this.showAdditionalFields){
+        if (this.showAdditionalFields) {
           this.merchantRegistrationForm.get('document')?.setValidators([Validators.required]);
           this.merchantRegistrationForm.get('filename')?.setValidators([Validators.required]);
           this.merchantRegistrationForm.get('description')?.setValidators([Validators.required]);
         }
       }
-      else{
+      else {
         if (this.selectedForm.get('fullname')?.hasError('required') || this.selectedForm.get('email')?.hasError('required') || this.selectedForm.get('phoneNum')?.hasError('required') || this.selectedForm.get('merchantDescription')?.hasError('required')) {
           this.error = 'Registration failed. Please fill in all the required fields for the merchant.';
           Swal.fire({
@@ -135,16 +135,32 @@ export class RegisterComponent {
       }
 
       console.log('Register form values', inputValues);
-      Swal.fire({
-        title: 'Success!',
-        text: `You have successfully registered with data DEBUG!\n ${JSON.stringify(inputValues, null, 2)}`,
-        icon: 'success',
-        confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.router.navigate(['/login']);
-        }
-      });
+      // Check if the user is a merchant
+      if (inputValues.userRole === "merchant") {
+        // Swal message for merchant
+        Swal.fire({
+          title: 'Merchant Account Successfully Created!',
+          text: 'Please check your email to see your password to be able to login to our system. Please remember that you have to change your password upon your first login!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/login']);
+          }
+        });
+      } else {
+        // Swal message for other users
+        Swal.fire({
+          title: 'Success!',
+          text: `You have successfully registered with data DEBUG!\n ${JSON.stringify(inputValues, null, 2)}`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/login']);
+          }
+        });
+      }
     } else {
       // Handle validation errors based on the selected form
       if (this.userRole === 'customer') {
@@ -185,7 +201,7 @@ export class RegisterComponent {
       } else if (this.userRole === 'merchant') {
         // Handle merchant form validation errors
         if (this.selectedForm.get('fullname')?.hasError('required') || this.selectedForm.get('email')?.hasError('required') || this.selectedForm.get('phoneNum')?.hasError('required') || this.selectedForm.get('merchantDescription')?.hasError('required')
-            || this.selectedForm.get('document')?.hasError('required') || this.selectedForm.get('filename')?.hasError('required') || this.selectedForm.get('description')?.hasError('required')) {
+          || this.selectedForm.get('document')?.hasError('required') || this.selectedForm.get('filename')?.hasError('required') || this.selectedForm.get('description')?.hasError('required')) {
           this.error = 'Registration failed. Please fill in all the required fields for the merchant.';
           Swal.fire({
             title: 'Empty Fields',
