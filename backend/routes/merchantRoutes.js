@@ -58,33 +58,31 @@ router.post('/register', async (req, res) => {
       // Handle file upload
       if (files.document && files.document.length > 0) {
         const file = files.document[0];
+        console.log('file object: ', file);
 
-        // ! BUG: pdf file is not recognized as pdf
-        // if (files.document.mimetype !== 'application/pdf') {
-        //   return res.status(400).json({ message: 'Only PDF files are allowed' });
-        // }
-
-        console.log('file object: ', files);
+        if (file.mimetype !== 'application/pdf') {
+          console.log('file is not pdf from backend!');
+          console.log('file mimetype: ', file.mimetype);
+          return res.status(400).json({ message: 'Only PDF files are allowed' });
+        }
 
         const oldPath = file.filepath;
         const originalFilename = file.originalFilename;
 
         // Generate new filename
         newFilename = `${fullname.replace(/\s+/g, '_')}_${originalFilename}`;
-        const newPath = path.join(__dirname, '../uploads', newFilename);
-
+        const newPath = path.join(__dirname, '../uploads/documents', newFilename);
 
         // Move the file
         fs.renameSync(oldPath, newPath);
         // Generate a relative URL for the file
-        documentPath = `/uploads/${newFilename}`;
+        documentPath = `/uploads/documents/${newFilename}`;
 
         // Optional: Log to check if documentData is not null or empty
         console.log('filename: ', newFilename);
         console.log('documentPath: ', documentPath);
         // console.log('documentData: ', documentData.length); // Check if data is read
       }
-
 
       // Create a new user (merchant)
       //! Doesnt work with formidable

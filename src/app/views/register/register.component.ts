@@ -76,8 +76,23 @@ export class RegisterComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       this.selectedFile = input.files[0];
-      // Set the file name in the form control
-      this.merchantRegistrationForm.patchValue({ filename: this.selectedFile.name });
+
+      // handle accept pdf only
+      if (this.selectedFile.type !== 'application/pdf') {
+        Swal.fire({
+          title: 'Invalid File Type',
+          text: 'Please upload a PDF file',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+        // Reset the file input
+        // input.value = '';
+        // this.selectedFile = null;
+      }
+      else{
+        console.log('file is pdf. with original file name is: ' + this.selectedFile.name);
+        this.merchantRegistrationForm.patchValue({ filename: this.selectedFile.name });
+      }
     }
   }
 
