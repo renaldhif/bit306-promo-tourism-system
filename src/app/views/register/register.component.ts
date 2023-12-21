@@ -161,115 +161,93 @@ export class RegisterComponent {
           }
         });
 
-        // Call the service with FormData
-        this.merchantService.registerMerchant(formData).subscribe((response: any) => {
-          console.log('Response this.merchantService.registerMerchant', response);
-          // Swal message for merchant
-          Swal.fire({
-            title: 'Merchant Account Successfully Created!',
-            text: 'Please check your email to see your password to be able to login to our system. Please remember that you have to change your password upon your first login!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/login']);
-            }
-          });
-        });
-      } else {
-        // Swal message for other users
-        Swal.fire({
-          title: 'Success!',
-          text: `You have successfully registered with data DEBUG!\n ${JSON.stringify(inputValues, null, 2)}`,
-          icon: 'success',
-          confirmButtonText: 'OK',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/login']);
+        const email = this.selectedForm.value.email;
+        console.log('email is: ' + email);
+        this.authService.isEmailTaken(email).subscribe((response) => {
+          console.log('valiadtion email taken from merchant');
+          console.log('Response this.authService.isEmailTaken', response);
+          if (response.isEmailTaken) {
+            Swal.fire({
+              title: 'Email Exists',
+              text: 'Email already exists',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
+          else {
+            // Call the service with FormData
+            this.merchantService.registerMerchant(formData).subscribe((response: any) => {
+              console.log('Response this.merchantService.registerMerchant', response);
+              // Swal message for merchant
+              Swal.fire({
+                title: 'Merchant Account Successfully Created!',
+                text: 'Please check your email to see your password to be able to login to our system. Please remember that you have to change your password upon your first login!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.router.navigate(['/login']);
+                }
+              });
+            });
           }
         });
       }
-    } else {
-      // Handle validation errors based on the selected form
-      if (this.userRole === 'customer') {
-        // Handle customer form validation errors
-        if (this.selectedForm.get('fullname')?.hasError('required') || this.selectedForm.get('email')?.hasError('required') || this.selectedForm.get('phoneNum')?.hasError('required') || this.selectedForm.get('password')?.hasError('required') || this.selectedForm.get('repassword')?.hasError('required')) {
-          this.error = 'Registration failed. Please fill in all the required fields for the customer.';
-          Swal.fire({
-            title: 'Empty Fields',
-            text: 'Please fill in all the required fields for the customer',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        } else if (this.selectedForm.get('email')?.hasError('email')) {
-          this.error = 'Registration failed. Invalid email format for the customer.';
-          Swal.fire({
-            title: 'Invalid Email',
-            text: 'Please enter a valid email address for the customer',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        } else if (this.selectedForm.get('password')?.value !== this.selectedForm.get('repassword')?.value) {
-          this.error = 'Registration failed. Passwords do not match for the customer.';
-          Swal.fire({
-            title: 'Password Mismatch',
-            text: 'Passwords do not match for the customer',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        } else {
-          this.error = 'Registration failed. Please check your inputs for the customer.';
-          Swal.fire({
-            title: 'Registration Failed',
-            text: 'Please check your inputs for the customer',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        }
-      } else if (this.userRole === 'merchant') {
-        // Handle merchant form validation errors
-        if (this.selectedForm.get('fullname')?.hasError('required') || this.selectedForm.get('email')?.hasError('required') || this.selectedForm.get('phoneNum')?.hasError('required') || this.selectedForm.get('merchantDescription')?.hasError('required')
-          || this.selectedForm.get('document')?.hasError('required') || this.selectedForm.get('filename')?.hasError('required') || this.selectedForm.get('description')?.hasError('required')) {
-          this.error = 'Registration failed. Please fill in all the required fields for the merchant.';
-          Swal.fire({
-            title: 'Empty Fields',
-            text: 'Please fill in all the required fields for the merchant',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        } else if (this.selectedForm.get('email')?.hasError('email')) {
-          this.error = 'Registration failed. Invalid email format for the merchant.';
-          Swal.fire({
-            title: 'Invalid Email',
-            text: 'Please enter a valid email address for the merchant',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        }
-        else {
-          this.error = 'Registration failed. Please check your inputs for the merchant.';
-          Swal.fire({
-            title: 'Registration Failed',
-            text: 'Please check your inputs for the merchant',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        }
+    }
+    else {
+      console.log('Register Merchant fields are not valid');
+
+      // Handle merchant form validation errors
+      if (this.selectedForm.get('fullname')?.hasError('required')
+        || this.selectedForm.get('email')?.hasError('required')
+        || this.selectedForm.get('phoneNum')?.hasError('required')
+        || this.selectedForm.get('merchantDescription')?.hasError('required')
+        || this.selectedForm.get('document')?.hasError('required')
+        || this.selectedForm.get('filename')?.hasError('required')
+        || this.selectedForm.get('description')?.hasError('required')) {
+        this.error = 'Registration failed. Please fill in all the required fields for the merchant.';
+        Swal.fire({
+          title: 'Empty Fields',
+          text: 'Please fill in all the required fields for the merchant',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } else if (this.selectedForm.get('email')?.hasError('email')) {
+        this.error = 'Registration failed. Invalid email format for the merchant.';
+        Swal.fire({
+          title: 'Invalid Email',
+          text: 'Please enter a valid email address for the merchant',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+      else {
+        this.error = 'Registration failed. Please check your inputs for the merchant.';
+        Swal.fire({
+          title: 'Registration Failed',
+          text: 'Please check your inputs for the merchant',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
       }
     }
   }
 
-  onSubmit() {
-    console.log('Register button pressed');
+  registerCustomer() {
+    console.log('RegisterCustomer BEGINS');
     console.log('Is the form valid?' + this.selectedForm.valid);
+    console.log('customerRegistrationForm is: ' + this.customerRegistrationForm);
+    console.log('customerRegistrationForm isValid?: ' + this.customerRegistrationForm.valid);
 
-    if (this.selectedForm.valid) {
-      const inputValues = { ...this.selectedForm.value };
+    if (this.userRole === 'customer' && this.customerRegistrationForm.valid) {
+      const customerData = { ...this.customerRegistrationForm.value };
+      console.log('customerData is: ' + customerData);
 
       // Check if the email already exists
       const email = this.selectedForm.value.email;
       console.log('email is: ' + email);
       this.authService.isEmailTaken(email).subscribe((response) => {
+        console.log('valiadtion email taken from customer');
         console.log('Response this.authService.isEmailTaken', response);
         if (response.isEmailTaken) {
           Swal.fire({
@@ -280,10 +258,67 @@ export class RegisterComponent {
           });
         }
         else {
-          console.log('block else, this.registerMerchant is executed');
-          this.registerMerchant();
+          console.log('Registering for customer...');
+          this.authService.register(customerData).subscribe((response: any) => {
+            console.log('Response this.authService.register', response);
+            Swal.fire({
+              title: 'Success!',
+              text: 'Your account has been created successfully.\nWelcome to Promo Tourism!',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.router.navigate(['/login']);
+              }
+            });
+          });
         }
       });
     }
+    else {
+      // Handle customer form validation errors
+      if (this.selectedForm.get('fullname')?.hasError('required')
+        || this.selectedForm.get('email')?.hasError('required')
+        || this.selectedForm.get('phoneNum')?.hasError('required')
+        || this.selectedForm.get('password')?.hasError('required')
+        || this.selectedForm.get('repassword')?.hasError('required')) {
+        this.error = 'Registration failed. Please fill in all the required fields for the customer.';
+        Swal.fire({
+          title: 'Empty Fields',
+          text: 'Please fill in all the required fields for the customer',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } else if (this.selectedForm.get('email')?.hasError('email')) {
+        this.error = 'Registration failed. Invalid email format for the customer.';
+        Swal.fire({
+          title: 'Invalid Email',
+          text: 'Please enter a valid email address for the customer',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } else if (this.selectedForm.get('password')?.value !== this.selectedForm.get('repassword')?.value) {
+        this.error = 'Registration failed. Passwords do not match for the customer.';
+        Swal.fire({
+          title: 'Password Mismatch',
+          text: 'Passwords do not match for the customer',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } else {
+        this.error = 'Registration failed. Please check your inputs for the customer.';
+        Swal.fire({
+          title: 'Registration Failed',
+          text: 'Please check your inputs for the customer',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    }
+  }
+
+  onSubmit() {
+    console.log('Register button pressed');
+    this.userRole === 'merchant' ? this.registerMerchant() : this.registerCustomer();
   }
 }
