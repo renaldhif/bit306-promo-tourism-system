@@ -48,6 +48,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       phoneNum: ['', Validators.required],
       userRole: ['merchant'],
+      address: ['', Validators.required],
       merchantDescription: ['', Validators.required],
       document: [''],
       filename: [''],
@@ -79,7 +80,13 @@ export class RegisterComponent {
 
   toggleAdditionalFields() {
     if (this.userRole === 'merchant') {
-      if (this.selectedForm.get('fullname')?.valid && this.selectedForm.get('email')?.valid && this.selectedForm.get('phoneNum')?.valid && this.selectedForm.get('merchantDescription')?.valid) {
+      if (
+          this.selectedForm.get('fullname')?.valid
+          && this.selectedForm.get('email')?.valid
+          && this.selectedForm.get('phoneNum')?.valid
+          && this.selectedForm.get('address')?.valid
+          && this.selectedForm.get('merchantDescription')?.valid
+        ){
         this.showAdditionalFields = !this.showAdditionalFields;
         if (this.showAdditionalFields) {
           this.merchantRegistrationForm.get('document')?.setValidators([Validators.required]);
@@ -88,7 +95,12 @@ export class RegisterComponent {
         }
       }
       else {
-        if (this.selectedForm.get('fullname')?.hasError('required') || this.selectedForm.get('email')?.hasError('required') || this.selectedForm.get('phoneNum')?.hasError('required') || this.selectedForm.get('merchantDescription')?.hasError('required')) {
+        if (
+          this.selectedForm.get('fullname')?.hasError('required')
+          || this.selectedForm.get('email')?.hasError('required')
+          || this.selectedForm.get('phoneNum')?.hasError('required')
+          || this.selectedForm.get('address')?.hasError('required')
+          || this.selectedForm.get('merchantDescription')?.hasError('required')) {
           this.error = 'Registration failed. Please fill in all the required fields for the merchant.';
           Swal.fire({
             title: 'Empty Fields',
@@ -201,6 +213,7 @@ export class RegisterComponent {
       if (this.selectedForm.get('fullname')?.hasError('required')
         || this.selectedForm.get('email')?.hasError('required')
         || this.selectedForm.get('phoneNum')?.hasError('required')
+        || this.selectedForm.get('address')?.hasError('required')
         || this.selectedForm.get('merchantDescription')?.hasError('required')
         || this.selectedForm.get('document')?.hasError('required')
         || this.selectedForm.get('filename')?.hasError('required')

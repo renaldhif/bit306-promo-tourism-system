@@ -86,6 +86,10 @@
 
             <!-- Inside the merchant block -->
             <div *ngIf="userRole === 'merchant'">
+              <label class="block mt-4 text-sm text-gray-600">Merchant Address</label>
+                <input formControlName="address" type="text" placeholder="Enter merchant address"
+                  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+
               <label class="block mt-4 text-sm text-gray-600">Merchant Description</label>
               <textarea formControlName="merchantDescription" placeholder="Enter merchant description"
                 class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"></textarea>

@@ -32,6 +32,7 @@ router.post('/register', async (req, res) => {
       const email = Array.isArray(fields.email) ? fields.email[0] : fields.email;
       const userRole = Array.isArray(fields.userRole) ? fields.userRole[0] : fields.userRole;
       const phoneNum = Array.isArray(fields.phoneNum) ? fields.phoneNum[0] : fields.phoneNum;
+      const address = Array.isArray(fields.address) ? fields.address[0] : fields.address;
       const merchantDescription = Array.isArray(fields.merchantDescription) ? fields.merchantDescription[0] : fields.merchantDescription;
       const description = Array.isArray(fields.description) ? fields.description[0] : fields.description;
 
@@ -113,7 +114,7 @@ router.post('/register', async (req, res) => {
         userRole,
         phoneNum,
         status,
-        address: fields.address,
+        address,
         merchantDescription,
         // document: documentData,
         document: documentPath,
