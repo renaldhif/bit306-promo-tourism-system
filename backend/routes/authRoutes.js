@@ -44,8 +44,6 @@ router.post('/register', async (req, res) => {
     console.log('\n===Error in authRoutes.js -> /register===');
     console.log('user: ', req.body);
     console.log('\nerror: ', err);
-
-
   }
 });
 
@@ -110,6 +108,26 @@ router.post('/reset-password', async (req, res) => {
     res.status(200).json({ message: 'Password has been reset successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+//* CHECK EMAIL
+router.get('/check-email/:email', async (req, res) => {
+  // const { email } = req.query;
+  const email = req.params.email;
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.json({ isEmailTaken: true });
+    } else {
+      return res.json({ isEmailTaken: false });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

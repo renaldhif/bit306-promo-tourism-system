@@ -40,6 +40,9 @@ app.use('/api/auth', authRoutes);
 import userRoutes from "./routes/userRoutes.js";
 app.use('/api/user', userRoutes);
 
+import merchantRoutes from "./routes/merchantRoutes.js";
+app.use('/api/merchant', merchantRoutes);
+
 import productRoutes from "./routes/productRoutes.js";
 app.use('/api/', productRoutes);
 

@@ -13,6 +13,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  register(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/api/auth/register`, formData);
+  }
+
   login(email: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/api/auth/login`, { email, password });
   }
@@ -58,5 +62,10 @@ export class AuthService {
   // reset password
   resetPassword(email: string, newPassword: string) {
     return this.http.post<any>(`${this.apiUrl}/api/auth/reset-password`, { email, newPassword });
+  }
+
+  // check email
+  isEmailTaken(email: string) {
+    return this.http.get<any>(`${this.apiUrl}/api/auth/check-email/${email}`);
   }
 }
