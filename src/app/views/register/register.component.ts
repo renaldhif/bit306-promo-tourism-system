@@ -154,6 +154,18 @@ export class RegisterComponent {
     }
   }
 
+  isPasswordMatch() {
+    const password = this.selectedForm.get('password')?.value;
+    const repassword = this.selectedForm.get('repassword')?.value;
+    if (password !== repassword) {
+      this.selectedForm.get('repassword')?.setErrors({ mismatch: true });
+      console.log('password mismatch');
+      return false;
+    }
+    console.log('password match, return false');
+    return true;
+  }
+
   registerMerchant() {
     console.log('Register button pressed');
     console.log('Is the form valid?' + this.selectedForm.valid);
@@ -252,7 +264,7 @@ export class RegisterComponent {
     console.log('customerRegistrationForm is: ' + this.customerRegistrationForm);
     console.log('customerRegistrationForm isValid?: ' + this.customerRegistrationForm.valid);
 
-    if (this.userRole === 'customer' && this.customerRegistrationForm.valid) {
+    if (this.userRole === 'customer' && this.customerRegistrationForm.valid && this.isPasswordMatch()) {
       const customerData = { ...this.customerRegistrationForm.value };
       console.log('customerData is: ' + customerData);
 
@@ -272,6 +284,10 @@ export class RegisterComponent {
         }
         else {
           console.log('Registering for customer...');
+
+          console.log('password: ' + customerData.password);
+          console.log('repassword: ' + customerData.repassword);
+
           this.authService.register(customerData).subscribe((response: any) => {
             console.log('Response this.authService.register', response);
             Swal.fire({
@@ -290,6 +306,7 @@ export class RegisterComponent {
     }
     else {
       // Handle customer form validation errors
+      const customerData = { ...this.customerRegistrationForm.value };
       if (this.selectedForm.get('fullname')?.hasError('required')
         || this.selectedForm.get('email')?.hasError('required')
         || this.selectedForm.get('phoneNum')?.hasError('required')
@@ -310,7 +327,7 @@ export class RegisterComponent {
           icon: 'error',
           confirmButtonText: 'OK',
         });
-      } else if (this.selectedForm.get('password')?.value !== this.selectedForm.get('repassword')?.value) {
+      } else if (customerData.password !== customerData.repassword) {
         this.error = 'Registration failed. Passwords do not match for the customer.';
         Swal.fire({
           title: 'Password Mismatch',
