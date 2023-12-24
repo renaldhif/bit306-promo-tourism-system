@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MerchantService } from 'src/app/service/merchant-service';
 import { AdminService } from 'src/app/service/admin.service';
+import Swal from 'sweetalert2';
 
 // Dev env
 import { environment } from '../../../../../env/dev.environtment';
@@ -35,18 +36,29 @@ export class ViewMerchantDetailComponent {
         this.merchant = res;
         console.log('merchant detail: ', this.merchant);
 
-        // Construct the full document URL after getting the merchant details
-        const baseUrl = environment.apiUrl;
+        // Check if documentPath is valid before constructing URL
         const documentPath = this.merchant.document;
-        this.fullDocumentUrl = baseUrl + documentPath;
-        console.log('full document url: ', this.fullDocumentUrl);
+        if (documentPath) {
+          const baseUrl = environment.apiUrl;
+          this.fullDocumentUrl = baseUrl + documentPath;
+          console.log('full document url: ', this.fullDocumentUrl);
+        }
       });
     }
   }
 
   viewMerchantFile = () => {
-    console.log('opening file:' + this.fullDocumentUrl);
-    window.open(this.fullDocumentUrl, '_blank');
+    console.log('Opening file:', this.fullDocumentUrl);
+
+    if (!this.fullDocumentUrl || this.fullDocumentUrl.includes('null')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error occured while opening file',
+        text: 'It seems the document is not available, or there might be an issue with the file'
+      });
+    } else {
+      window.open(this.fullDocumentUrl, '_blank');
+    }
   }
 
 }
