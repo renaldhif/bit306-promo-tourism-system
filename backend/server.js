@@ -46,6 +46,9 @@ app.use('/api/merchant', merchantRoutes);
 import productRoutes from "./routes/productRoutes.js";
 app.use('/api/', productRoutes);
 
+import adminRoutes from "./routes/adminRoutes.js";
+app.use('/api/admin', adminRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
