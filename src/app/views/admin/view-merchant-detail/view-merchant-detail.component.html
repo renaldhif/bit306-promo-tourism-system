@@ -13,19 +13,20 @@
 
 <!-- Merchant Container -->
 <div
+  *ngIf="merchant"
   class="flex flex-col lg:flex-row lg:ml-72 mx-auto mt-8 container bg-white border border-gray-400 w-3/4 shadow-md rounded-md"
 >
   <div class="p-4 lg:ml-4 lg:mt-4">
     <h1 class="text-2xl font-semibold text-center lg:text-left mb-4">
-      {{ merchant.name }}
+      {{ merchant.fullname }}
     </h1>
 
     <div class="flex flex-col gap-y-3">
       <!-- ID -->
-      <div class="lg:flex">
+      <!-- <div class="lg:flex">
         <p class="text-darkGrey font-semibold mr-2">ID:</p>
         <p class="text-left lg:text-left">{{ merchant.id }}</p>
-      </div>
+      </div> -->
 
       <!-- Email -->
       <div class="lg:flex">
@@ -42,7 +43,7 @@
       <!-- Phone: -->
       <div class="lg:flex">
         <p class="text-darkGrey font-semibold mr-2">Phone:</p>
-        <p class="text-left lg:text-left">{{ merchant.phone }}</p>
+        <p class="text-left lg:text-left">{{ merchant.phoneNum }}</p>
       </div>
 
       <!-- Status: -->
@@ -74,7 +75,7 @@
     <div class="flex flex-col lg:flex-row gap-y-3 lg:gap-x-3 mt-4">
       <div class="lg:flex">
         <p class="text-darkGrey font-semibold mr-2">File name:</p>
-        <p class="text-left lg:text-left">{{ merchant.documentName }}</p>
+        <p class="text-left lg:text-left">{{ merchant.filename }}</p>
       </div>
     </div>
 
@@ -82,7 +83,7 @@
     <div class="flex flex-col lg:flex-row gap-y-3 lg:gap-x-3 mt-4">
       <div class="lg:flex">
         <p class="text-darkGrey font-semibold mr-2">File Description:</p>
-        <p class="text-left lg:text-left">{{ merchant.documentDescription }}</p>
+        <p class="text-left lg:text-left">{{ merchant.description }}</p>
       </div>
     </div>
 

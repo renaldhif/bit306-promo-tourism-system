@@ -15,37 +15,45 @@
   <div class="px-4 md:px-10 mx-auto w-full">
     <!-- Card Stats -->
     <div class="w-full bg-transparent p-4 sm:flex-row sm:flex-nowrap sm:justify-start lg:flex">
+
+      <!-- Total merchants -->
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
           statSubtitle="Merchants"
-          statTitle="5"
+          statTitle="{{ merchantTotal }}"
           statIconName="fa fa-users"
           statIconColor="bg-primary"
         >
         </app-card-stats>
       </div>
+
+      <!-- Verified merchants total -->
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
           statSubtitle="Verified Merchants"
-          statTitle="2"
+          statTitle="{{ verifiedMerchantTotal }}"
           statIconName="fa fa-check-circle"
           statIconColor="bg-green-400"
         >
         </app-card-stats>
       </div>
+
+      <!-- Pending merchants total -->
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
           statSubtitle="Pending Merchants"
-          statTitle="2"
+          statTitle="{{ pendingMerchantTotal }}"
           statIconName="fa fa-info-circle"
           statIconColor="bg-orange-400"
         >
         </app-card-stats>
       </div>
+
+      <!-- Rejected merchants total -->
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
           statSubtitle="Rejected Merchants"
-          statTitle="1"
+          statTitle="{{ rejectedMerchantTotal }}"
           statIconName="fa fa-user-times"
           statIconColor="bg-red-400"
         >

@@ -3,10 +3,13 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 
 dotenv.config();
 const app = express();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Middlewares
 app.use(cors());
@@ -45,6 +48,11 @@ app.use('/api/merchant', merchantRoutes);
 
 import productRoutes from "./routes/productRoutes.js";
 app.use('/api/', productRoutes);
+
+import adminRoutes from "./routes/adminRoutes.js";
+app.use('/api/admin', adminRoutes);
+
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 
 const PORT = process.env.PORT || 3000;
