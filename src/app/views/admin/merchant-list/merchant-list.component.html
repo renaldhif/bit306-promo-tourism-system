@@ -50,11 +50,11 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let merchant of merchantList">
+            <tr *ngFor="let merchant of merchantList; let i = index">
               <!-- ID -->
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold items-center justify-center">
-                {{ merchant.id }}
+                {{ i+1 }}
               </td>
               <!-- Merchant -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -85,19 +85,19 @@
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 justify-start items-start">
                 <div class="flex justify-center items-center">
                   <!-- Merchant Detail Button -->
-                  <button (click)="onShowMerchantDetail(merchant.id)"
+                  <button (click)="onShowMerchantDetail(merchant._id)"
                     class="bg-blue-400 text-white hover:bg-blue-500 active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                     type="button" style="transition: all 0.15s ease 0s;">
                     <i class="fa fa-info"></i>
                   </button>
                   <!-- Accept Button -->
-                  <button (click)="onAcceptMerchant()" *ngIf="merchant.status === 'pending'"
+                  <button (click)="onAcceptMerchant(merchant._id)" *ngIf="merchant.status === 'pending'"
                     class="bg-green-400 text-white hover:bg-green-500 active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                     type="button" style="transition: all 0.15s ease 0s;">
                     <i class="fa fa-check"></i>
                   </button>
                   <!-- Reject Button -->
-                  <button (click)="onRejectMerchant()" *ngIf="merchant.status === 'pending'"
+                  <button (click)="onRejectMerchant(merchant._id)" *ngIf="merchant.status === 'pending'"
                     class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                     type="button" style="transition: all 0.15s ease 0s;">
                     <i class="fa fa-times"></i>

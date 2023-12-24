@@ -17,18 +17,15 @@ export class MerchantListComponent {
 
   // merchantsDummy: any[] = [];
   merchantList: any[] = [];
-
   constructor(
     private router:Router,
-    private merchantService: MerchantService,
     private adminService: AdminService
   ){}
 
   ngOnInit(): void {
-
     this.fetchMerchantListAPI();
     this.dtOptions = {
-      pagingType: 'full_numbers'
+      pagingType: 'full_numbers',
     };
   }
   fetchMerchantListAPI = () => {
@@ -43,7 +40,7 @@ export class MerchantListComponent {
   }
 
 
-  onAcceptMerchant = () => {
+  onAcceptMerchant = (merchantID: number) => {
     Swal.fire({
       title: 'Accept merchant?',
       text: "Are you sure want to accept this merchant?",
@@ -55,16 +52,21 @@ export class MerchantListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Accepted!',
-          'Merchant has been accepted.',
-          'success'
-        )
+        console.log('merchantID to be accepted: ', merchantID);
+        this.adminService.verifyMerchant(merchantID).subscribe(() => {
+          Swal.fire(
+            'Accepted!',
+            'Merchant has been accepted.',
+            'success'
+          ).then(() => {
+            window.location.reload();
+          });
+        });
       }
     })
   }
 
-  onRejectMerchant = () => {
+  onRejectMerchant = (merchantID: number) => {
     Swal.fire({
       title: 'Reject merchant?',
       text: "Are you sure want to reject this merchant?",
@@ -76,11 +78,16 @@ export class MerchantListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Rejected!',
-          'Merchant has been rejected.',
-          'success'
-        )
+        console.log('merchantID to be rejected: ', merchantID);
+        this.adminService.rejectMerchant(merchantID).subscribe(() => {
+          Swal.fire(
+            'Accepted!',
+            'Merchant has been accepted.',
+            'success'
+          ).then(() => {
+            window.location.reload();
+          });
+        });
       }
     })
   }
