@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { MerchantService } from 'src/app/service/merchant-service';
+import { AdminService } from 'src/app/service/admin.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-merchant-list',
@@ -11,17 +13,30 @@ import { MerchantService } from 'src/app/service/merchant-service';
 export class MerchantListComponent {
 
   dtOptions: DataTables.Settings = {};
-  merchantsDummy: any[] = [];
+  dtTrigger: Subject<any> = new Subject<any>();
 
-  constructor(private router:Router, private merchantService: MerchantService){}
+  // merchantsDummy: any[] = [];
+  merchantList: any[] = [];
+
+  constructor(
+    private router:Router,
+    private merchantService: MerchantService,
+    private adminService: AdminService
+  ){}
 
   ngOnInit(): void {
-    this.merchantsDummy = this.merchantService.getAllMerchants();
+
+    this.fetchMerchantListAPI();
     this.dtOptions = {
       pagingType: 'full_numbers'
     };
   }
-
+  fetchMerchantListAPI = () => {
+    this.adminService.getAllMerchants().subscribe((res: any) => {
+      this.merchantList = res;
+      this.dtTrigger.next(null as any);
+    });
+  }
   // Swal
   onShowMerchantDetail = (merchantID: number) => {
     this.router.navigate(['/admin/view-merchant-detail', merchantID]);
