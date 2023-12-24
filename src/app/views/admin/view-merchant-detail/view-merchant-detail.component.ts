@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MerchantService } from 'src/app/service/merchant-service';
+import { AdminService } from 'src/app/service/admin.service';
+
+// Dev env
+import { environment } from '../../../../../env/dev.environtment';
+// Prod env
+// import { environment } from '../../../../../env/environtment';
 
 @Component({
   selector: 'app-view-merchant-detail',
@@ -9,22 +15,38 @@ import { MerchantService } from 'src/app/service/merchant-service';
 })
 export class ViewMerchantDetailComponent {
 
-  merchantId : number | null;
+  merchantId : string;
   merchant : any;
+  fullDocumentUrl!: string;
 
-  constructor(private route: ActivatedRoute, private merchantService: MerchantService) {
+  constructor(
+    private route: ActivatedRoute,
+    private merchantService: MerchantService,
+    private adminService: AdminService
+  ) {
     const idParam = this.route.snapshot.paramMap.get('id');
-    this.merchantId = idParam ? parseInt(idParam, 10) : null;
+    this.merchantId = idParam ?? '';
   }
 
   ngOnInit(): void {
-    if (this.merchantId !== null) {
-      this.merchant = this.merchantService.getMerchantById(this.merchantId);
+    console.log('merchantID passed in: ', this.merchantId);
+    if (this.merchantId) {
+      this.adminService.getMerchantDetail(this.merchantId).subscribe(res => {
+        this.merchant = res;
+        console.log('merchant detail: ', this.merchant);
+
+        // Construct the full document URL after getting the merchant details
+        const baseUrl = environment.apiUrl;
+        const documentPath = this.merchant.document;
+        this.fullDocumentUrl = baseUrl + documentPath;
+        console.log('full document url: ', this.fullDocumentUrl);
+      });
     }
   }
 
   viewMerchantFile = () => {
-    window.open(this.merchant.document, '_blank');
+    console.log('opening file:' + this.fullDocumentUrl);
+    window.open(this.fullDocumentUrl, '_blank');
   }
 
 }

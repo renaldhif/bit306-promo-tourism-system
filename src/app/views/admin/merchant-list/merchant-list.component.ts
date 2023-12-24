@@ -35,12 +35,12 @@ export class MerchantListComponent {
     });
   }
   // Swal
-  onShowMerchantDetail = (merchantID: number) => {
+  onShowMerchantDetail = (merchantID: string) => {
     this.router.navigate(['/admin/view-merchant-detail', merchantID]);
   }
 
 
-  onAcceptMerchant = (merchantID: number) => {
+  onAcceptMerchant = (merchantID: string) => {
     Swal.fire({
       title: 'Accept merchant?',
       text: "Are you sure want to accept this merchant?",
@@ -66,7 +66,7 @@ export class MerchantListComponent {
     })
   }
 
-  onRejectMerchant = (merchantID: number) => {
+  onRejectMerchant = (merchantID: string) => {
     Swal.fire({
       title: 'Reject merchant?',
       text: "Are you sure want to reject this merchant?",

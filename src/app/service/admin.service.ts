@@ -17,15 +17,15 @@ export class AdminService {
     return this.http.get(`${this.apiUrl}/api/admin/merchant-list`);
   }
 
-  getMerchantDetail = (merchantID: number) => {
-    return this.http.get(`${this.apiUrl}/api/admin/merchant-detail/${merchantID}`);
+  getMerchantDetail = (merchantID: string) => {
+    return this.http.get(`${this.apiUrl}/api/admin/merchant/${merchantID}`);
   }
 
-  verifyMerchant = (merchantID: number) => {
+  verifyMerchant = (merchantID: string) => {
     return this.http.put(`${this.apiUrl}/api/admin/merchant/verify/${merchantID}`, {})
   }
 
-  rejectMerchant = (merchantID: number) => {
+  rejectMerchant = (merchantID: string) => {
     return this.http.put(`${this.apiUrl}/api/admin/merchant/reject/${merchantID}`, {})
   }
 
