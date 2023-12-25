@@ -41,7 +41,10 @@ import userRoutes from "./routes/userRoutes.js";
 app.use('/api/user', userRoutes);
 
 import productRoutes from "./routes/productRoutes.js";
-app.use('/api/', productRoutes);
+app.use('/api/products', productRoutes);
+
+import reviewRoutes from "./routes/reviewRoutes.js";
+app.use('/api/reviews', reviewRoutes);
 
 
 const PORT = process.env.PORT || 3000;
