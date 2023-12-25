@@ -55,10 +55,10 @@
           </thead>
 
           <tbody>
-            <tr *ngFor = "let product of products">
+            <tr *ngFor = "let product of products; let i = index">
               <!-- ID -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold items-center justify-center">
-                {{ product.id }}
+                {{ i+1 }}
               </td>
               <!-- Name -->
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -82,7 +82,7 @@
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                 <!-- View Button -->
                 <button
-                  (click)="onViewInfoProduct(product.id)"
+                  (click)="onViewInfoProduct(product._id)"
                   class="w-11 bg-blue-400 text-white hover:bg-blue-500 active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                   type="button"
                   style="transition: all 0.15s ease 0s;"
@@ -92,7 +92,7 @@
 
                 <!-- Edit Button -->
                 <button
-                  (click)="onEditProduct(product.id)"
+                  (click)="onEditProduct(product._id)"
                   class="w-11 bg-yellow-400 text-white hover:bg-yellow-500 active:bg-yellow-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                   type="button"
                   style="transition: all 0.15s ease 0s;"
