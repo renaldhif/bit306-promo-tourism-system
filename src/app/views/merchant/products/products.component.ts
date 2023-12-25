@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { AuthService } from 'src/app/service/auth.service';
 import { ProductService } from 'src/app/service/product-service';
 import Swal from 'sweetalert2';
 
@@ -10,10 +12,11 @@ import Swal from 'sweetalert2';
 })
 export class ProductsComponent {
   dtOptions: DataTables.Settings = {};
-
+  dtTrigger: Subject<any> = new Subject<any>();
   products: any[] = [];  // Initialize products as an array
+  
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(private router: Router, private productService: ProductService, private authService: AuthService) {}
 
 
   ngOnInit(): void {
@@ -21,16 +24,21 @@ export class ProductsComponent {
       pagingType: 'full_numbers'
     };
 
+    //fetch current user id
+    const userId = this.authService.getUserId();
+
     // Fetch products from the service
-    this.productService.getAllProducts().subscribe(
-      (products: any[]) => {
-        this.products = products;
-      },
-      error => {
-        console.error('Error fetching products:', error);
-        // Handle the error, e.g., show an error message to the user
-      }
-    );
+    if(userId) {
+      this.productService.getProductsByMerchant(userId).subscribe({
+        next: (data) => {
+          this.products = data;
+          console.log('Products from products.component.ts: ' + JSON.stringify(this.products, null, 2));
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
   }
   // Swal
   onAddProduct = () => {
