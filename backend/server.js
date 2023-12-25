@@ -47,7 +47,10 @@ import merchantRoutes from "./routes/merchantRoutes.js";
 app.use('/api/merchant', merchantRoutes);
 
 import productRoutes from "./routes/productRoutes.js";
-app.use('/api/', productRoutes);
+app.use('/api/products', productRoutes);
+
+import reviewRoutes from "./routes/reviewRoutes.js";
+app.use('/api/reviews', reviewRoutes);
 
 import adminRoutes from "./routes/adminRoutes.js";
 app.use('/api/admin', adminRoutes);

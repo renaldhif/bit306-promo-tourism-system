@@ -79,7 +79,7 @@
           <style>svg {fill: #6b7280;}</style>
             <path d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z" />
         </svg>
-        <h2 class="ml-2 text-lg font-semibold text-gray-600">{{ product.merchant.name }}</h2>
+        <h2 class="ml-2 text-lg font-semibold text-gray-600">{{ product.merchant.fullname }}</h2>
       </div>
       <!-- description -->
       <p class="mt-2 text-textPrimary">{{ product.merchant.description }}</p>
@@ -92,7 +92,7 @@
         <!-- Phone -->
         <div class="inline-flex items-center justify-center mt-2 ml-4">
           <i class="fa fa-phone text-blue-400 mr-2"></i>
-          <p class="text-gray-400">{{ product.merchant.phone }}</p>
+          <p class="text-gray-400">{{ product.merchant.phoneNum }}</p>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@
         <!-- Buy Now Button -->
         <button
           class="mt-7 w-full bg-primary text-white py-3 px-7 rounded-lg text-lg font-semibold shadow-md hover:bg-darkPrimary transition duration-300"
-          (click)="checkoutNow(product.id)"
+          (click)="checkoutNow(product._id)"
         >
           <i class="fa fa-credit-card mr-2"></i>
           Checkout Now
@@ -148,7 +148,7 @@
     <!-- Review Card Container -->
     <div class="p-4">
       <!-- Customer Full Name -->
-      <p class="text-lg font-semibold text-primary mb-2">{{ review.user.name }}</p>
+      <p class="text-lg font-semibold text-primary mb-2">{{ review.user?.name || '' }}</p>
 
       <!-- Star Rating -->
       <div class="flex items-center mb-2">

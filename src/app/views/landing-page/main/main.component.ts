@@ -137,7 +137,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-  goToProductDetail(productID: number) {
+  goToProductDetail(productID: string) {
     // Fetch the product details by ID
     console.log('product list' + JSON.stringify(this.productList));
     console.log('productID: ' + productID);

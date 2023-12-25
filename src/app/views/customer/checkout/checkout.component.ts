@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/service/product-service';
 import { Router } from '@angular/router';
+import { QuantityService } from 'src/app/service/quantity.service';
 
 
 @Component({
@@ -15,16 +16,22 @@ export class CheckoutComponent {
 
   checkoutForm: FormGroup;
   orderItem: any;
-  productId: number | null;
-  quantity:number = 1;
+  productId: string | null;
+  quantity:number | 1;
 
   ngOnInit(): void {
     if (this.productId !== null) {
-      this.orderItem = this.productService.getUserOrderProduct(this.productId);
+      this.orderItem = this.productService.getProductById(this.productId);
     }
   }
 
-  constructor(private router:Router, private formBuilder: FormBuilder, private route: ActivatedRoute, private productService: ProductService) {
+  constructor(
+    private router:Router, 
+    private formBuilder: FormBuilder, 
+    private route: ActivatedRoute, 
+    private productService: ProductService,
+    private quantityService: QuantityService
+    ) {
     this.checkoutForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -33,17 +40,38 @@ export class CheckoutComponent {
       notes: ['', []],
     });
     const idParam = this.route.snapshot.paramMap.get('id');
-    this.productId = idParam ? parseInt(idParam, 10) : null;
+    this.productId = idParam;
 
     // might not appropriate to use query parameters here to pass the quantity
     // later we will use a service or state management to store the quantity
-    this.route.queryParams.subscribe((params) => {
-      this.quantity = +params['quantity'];
-    });
+    // this.route.queryParams.subscribe((params) => {
+    //   this.quantity = +params['quantity'];
+    // });
 
-    // intialize quantity to 1 if no query parameter is passed
-    if (this.route.snapshot.queryParamMap.get('quantity') == null) {
-      this.quantity = 1;
+    // // intialize quantity to 1 if no query parameter is passed
+    // if (this.route.snapshot.queryParamMap.get('quantity') == null) {
+    //   this.quantity = 1;
+    // }
+
+    // this.quantityService.quantity$.subscribe((quantity) => {
+    //   this.quantity = quantity;
+    // });
+
+
+    // this.quantity = this.quantityService.getQuantity();
+
+    this.quantity = this.quantityService.getQuantity();
+
+    if (this.productId !== null) {
+      this.productService.getProductById(this.productId).subscribe(
+        (product) => {
+          this.orderItem = product;
+        },
+        (error) => {
+          console.error('Error fetching product details:', error);
+          // Handle the error, e.g., show an error message to the user
+        }
+      );
     }
   }
 
