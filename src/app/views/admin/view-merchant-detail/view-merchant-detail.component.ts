@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLinkActive } from '@angular/router';
 import { MerchantService } from 'src/app/service/merchant-service';
 import { AdminService } from 'src/app/service/admin.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 // Dev env
 import { environment } from '../../../../../env/dev.environtment';
@@ -23,7 +24,8 @@ export class ViewMerchantDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private merchantService: MerchantService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.merchantId = idParam ?? '';
@@ -59,6 +61,11 @@ export class ViewMerchantDetailComponent {
     } else {
       window.open(this.fullDocumentUrl, '_blank');
     }
+  }
+
+  viewMerchantAnalytics = () => {
+    console.log('Opening merchant analytics page');
+    this.router.navigate(['/admin/analytics', this.merchantId, RouterLinkActive,]);
   }
 
 }

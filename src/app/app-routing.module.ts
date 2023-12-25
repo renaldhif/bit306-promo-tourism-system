@@ -46,7 +46,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'merchant-list', component: MerchantListComponent },
       { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent},
-      { path: 'analytics', component: AdminAnalyticsComponent}
+      { path: 'analytics/:id', component: AdminAnalyticsComponent}
     ],
   },
 

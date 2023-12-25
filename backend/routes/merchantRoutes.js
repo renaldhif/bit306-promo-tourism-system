@@ -163,4 +163,121 @@ router.post('/register', async (req, res) => {
   });
 });
 
+// * MERCHANT DASHBOARD
+
+// GET count merchant total products
+router.get('/total-products/:merchantId', async (req, res) => {
+  const requestedMerchantId = req.params.merchantId;
+
+  try {
+    const totalProducts = await User.aggregate([
+      {
+        $match: {
+          userRole: 'merchant', // Filter for userRole 'merchant'
+          _id: requestedMerchantId
+        }
+      },
+      {
+        $project: {
+          totalProducts: { $size: "$products" }
+        }
+      }
+    ]);
+
+    res.status(200).json(totalProducts);
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting total products' });
+  }
+});
+
+// GET count merchant total revenue
+router.get('/total-revenue/:merchantId', async (req, res) => {
+  const requestedMerchantId = req.params.merchantId;
+
+  try {
+    const totalRevenue = await User.aggregate([
+      {
+        $match: {
+          userRole: 'merchant', // Filter for userRole 'merchant'
+          _id: requestedMerchantId
+        }
+      },
+      {
+        $project: {
+          totalRevenue: { $sum: "$products.price" }
+        }
+      }
+    ]);
+
+    res.status(200).json(totalRevenue);
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting total revenue' });
+  }
+});
+
+// GET count merchant total product sold
+router.get('/total-product-sold/:merchantId', async (req, res) => {
+  const requestedMerchantId = req.params.merchantId;
+
+  try {
+    const totalProductSold = await User.aggregate([
+      {
+        $match: {
+          userRole: 'merchant', // Filter for userRole 'merchant'
+          _id: requestedMerchantId
+        }
+      },
+      {
+        $project: {
+          totalProductSold: { $sum: "$products.quantity" }
+        }
+      }
+    ]);
+
+    res.status(200).json(totalProductSold);
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting total product sold' });
+  }
+});
+
+//* ANALYTICS
+// GET merchant total product sold in a month by year by merchant id
+router.get('/analytics/total-product-sold/:merchantId/:year/', async (req, res) => {
+  const requestedYear = parseInt(req.params.year);
+  const requestedMonth = parseInt(req.params.month);
+  const requestedMerchantId = req.params.merchantId;
+
+  try {
+    const totalProductSold = await User.aggregate([
+      {
+        $match: {
+          userRole: 'merchant', // Filter for userRole 'merchant'
+          _id: requestedMerchantId,
+          createdAt: {
+            $gte: new Date(`${requestedYear}-${requestedMonth}-01`),
+            $lt: new Date(`${requestedYear}-${requestedMonth + 1}-01`)
+          } // Filter for the requested year
+        }
+      },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" },
+          totalProductSold: 1
+        }
+      },
+      {
+        $group: {
+          _id: { month: "$month", year: "$year" },
+          totalProductSold: { $sum: "$totalProductSold" }
+        }
+      }
+    ]);
+
+    res.status(200).json(totalProductSold);
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting total product sold' });
+  }
+});
+
 export default router;
