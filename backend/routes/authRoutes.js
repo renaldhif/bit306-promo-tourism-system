@@ -55,11 +55,17 @@ router.post('/login', async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
+    // Check merchant is rejected or not
+    if (user.userRole === 'merchant' && user.status === 'rejected') {
+      console.log('\n===Error in authRoutes.js -> /login===');
+      console.log('merchant account is rejected');
+      return res.status(400).json({ message: 'Your merchant account has been rejected.' });
+    }
 
     // Compare password
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ message: 'Invalid password' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     // Create and assign a token

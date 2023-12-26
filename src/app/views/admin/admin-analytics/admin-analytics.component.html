@@ -1,29 +1,57 @@
 <app-sidebar></app-sidebar>
-
 <div class="relative md:ml-64 bg-blueGray-100">
-  <h2 class="text-start text-2xl font-bold mt-5 ml-5">Analytics</h2>
+  <app-header-stats></app-header-stats>
 
-  <!-- Total merchants -->
-  <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Total Merchants</p>
-    <canvas id="totalMerchantsChart"></canvas>
+  <!-- Analytic Card -->
+  <div class="py-7 px-4 rounded-xl -mt-24">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-whiteBackground">
+      <!-- Header with Title and Select Year -->
+      <div class="flex justify-between items-center m-8">
+        <h2 class="text-2xl font-bold">Analytics</h2>
+
+        <!-- Select Year -->
+        <select [value]="selectedYear" (change)="onYearChange($event)"
+          class="w-1/4 rounded-lg border-2 border-blueGray-300 focus:outline-none focus:border-blue-500 text-base px-4 py-2"
+          id="year">
+          <!-- Select year default value -->
+          <option value="" selected>Select Year</option>
+          <!-- Loop year -->
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedYear">
+        <!-- Total merchants -->
+      <div class="w-2/3 mx-auto my-7">
+        <p class="text-center text-xl mb-4">Total Merchants</p>
+        <canvas id="totalMerchantsChart"></canvas>
+      </div>
+
+      <!-- Total customers -->
+      <div class="w-2/3 mx-auto my-7">
+        <p class="text-center text-xl mb-4">Total Customers</p>
+        <canvas id="totalCustomersChart"></canvas>
+      </div>
+      </div>
+    </div>
   </div>
+
 
   <!-- Verified Merchants -->
-  <div class="w-1/2 mx-auto my-10">
+  <!-- <div class="w-1/2 mx-auto my-10">
     <p class="text-center text-xl font-bold">Verified Merchants</p>
     <canvas id="verifiedMerchantsChart"></canvas>
-  </div>
+  </div> -->
 
   <!-- Pending Merchants -->
-  <div class="w-1/2 mx-auto my-10">
+  <!-- <div class="w-1/2 mx-auto my-10">
     <p class="text-center text-xl font-bold">Pending Merchants</p>
     <canvas id="pendingMerchantsChart"></canvas>
-  </div>
+  </div> -->
 
   <!-- Rejected Merchants -->
-  <div class="w-1/2 mx-auto my-10">
+  <!-- <div class="w-1/2 mx-auto my-10">
     <p class="text-center text-xl font-bold">Rejected Merchants</p>
     <canvas id="rejectedMerchantsChart"></canvas>
-  </div>
+  </div> -->
 </div>

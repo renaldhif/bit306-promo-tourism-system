@@ -104,4 +104,88 @@ router.get('/merchant/count/all', async (req, res) => {
 //   }
 // });
 
+// merchant data by month
+// used for chart analytics
+router.get('/analytics/merchants-by-month/:year', async (req, res) => {
+  // Default to current year
+  // const requestedYear = parseInt(req.query.year) || new Date().getFullYear();
+  const requestedYear = parseInt(req.params.year);
+  console.log('merchant adminRoutes requestedYear', requestedYear);
+
+  try {
+    const merchantData = await User.aggregate([
+      {
+        $match: {
+          userRole: 'merchant', // Filter for userRole 'merchant'
+          createdAt: {
+            $gte: new Date(`${requestedYear}-01-01`),
+            $lt: new Date(`${requestedYear + 1}-01-01`)
+          } // Filter for the requested year
+        }
+      },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" }
+        }
+      },
+      {
+        $group: {
+          _id: { month: "$month", year: "$year" },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 }
+      }
+    ]);
+
+    res.json(merchantData);
+    console.log("🚀 ~ file: adminRoutes.js:142 ~ router.get ~ merchantData:", merchantData)
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// customer data by month
+router.get('/analytics/customers-by-month/:year', async (req, res) => {
+  // Default to current year
+  // const requestedYear = parseInt(req.query.year) || new Date().getFullYear();
+  const requestedYear = parseInt(req.params.year);
+
+  try {
+    const customerData = await User.aggregate([
+      {
+        $match: {
+          userRole: 'customer', // Filter for userRole 'merchant'
+          createdAt: {
+            $gte: new Date(`${requestedYear}-01-01`),
+            $lt: new Date(`${requestedYear + 1}-01-01`)
+          } // Filter for the requested year
+        }
+      },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" }
+        }
+      },
+      {
+        $group: {
+          _id: { month: "$month", year: "$year" },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 }
+      }
+    ]);
+
+    res.json(customerData);
+    console.log("🚀 ~ file: adminRoutes.js:181 ~ router.get ~ customerData:", customerData)
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 export default router;

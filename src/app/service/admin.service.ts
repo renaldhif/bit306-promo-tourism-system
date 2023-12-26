@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // Dev
 import { environment } from '../../../env/dev.environtment';
+import { Observable } from 'rxjs/internal/Observable';
 // Prod
 // import { environment } from '../../../env/prod.environtment';
 
@@ -34,6 +35,15 @@ export class AdminService {
   // All Merchants
   getAllMerchantCount = () => {
     return this.http.get(`${this.apiUrl}/api/admin/merchant/count/all`);
+  }
+
+  // * ANALYTICS
+  getMerchantsByMonth(year: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/api/admin/analytics/merchants-by-month/${year}`);
+  }
+
+  getCustomersByMonth(year: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/api/admin/analytics/customers-by-month/${year}`);
   }
 
   // // Verified Merchants count
