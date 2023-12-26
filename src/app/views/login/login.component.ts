@@ -74,11 +74,11 @@ export class LoginComponent {
           });
         },
         error: (error) => {
-          this.error = 'Login failed. Invalid email or password.';
-          console.log(this.error);
+          // console.error('Login error:', error);
+          const errorMessage = error.error && error.error.message ? error.error.message : 'Login failed. Please try again.';
           Swal.fire({
             title: 'Login Failed',
-            text: 'Invalid email or password',
+            text: errorMessage,
             icon: 'error',
             confirmButtonText: 'OK'
           });
