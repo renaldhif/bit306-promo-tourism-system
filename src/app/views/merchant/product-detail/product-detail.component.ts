@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/service/product-service';
 import { ReviewService } from 'src/app/service/review.service';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../../env/dev.environtment';
 
 @Component({
   selector: 'app-product-detail',
@@ -10,14 +11,17 @@ import Swal from 'sweetalert2';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-
   productId: string | null;
   product: any;
   destinationsKeys: string[] = [];
   reviews: any[] = [];
   includes: string[] = [];
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private reviewService: ReviewService) {
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private reviewService: ReviewService
+  ) {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.productId = idParam;
   }
@@ -59,6 +63,22 @@ export class ProductDetailComponent implements OnInit {
         title: 'Oops...',
         text: 'Something went wrong!',
       });
+    }
+  }
+
+  getProductImageURL(imagePath: string | undefined): string {
+    if (!imagePath) {
+      // Handle the case where imagePath is undefined
+      return ''; // or a default image URL
+    }
+
+    // Check if the imagePath is an absolute URL (starts with "http" or "/")
+    if (imagePath.startsWith('http')) {
+      return imagePath; // It's already an absolute URL
+    } else {
+      // Assuming there is a base URL for your images
+      const baseURL = environment.apiUrl;
+      return baseURL + imagePath;
     }
   }
 }

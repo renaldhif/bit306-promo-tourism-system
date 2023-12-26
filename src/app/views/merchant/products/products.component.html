@@ -25,7 +25,7 @@
       </div>
       <div class="block w-full overflow-x-auto px-4 pb-2">
         <!-- Merchant table -->
-        <table datatable [dtOptions]="dtOptions" class="row-border items-center w-full bg-transparent border-collapse py-5">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border items-center w-full bg-transparent border-collapse py-5">
           <thead>
             <tr>
               <!-- ID -->
@@ -101,7 +101,7 @@
                 </button>
                 <!-- Delete Button -->
                 <button
-                  (click)="onDeleteProduct()"
+                  (click)="onDeleteProduct(product._id)"
                   class="w-11 bg-red-400 text-white hover:bg-red-500 active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 mb-1"
                   type="button"
                   style="transition: all 0.15s ease 0s;"

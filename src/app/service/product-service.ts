@@ -165,8 +165,9 @@ export class ProductService {
     return this.http.post(`${this.apiUrl}/api/products/`, productData);
   }
 
-  updateProduct(id: number, updatedProductData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/api/products/${id}`, updatedProductData);
+  updateProduct(id: string, updatedProductData: FormData): Observable<any> {
+    console.log('updatedProductData: ' + updatedProductData.get('destination'));
+    return this.http.patch<any>(`${this.apiUrl}/api/products/${id}`, updatedProductData);
   }
 
   deleteProduct(id: number): Observable<void> {
