@@ -26,6 +26,7 @@ import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-ana
 import { AuthGuard } from './helper/auth.guard';
 import { AdminGuard } from './helper/admin.guard';
 import { MerchantGuard } from './helper/merchant.guard';
+import { AddReviewComponent } from './views/customer/add-review/add-review.component';
 
 const routes: Routes = [
   {
@@ -77,7 +78,8 @@ const routes: Routes = [
       { path: 'dashboard', component: LandingPageComponent },
       { path: 'payment-history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
       { path: 'payment-history-detail/:id', component: PaymentHistoryDetailComponent, canActivate: [AuthGuard]},
-      { path: 'checkout/:id', component: CheckoutComponent, canActivate: [AuthGuard] }
+      { path: 'checkout/:id', component: CheckoutComponent, canActivate: [AuthGuard] },
+      { path: 'add-review/:id', component: AddReviewComponent, canActivate: [AuthGuard]}
     ],
   },
 

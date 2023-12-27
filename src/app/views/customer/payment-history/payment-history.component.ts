@@ -36,47 +36,48 @@ export class PaymentHistoryComponent {
   }
 
   addReview = (paymentID: Number) => {
-    Swal.fire({
-      title: 'Submit a Review',
-      html: `
-        <div class="mb-3">
-          <label for="starRating" class="block mb-1">Rating:</label>
-          <select id="starRating" class="w-full p-2 border rounded-md" required>
-            <option value="1">1 Star</option>
-            <option value="2">2 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="5">5 Stars</option>
-          </select>
-        </div>
-        <div>
-          <label for="reviewText" class="block mb-1">Review:</label>
-          <textarea id="reviewText" class="w-full p-2 border rounded-md" rows="5" required placeholder="Write your review here..."></textarea>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Submit',
-      cancelButtonText: 'Cancel',
-      focusConfirm: false,
-      preConfirm: () => {
-        const selectedRating = (document.getElementById('starRating') as HTMLSelectElement).value;
-        const reviewText = (document.getElementById('reviewText') as HTMLTextAreaElement).value;
-        if (!reviewText) {
-          Swal.showValidationMessage('Please enter your review.');
-          return false; // Prevent closing the modal
-        } else if (selectedRating === '0') {
-          Swal.showValidationMessage('Please select a rating.');
-          return false; // Prevent closing the modal
-        } else {
-          Swal.fire({
-            title: 'Success',
-            text: 'Review submitted with rating ' + selectedRating + ' and review text: ' + reviewText,
-            icon: 'success',
-          })
-          return true;
-        }
-      },
-    });
+    // Swal.fire({
+    //   title: 'Submit a Review',
+    //   html: `
+    //     <div class="mb-3">
+    //       <label for="starRating" class="block mb-1">Rating:</label>
+    //       <select id="starRating" class="w-full p-2 border rounded-md" required>
+    //         <option value="1">1 Star</option>
+    //         <option value="2">2 Stars</option>
+    //         <option value="3">3 Stars</option>
+    //         <option value="4">4 Stars</option>
+    //         <option value="5">5 Stars</option>
+    //       </select>
+    //     </div>
+    //     <div>
+    //       <label for="reviewText" class="block mb-1">Review:</label>
+    //       <textarea id="reviewText" class="w-full p-2 border rounded-md" rows="5" required placeholder="Write your review here..."></textarea>
+    //     </div>
+    //   `,
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Submit',
+    //   cancelButtonText: 'Cancel',
+    //   focusConfirm: false,
+    //   preConfirm: () => {
+    //     const selectedRating = (document.getElementById('starRating') as HTMLSelectElement).value;
+    //     const reviewText = (document.getElementById('reviewText') as HTMLTextAreaElement).value;
+    //     if (!reviewText) {
+    //       Swal.showValidationMessage('Please enter your review.');
+    //       return false; // Prevent closing the modal
+    //     } else if (selectedRating === '0') {
+    //       Swal.showValidationMessage('Please select a rating.');
+    //       return false; // Prevent closing the modal
+    //     } else {
+    //       Swal.fire({
+    //         title: 'Success',
+    //         text: 'Review submitted with rating ' + selectedRating + ' and review text: ' + reviewText,
+    //         icon: 'success',
+    //       })
+    //       return true;
+    //     }
+    //   },
+    // });
+    this.router.navigate(['/customer/add-review', paymentID]);
   }
 
   payNow = (paymentID: Number) => {

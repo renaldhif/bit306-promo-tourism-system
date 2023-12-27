@@ -39,6 +39,8 @@ import { PaymentHistoryDetailComponent } from './views/customer/payment-history-
 import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { AddReviewComponent } from './views/customer/add-review/add-review.component';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     CheckoutComponent,
     PaymentHistoryDetailComponent,
     AdminAnalyticsComponent,
+    AddReviewComponent,
+    StarRatingComponent,
   ],
   imports: [
     BrowserModule,
