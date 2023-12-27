@@ -23,6 +23,9 @@ import { ChangePasswordComponent } from './views/change-password/change-password
 import { CheckoutComponent } from './views/customer/checkout/checkout.component';
 import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
 import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
+import { AuthGuard } from './helper/auth.guard';
+import { AdminGuard } from './helper/admin.guard';
+import { MerchantGuard } from './helper/merchant.guard';
 
 const routes: Routes = [
   {
@@ -43,10 +46,10 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'merchant-list', component: MerchantListComponent },
-      { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent},
-      { path: 'analytics/:id', component: AdminAnalyticsComponent}
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
+      { path: 'merchant-list', component: MerchantListComponent, canActivate: [AdminGuard] },
+      { path: 'view-merchant-detail/:id', component: ViewMerchantDetailComponent, canActivate: [AdminGuard]},
+      { path: 'analytics/:id', component: AdminAnalyticsComponent, canActivate: [AdminGuard]}
     ],
   },
 
@@ -56,12 +59,12 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      { path: 'dashboard', component: MerchantDashboardComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'add-product', component: AddProductComponent },
-      { path: 'edit-product/:id', component: EditProductComponent },
-      { path: 'view-product-detail/:id', component: ProductDetailComponent },
-      { path: 'analytics', component: AnalyticsComponent },
+      { path: 'dashboard', component: MerchantDashboardComponent, canActivate: [MerchantGuard] },
+      { path: 'products', component: ProductsComponent, canActivate: [MerchantGuard] },
+      { path: 'add-product', component: AddProductComponent, canActivate: [MerchantGuard] },
+      { path: 'edit-product/:id', component: EditProductComponent, canActivate: [MerchantGuard] },
+      { path: 'view-product-detail/:id', component: ProductDetailComponent, canActivate: [MerchantGuard] },
+      { path: 'analytics', component: AnalyticsComponent, canActivate: [MerchantGuard] },
     ],
   },
 
@@ -72,9 +75,9 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: LandingPageComponent },
-      { path: 'payment-history', component: PaymentHistoryComponent },
-      { path: 'payment-history-detail/:id', component: PaymentHistoryDetailComponent},
-      { path: 'checkout/:id', component: CheckoutComponent }
+      { path: 'payment-history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
+      { path: 'payment-history-detail/:id', component: PaymentHistoryDetailComponent, canActivate: [AuthGuard]},
+      { path: 'checkout/:id', component: CheckoutComponent, canActivate: [AuthGuard] }
     ],
   },
 

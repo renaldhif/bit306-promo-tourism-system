@@ -38,6 +38,7 @@ import { CheckoutComponent } from './views/customer/checkout/checkout.component'
 import { PaymentHistoryDetailComponent } from './views/customer/payment-history-detail/payment-history-detail.component';
 import { AdminAnalyticsComponent } from './views/admin/admin-analytics/admin-analytics.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { HttpClientModule } from '@angular/common/http';
     DataTablesModule,
     SweetAlert2Module.forRoot(),
     HttpClientModule,
+    NgxPayPalModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
