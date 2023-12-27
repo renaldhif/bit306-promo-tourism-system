@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../env/dev.environtment';
 // Prod
 // import { environment } from '../../../env/prod.environtment';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -67,5 +68,37 @@ export class AuthService {
   // check email
   isEmailTaken(email: string) {
     return this.http.get<any>(`${this.apiUrl}/api/auth/check-email/${email}`);
+  }
+
+  // check whether the user isAuthenticated and token is not expired
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    // Check whether the token is expired
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const expirationDate = decodedToken.exp;
+      const isExpired = expirationDate !== undefined && Date.now() >= expirationDate * 1000;
+
+      return !isExpired;
+    }
+    return false;
+  }
+
+  // check whether the admin isAuthenticated and token is not expired
+  isAdminAuthenticated(): boolean {
+    if (this.isAuthenticated()) {
+      const role = this.getRole();
+      return role === 'admin';
+    }
+    return false;
+  }
+
+  // check whether the merchant isAuthenticated and token is not expired
+  isMerchantAuthenticated(): boolean {
+    if (this.isAuthenticated()) {
+      const role = this.getRole();
+      return role === 'merchant';
+    }
+    return false;
   }
 }
