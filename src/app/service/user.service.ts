@@ -22,4 +22,9 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/api/user/${userId}`, { headers });
   }
 
+  // New method without authentication
+  getUserDetailsWithoutAuth(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/user/public/${userId}`);
+  }
+
 }

@@ -16,7 +16,7 @@
 <div class="container my-10 lg:ml-72 flex">
   <!-- !? IMAGE CONTAINER (1/4 width) -->
   <div class="w-full md:w-1/3 lg:w-1/4 justify-center items-start lg:flex">
-    <img src="{{ product.image }}" alt="Product Photo" class="w-[400px] h-[400px] object-cover rounded-lg">
+    <img [src]="getProductImageURL(product.image)" alt="Product Photo" class="w-[400px] h-[400px] object-cover rounded-lg">
   </div>
 
   <!-- !? DETAIL CONTAINER (2/3 width) -->

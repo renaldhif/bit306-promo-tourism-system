@@ -47,8 +47,7 @@
 
       <div class="card border rounded overflow-hidden m-4 shadow-md w-64">
         <a (click)="goToProductDetail(item._id)" class="card">
-          <img
-            src="{{ item.image }}"
+          <img [src]="getProductImageURL(item.image)"
             alt="product {{ item._id }} photo"
             class="card-cover w-full h-40 object-cover"
           />

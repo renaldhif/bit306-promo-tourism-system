@@ -53,42 +53,6 @@ export class AddProductComponent {
     return this.productForm.get('whatsIncluded') as FormArray;
   }
 
-  // handleFileInput(event: Event) {
-  //   try {
-  //     const fileInput = event.target as HTMLInputElement;
-
-  //     if (fileInput.files && fileInput.files.length) {
-  //       console.log('masuk dalam if')
-  //       this.selectedFile = fileInput.files[0];
-  //       if (this.selectedFile.type !== 'image/jpeg' && this.selectedFile.type !== 'image/png') {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: 'Only JPG and PNG files are allowed.',
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok',
-  //         });
-  //         return;
-  //       }
-  //       else {
-  //         console.log('masuk dalam else, dia image')
-  //         console.log('selectedFile: ' + JSON.stringify(this.selectedFile, null, 2));
-  //         this.productForm.patchValue({
-  //           image: this.selectedFile.name,
-  //         });
-  //       }
-  //     }
-  //   }
-  //   catch (error) {
-  //     console.error('Error uploading file:', error);
-  //     Swal.fire({
-  //       title: 'Error!',
-  //       text: 'Something went wrong while uploading the file.',
-  //       icon: 'error',
-  //       confirmButtonText: 'Ok',
-  //     });
-  //   }
-  // }
-
   handleFileInput(event: Event) {
     try {
       const fileInput = event.target as HTMLInputElement;

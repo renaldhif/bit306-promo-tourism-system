@@ -76,6 +76,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuantityService } from 'src/app/service/quantity.service';
 import { ReviewService } from 'src/app/service/review.service';
+import { environment } from 'env/dev.environtment';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -107,33 +108,6 @@ export class ProductComponent {
     console.log('this product id' + this.productId);
 
   }
-
-  // ngOnInit(): void {
-  //   if (this.productId !== null) {
-  //     console.log("jalan di if tidak null")
-  //     this.productService.getProductById(this.productId).subscribe(
-  //       (product) => {
-  //         console.log(product);
-  //         this.product = product;
-  //         this.pricePerItem = product.price;
-  //         this.destinationsKeys = Object.keys(this.product.destinations);
-  //         this.reviews = Object.values(this.product.reviews);
-  //         this.includes = Object.values(this.product.includes);
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching product details:', error);
-  //         // Handle the error, e.g., show an error message to the user
-  //       }
-  //     );
-  //   }
-  //   else {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Oops...',
-  //       text: 'Something went wrong!',
-  //     });
-  //   }
-  // }
 
   ngOnInit(): void {
     if (this.productId !== null) {
@@ -176,6 +150,22 @@ export class ProductComponent {
     }
   }
 
+  getProductImageURL(imagePath: string | undefined): string {
+    if (!imagePath) {
+      // Handle the case where imagePath is undefined
+      return ''; // or a default image URL
+    }
+
+    // Check if the imagePath is an absolute URL (starts with "http" or "/")
+    if (imagePath.startsWith('http')) {
+      return imagePath; // It's already an absolute URL
+    } else {
+      // Assuming there is a base URL for your images
+      const baseURL = environment.apiUrl;
+      return baseURL + imagePath;
+    }
+  }
+
   // Calculate the total price based on quantity and price per item
   get total(): number {
     return this.quantity * this.pricePerItem;
@@ -195,19 +185,6 @@ export class ProductComponent {
       this.quantity--;
     }
   }
-
-  // checkoutNow(productID: string) {
-  //   // might not appropriate to use query parameters here to pass the quantity
-  //   // later we will use a service or state management to store the quantity
-  //   const queryParams = {
-  //     quantity: this.quantity,
-  //   };
-
-  //   // Navigate to /customer/checkout/{productID} with query parameters
-  //   this.router.navigate(['/customer/checkout', productID], {
-  //     queryParams,
-  //   });
-  // }
 
   checkoutNow(productID: string) {
     // Use the QuantityService to set the quantity

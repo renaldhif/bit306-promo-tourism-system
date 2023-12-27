@@ -15,7 +15,6 @@ export class ProductService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
     private userService: UserService,
     private reviewService: ReviewService
   ) { }
@@ -89,7 +88,7 @@ export class ProductService {
     return this.http.get<any[]>(`${this.apiUrl}/api/products/`).pipe(
       mergeMap((products: any[]) => {
         const merchantRequests = products.map(product =>
-          this.userService.getUserDetails(product.merchant).pipe(
+          this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
             map(merchantDetails => {
               console.log('Merchant Details:', merchantDetails); // Log merchant details
               return {
@@ -111,7 +110,7 @@ export class ProductService {
   getProductById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/products/${id}`).pipe(
       mergeMap(product => {
-        return this.userService.getUserDetails(product.merchant).pipe(
+        return this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
           map(merchantDetails => {
             console.log('Merchant Details:', merchantDetails); // Log merchant details
             return {
@@ -165,8 +164,9 @@ export class ProductService {
     return this.http.post(`${this.apiUrl}/api/products/`, productData);
   }
 
-  updateProduct(id: number, updatedProductData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/api/products/${id}`, updatedProductData);
+  updateProduct(id: string, updatedProductData: FormData): Observable<any> {
+    console.log('updatedProductData: ' + updatedProductData.get('destination'));
+    return this.http.patch<any>(`${this.apiUrl}/api/products/${id}`, updatedProductData);
   }
 
   deleteProduct(id: number): Observable<void> {
@@ -179,6 +179,10 @@ export class ProductService {
 
   getProductsByMerchant(merchantId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/api/products/merchant/${merchantId}`);
+  }
+
+  addReview(productId: string, reviewId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/products/${productId}/reviews`, { reviewId });
   }
 
 }

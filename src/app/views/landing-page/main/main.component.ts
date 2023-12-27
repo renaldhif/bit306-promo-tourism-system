@@ -75,6 +75,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'env/dev.environtment';
 import { ProductService } from 'src/app/service/product-service';
 
 @Component({
@@ -107,6 +108,22 @@ export class MainComponent implements OnInit {
         // Handle the error, e.g., show an error message to the user
       }
     );
+  }
+
+  getProductImageURL(imagePath: string | undefined): string {
+    if (!imagePath) {
+      // Handle the case where imagePath is undefined
+      return ''; // or a default image URL
+    }
+
+    // Check if the imagePath is an absolute URL (starts with "http" or "/")
+    if (imagePath.startsWith('http')) {
+      return imagePath; // It's already an absolute URL
+    } else {
+      // Assuming there is a base URL for your images
+      const baseURL = environment.apiUrl;
+      return baseURL + imagePath;
+    }
   }
 
   scrollToProducts() {
