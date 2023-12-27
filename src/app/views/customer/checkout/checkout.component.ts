@@ -21,10 +21,11 @@ export class CheckoutComponent {
   orderItem: any;
   productId: string | null;
   quantity: number | 1;
-  public payPalConfig?: IPayPalConfig;
   totalPrice?: number;
+  isLoading: boolean = false;
 
   // Paypal
+  public payPalConfig?: IPayPalConfig;
   apiKey: string = environment.FIXER_IO_CURRENCY_API_KEY;
   pricePerItemUSD: number = 0;
   totalPriceUSD: number = 0;
@@ -159,82 +160,19 @@ export class CheckoutComponent {
     });
   }
 
+  // On submit check out button to open paypal buttons
   onSubmit() {
     if (this.checkoutForm.valid) {
+      this.isLoading = true;
       // Handle form submission and payment method selection
       const formData = this.checkoutForm.value;
       console.log('formData', formData);
       this.getUSDPrice().then(() => {
         console.log('debug onSubmit - getUSDPrice - totalPriceUSD: ', this.totalPriceUSD);
         console.log('debug onSubmit - getUSDPrice - pricePerItemUSD: ', this.pricePerItemUSD);
-
         this.showPayPalButton = true;
-    });
-
-      // Swal.fire({
-      //   title: 'Success',
-      //   text: 'Your order has been placed with data DEBUG: ' + JSON.stringify(formData, null,2 ),
-      //   icon: 'success',
-      //   confirmButtonText: 'OK'
-      // }).then
-      // (result => {
-
-
-      // if (result.isConfirmed && formData.paymentMethod == 'paypal') {
-      //   Swal.fire({
-      //     title: 'Opening paypal payment page...',
-      //     text: 'Navigating to paypal payment page...',
-      //     icon: 'info',
-      //     confirmButtonText: 'OK'
-      //   }).then
-      //   (result => {
-      //     if (result.isConfirmed) {
-      //       Swal.fire({
-      //         title: 'Success',
-      //         text: 'This condition is after payment has been made \n Booking success!!!',
-      //         icon: 'success',
-      //         confirmButtonText: 'OK'
-      //       }).then
-      //       (result => {
-      //         if (result.isConfirmed) {
-      //           this.router.navigate(['/customer/payment-history']);
-      //         }
-      //       })
-      //     }
-      //   })
-      // }
-      // else if (result.isConfirmed && formData.paymentMethod == 'creditcard') {
-      //   Swal.fire({
-      //     title: 'Opening credit card payment page...',
-      //     text: 'Navigating to credit card payment page...',
-      //     icon: 'info',
-      //     confirmButtonText: 'OK'
-      //   }).then
-      //   (result => {
-      //     if (result.isConfirmed) {
-      //       Swal.fire({
-      //         title: 'Success',
-      //         text: 'This condition is after payment has been made \n Booking success!!!',
-      //         icon: 'success',
-      //         confirmButtonText: 'OK'
-      //       }).then
-      //       (result => {
-      //         if (result.isConfirmed) {
-      //           this.router.navigate(['/customer/payment-history']);
-      //         }
-      //       })
-      //     }
-      //   })
-      // }
-      // else{
-      //   Swal.fire({
-      //     title: 'Error',
-      //     text: 'Please select payment method',
-      //     icon: 'error',
-      //     confirmButtonText: 'OK'
-      //   });
-      // }
-      // })
+        this.isLoading = false;
+      });
     }
     else {
       Swal.fire({
@@ -245,7 +183,6 @@ export class CheckoutComponent {
       });
     }
   }
-
 
   //* PAYPAL
   public initPaypalConfig(): void {
@@ -298,9 +235,24 @@ export class CheckoutComponent {
         actions.order.get().then((details: any) => {
           console.log('onApprove - you can get full order details inside onApprove: ', details);
           // this.router.navigate(['/customer/checkout', this.productId]);
+          Swal.fire({
+            title: 'Payment Successful!',
+            text: 'Thank you for your purchase!',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Go to Dashboard',
+            cancelButtonText: 'Go to Payment Page'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['customer/payment-history']);
+            }
+          });
         });
       },
       onClientAuthorization: (data: any) => {
+        //TODO: Create Order onClientAuthorization pass it to backend
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
 
         // this.showSuccess = true;
@@ -320,7 +272,7 @@ export class CheckoutComponent {
       },
       onClick: (data: any, actions: any) => {
         console.log('onClick', data, actions);
-        // this.resetStatus();
+        //TODO: Create Order onClick, callback object: {fundingSource: 'paypal'}. then will be updated on onApprove
       },
     };
   }
