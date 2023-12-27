@@ -10,5 +10,6 @@ router.get('/:id', productsController.getProductById);
 router.patch('/:id', productsController.updateProduct);
 router.delete('/:id', productsController.deleteProduct);
 router.get('/merchant/:merchantId', productsController.getProductsByMerchant);
+router.post('/:productId/reviews', productsController.addReview);
 
 export default router;

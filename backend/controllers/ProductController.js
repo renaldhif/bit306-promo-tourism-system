@@ -1,4 +1,5 @@
 import Product from '../models/ProductsModel.js';
+import Review from '../models/ReviewsModel.js';
 import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { Formidable } from 'formidable';
@@ -262,7 +263,6 @@ const getProductsByMerchant = async (req, res) => {
     const validMerchantId = new ObjectId(merchantId); // Use ObjectId without new
 
     const products = await Product.find({ merchant: validMerchantId });
-
     // Return merchant id and products
     return res.status(200).json(products);
 
@@ -271,6 +271,42 @@ const getProductsByMerchant = async (req, res) => {
   }
 };
 
+
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const addReview = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const reviewId = req.body.reviewId;
+
+    // Check if the product and review exist
+    const product = await Product.findById(productId);
+    const review = await Review.findById(reviewId);
+
+    if (!product || !review) {
+      return res.status(404).json({ error: 'Product or review not found' });
+    }
+
+    // Add the review to the product's reviews array
+    product.reviews.push(reviewId);
+
+    // Save the updated product
+    const updatedProduct = await product.save();
+
+    res.json({ message: 'Review added to the product successfully', product: updatedProduct });
+  } catch (error) {
+    console.error('Error adding review to product:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 export default {
   createProduct,
   getProducts,
@@ -278,4 +314,6 @@ export default {
   updateProduct,
   deleteProduct,
   getProductsByMerchant,
+  getAllProducts,
+  addReview
 };
