@@ -8,7 +8,7 @@ import { FooterComponent } from './views/landing-page/footer/footer.component';
 import { MainComponent } from './views/landing-page/main/main.component';
 import { LoginComponent } from './views/login/login.component';
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './views/register/register.component';
 import { ErrorNotfoundComponent } from './views/error-notfound/error-notfound.component';
 import { AdminComponent } from './views/admin/admin.component';
@@ -41,6 +41,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { AddReviewComponent } from './views/customer/add-review/add-review.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { WhyChooseUsComponent } from './components/why-choose-us/why-choose-us.component';
+import { AllProductsComponent } from './views/all-products/all-products.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +81,9 @@ import { StarRatingComponent } from './components/star-rating/star-rating.compon
     AdminAnalyticsComponent,
     AddReviewComponent,
     StarRatingComponent,
+    ProductCardComponent,
+    WhyChooseUsComponent,
+    AllProductsComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +93,7 @@ import { StarRatingComponent } from './components/star-rating/star-rating.compon
     SweetAlert2Module.forRoot(),
     HttpClientModule,
     NgxPayPalModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
