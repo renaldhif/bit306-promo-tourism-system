@@ -24,13 +24,13 @@
     </div>
 
     <!-- Transaction Card -->
-    <div *ngFor="let payment of paymentsDummy"
+    <div *ngFor="let payment of paymentsData"
       class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-100 border border-slate-300">
       <!-- Header Container -->
       <div
         class="rounded-t mb-0 px-4 py-3 flex flex-row justify-between items-center border border-b-gray-200 bg-slate-100 lg:justify-start lg:items-start">
-        <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment.id }}</h2>
-        <h2 class="text-sm text-gray-500 mx-6">{{ payment.date_created | date }}</h2>
+        <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment._id }}</h2>
+        <h2 class="text-sm text-gray-500 mx-6">{{ payment.created_at | date }}</h2>
         <div class="border rounded-lg h-6 w-20 flex items-center justify-center" [ngClass]="
           payment.status === 'Paid' ? 'bg-green-100 border-green-300 text-green-700' :
           payment.status === 'Failed' ? 'bg-red-100 border-red-300 text-red-700' :
@@ -48,35 +48,39 @@
           <!-- Image Container -->
           <div class="flex flex-row justify-center items-center ml-8 lg:ml-0">
             <div class="flex-shrink-0 h-32 w-32 bg-slate-400 rounded-lg mr-8">
-              <img src="{{ payment.product.image }}" alt="Product {{ payment.id }} photo"
+              <ng-container *ngFor="let product of payment.products">
+                <img src="{{ getProductImageURL(product.image) }}" alt="Product {{ product._id }} photo"
                 class="h-full w-full object-cover rounded-lg">
+              </ng-container>
             </div>
           </div>
 
           <!-- Product Detail Container -->
           <div class="mt-4 md:mt-0">
-            <h2 class="font-semibold text-lg text-textPrimary">{{ payment.product.title }}</h2>
-            <h2 class="mt-2 text-sm text-gray-500">{{ payment.product.description }}</h2>
-            <h2 class="mt-4 text-sm font-bold text-gray-600">{{ payment.product.price | currency:'MYR ' }}</h2>
+            <ng-container *ngFor="let product of payment.products">
+              <h2 class="font-semibold text-lg text-textPrimary">{{ product.title }}</h2>
+              <h2 class="mt-2 text-sm text-gray-500">{{ product.description }}</h2>
+              <h2 class="mt-4 text-sm font-bold text-gray-600">{{ product.price | currency:'MYR ' }}</h2>
+            </ng-container>
           </div>
 
           <!-- Action Container -->
           <div class="flex flex-col mt-4 md:ml-auto md:mt-0 items-center justify-center gap-y-5">
             <!-- View Details -->
             <button class="w-36 h-11 ml-4 border border-primary text-white font-bold py-2 px-4 rounded-xl"
-              (click)="viewDetail(payment.id)">
+              (click)="viewDetail(payment._id)">
               <p class="text-primary">View Detail</p>
             </button>
 
-            <ng-container *ngIf="payment.status === 'Paid'">
+            <ng-container *ngIf="payment.status === 'completed' && payment.isReviewed == false">
               <!-- Add review -->
               <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
-                (click)="addReview(payment.id)">
+                (click)="addReview(payment._id)">
                 <p class="text-white">Add Review</p>
               </button>
             </ng-container>
 
-            <ng-container *ngIf="payment.status === 'Waiting'">
+            <ng-container *ngIf="payment.status === 'waiting'">
               <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
                 (click)="payNow(payment.id)">
                 <p class="text-white">Pay Now</p>

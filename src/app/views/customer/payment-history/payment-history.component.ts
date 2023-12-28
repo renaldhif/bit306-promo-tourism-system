@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { environment } from 'env/dev.environtment';
+import { forkJoin } from 'rxjs';
+import { AuthService } from 'src/app/service/auth.service';
+import { OrderService } from 'src/app/service/order.service';
 import { PaymentService } from 'src/app/service/payment-service';
+import { ProductService } from 'src/app/service/product-service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,23 +18,79 @@ export class PaymentHistoryComponent {
 
   paymentId: number | null;
   payment: any;
-  paymentsDummy: any = [];
+  // paymentsDummy: any = [];
+  paymentsData: any = [];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private paymentService: PaymentService,
+    private orderService: OrderService,
+    private authService: AuthService,
+    private productService: ProductService
   ) {
     const idParam = this.route.snapshot.paramMap.get('id');
   this.paymentId = idParam ? parseInt(idParam, 10) : null;
   }
 
   ngOnInit(): void {
-    this.paymentsDummy = this.paymentService.getAllPayments();
-    if (this.paymentId !== null) {
-      this.payment = this.paymentService.getPaymentById(this.paymentId);
+    const userID = this.authService.getUserId();
+  
+    if (userID) {
+      this.orderService.getOrderByUserId(userID).subscribe({
+        next: (data) => {
+          this.paymentsData = data;
+          console.log('PAYMENT DATA ' + JSON.stringify(this.paymentsData, null, 2));
+  
+          // Loop through paymentsData
+          this.paymentsData.forEach((payment: any) => {
+            // Extract product IDs from the products array
+            const productIds = payment.products.map((product: any) => product.productId);
+  
+            // Fetch product details for each product ID
+            const productRequests = productIds.map((productId: string) => {
+              return this.productService.getProductById(productId);
+            });
+  
+            // Use forkJoin to handle multiple requests concurrently
+            forkJoin(productRequests).subscribe({
+              next: (products: any) => {
+                // Attach product details to the corresponding payment
+                payment.products = products;
+                console.log('COBA PAYMENT DATA ' + payment._id);
+                console.log('is reviewd ' + payment.isReviewed);
+                
+              },
+              error: (error) => {
+                console.log(error);
+              }
+            });
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
     }
   }
+
+
+  getProductImageURL(imagePath: string | undefined): string {
+    if (!imagePath) {
+      // Handle the case where imagePath is undefined
+      return ''; // or a default image URL
+    }
+
+    // Check if the imagePath is an absolute URL (starts with "http" or "/")
+    if (imagePath.startsWith('http')) {
+      return imagePath; // It's already an absolute URL
+    } else {
+      // Assuming there is a base URL for your images
+      const baseURL = environment.apiUrl;
+      return baseURL + imagePath;
+    }
+  }
+
 
   viewDetail = (paymentID: Number) => {
     this.router.navigate(['/customer/payment-history-detail', paymentID]);

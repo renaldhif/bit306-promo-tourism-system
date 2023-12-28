@@ -8,6 +8,9 @@ import { QuantityService } from 'src/app/service/quantity.service';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
 // Dev env
 import { environment } from '../../../../../env/dev.environtment';
+import { OrderService } from 'src/app/service/order.service';
+import { UserService } from 'src/app/service/user.service';
+import { AuthService } from 'src/app/service/auth.service';
 // Prod env
 // import { environment } from '../../../../../env/environtment';
 @Component({
@@ -23,6 +26,7 @@ export class CheckoutComponent {
   quantity: number | 1;
   totalPrice?: number;
   isLoading: boolean = false;
+  orderID: string = '';
 
   // Paypal
   public payPalConfig?: IPayPalConfig;
@@ -32,6 +36,7 @@ export class CheckoutComponent {
   showPayPalButton: boolean = false;
 
   ngOnInit(): void {
+    // const userId = this.authService.getUserId();
     if (this.productId !== null) {
       //* PayPal init config
       this.orderItem = this.productService.getProductById(this.productId);
@@ -45,7 +50,10 @@ export class CheckoutComponent {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private quantityService: QuantityService
+    private quantityService: QuantityService,
+    private orderService: OrderService,
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.checkoutForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -99,6 +107,22 @@ export class CheckoutComponent {
     console.log("🚀 ~ file: checkout.component.ts:96 ~ CheckoutComponent ~ getTotalPrice ~ this.totalPrice:", this.totalPrice)
 
     return this.totalPrice;
+  }
+
+  getProductImageURL(imagePath: string | undefined): string {
+    if (!imagePath) {
+      // Handle the case where imagePath is undefined
+      return ''; // or a default image URL
+    }
+
+    // Check if the imagePath is an absolute URL (starts with "http" or "/")
+    if (imagePath.startsWith('http')) {
+      return imagePath; // It's already an absolute URL
+    } else {
+      // Assuming there is a base URL for your images
+      const baseURL = environment.apiUrl;
+      return baseURL + imagePath;
+    }
   }
 
   // convert to USD using Fixer.io API
@@ -167,12 +191,62 @@ export class CheckoutComponent {
       // Handle form submission and payment method selection
       const formData = this.checkoutForm.value;
       console.log('formData', formData);
+      const userId = this.authService.getUserId();
+      console.log('User ID from checkout.component.ts: ' + userId);
+
+      const orderData = {
+        user: userId,
+        contactInformation: {
+          name: formData.name,
+          email: formData.email,
+          phoneNumber: formData.phone,
+        },
+        products: [
+          {
+            productId: this.productId,
+            quantity: this.quantity,
+          },
+        ],
+        totalAmount: this.totalPrice,
+        totalQuantity: this.quantity,
+        payment: {
+          paymentMethod: '', //will be updated later
+          amount: this.totalPrice,
+        },
+        status: 'pending', // set the initial status
+        isReviewed: false,
+        notes: formData.notes,
+        date_created: new Date(),
+        paypalData: null, // update this later after the PayPal transaction is completed
+        paypalDetails: null, // update this later after the PayPal transaction is completed
+
+      };
+
+      console.log('debug onSubmit - orderData: ', orderData);
+
       this.getUSDPrice().then(() => {
         console.log('debug onSubmit - getUSDPrice - totalPriceUSD: ', this.totalPriceUSD);
         console.log('debug onSubmit - getUSDPrice - pricePerItemUSD: ', this.pricePerItemUSD);
         this.showPayPalButton = true;
         this.isLoading = false;
       });
+
+      // Call your order service to create the order
+      this.orderService.createOrder(orderData).subscribe(
+        (createdOrder) => {
+          console.log('Order created successfully:', createdOrder);
+          // Now you can proceed with showing the PayPal button and other logic
+          this.showPayPalButton = true;
+          this.isLoading = false;
+          this.orderID = createdOrder._id;
+          console.log('debug onSubmit - orderID: ', this.orderID);
+        },
+        (error) => {
+          console.error('Error creating order:', error);
+          this.isLoading = false;
+          // Handle the error, e.g., show an error message to the user
+        }
+      );
     }
     else {
       Swal.fire({
@@ -234,6 +308,28 @@ export class CheckoutComponent {
         console.log('onApprove - transaction was approved, but not authorized', data, actions);
         actions.order.get().then((details: any) => {
           console.log('onApprove - you can get full order details inside onApprove: ', details);
+          const updatedOrderData = {
+            payment: {
+              paymentMethod: 'PayPal', //!CHECK THIS ONE
+              amount: this.totalPrice,
+            },
+            status: 'completed',
+            paypalData: data,
+            paypalDetails: details,
+          };
+
+          // Update the order with the additional data
+          this.orderService.updateOrder(this.orderID, updatedOrderData).subscribe(
+            (updatedOrder) => {
+              console.log('Order updated successfully:', updatedOrder);
+              // ... any additional logic after updating the order
+            },
+            (error) => {
+              console.error('Error updating order:', error);
+              // ... handle error
+            }
+          );
+
           // this.router.navigate(['/customer/checkout', this.productId]);
           Swal.fire({
             title: 'Payment Successful!',
