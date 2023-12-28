@@ -27,6 +27,7 @@ import { AuthGuard } from './helper/auth.guard';
 import { AdminGuard } from './helper/admin.guard';
 import { MerchantGuard } from './helper/merchant.guard';
 import { AddReviewComponent } from './views/customer/add-review/add-review.component';
+import { AllProductsComponent } from './views/all-products/all-products.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'join-merchant', component: JoinMerchantComponent},
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'product/:id', component: ProductComponent},
+  { path: 'all-products', component: AllProductsComponent},
 
   // Admin Routes
   {
