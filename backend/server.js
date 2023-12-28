@@ -86,6 +86,9 @@ app.use('/api/reviews', reviewRoutes);
 import adminRoutes from "./routes/adminRoutes.js";
 app.use('/api/admin', adminRoutes);
 
+import orderRoutes from "./routes/orderRoutes.js";
+app.use('/api/orders', orderRoutes);
+
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 
