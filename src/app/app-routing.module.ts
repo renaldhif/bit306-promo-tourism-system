@@ -28,6 +28,9 @@ import { AdminGuard } from './helper/admin.guard';
 import { MerchantGuard } from './helper/merchant.guard';
 import { AddReviewComponent } from './views/customer/add-review/add-review.component';
 import { AllProductsComponent } from './views/all-products/all-products.component';
+import { PackageTourComponent } from './views/product/category/package-tour/package-tour.component';
+import { CruiseComponent } from './views/product/category/cruise/cruise.component';
+import { AttractionEntertainmentComponent } from './views/product/category/attraction-entertainment/attraction-entertainment.component';
 
 const routes: Routes = [
   {
@@ -42,6 +45,10 @@ const routes: Routes = [
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'product/:id', component: ProductComponent},
   { path: 'all-products', component: AllProductsComponent},
+  { path: 'package-tour', component: PackageTourComponent},
+  { path: 'cruise', component: CruiseComponent},
+  { path: 'attraction-and-entertainment', component: AttractionEntertainmentComponent},
+
 
   // Admin Routes
   {

@@ -44,6 +44,9 @@ import { StarRatingComponent } from './components/star-rating/star-rating.compon
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { WhyChooseUsComponent } from './components/why-choose-us/why-choose-us.component';
 import { AllProductsComponent } from './views/all-products/all-products.component';
+import { PackageTourComponent } from './views/product/category/package-tour/package-tour.component';
+import { CruiseComponent } from './views/product/category/cruise/cruise.component';
+import { AttractionEntertainmentComponent } from './views/product/category/attraction-entertainment/attraction-entertainment.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +87,9 @@ import { AllProductsComponent } from './views/all-products/all-products.componen
     ProductCardComponent,
     WhyChooseUsComponent,
     AllProductsComponent,
+    PackageTourComponent,
+    CruiseComponent,
+    AttractionEntertainmentComponent,
   ],
   imports: [
     BrowserModule,
