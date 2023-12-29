@@ -152,7 +152,7 @@
         </li>
         <!-- Register -->
         <li class="p-2" *ngIf="!isLoggedIn">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Register</a>
+          <a href="register" class="block text-sm text-textPrimary hover:text-primary">Register</a>
         </li>
 
         <!-- Customer Name -->
@@ -171,19 +171,19 @@
           <p class="font-semibold">Category</p>
         </li>
         <li class="p-2">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Package Tour</a>
+          <a href="/package-tour" class="block text-sm text-textPrimary hover:text-primary">Package Tour</a>
         </li>
         <!-- Menu 2-->
         <li class="p-2">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Cruise</a>
+          <a href="/cruise" class="block text-sm text-textPrimary hover:text-primary">Cruise</a>
         </li>
         <!-- Menu 3 -->
         <li class="p-2">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Attractions & Entertainment</a>
+          <a href="/attraction-and-entertainment" class="block text-sm text-textPrimary hover:text-primary">Attractions & Entertainment</a>
         </li>
         <!-- Menu 4 -->
         <li class="p-2">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Products</a>
+          <a href="/all-products" class="block text-sm text-textPrimary hover:text-primary">Products</a>
         </li>
         <!-- Menu 5 -->
         <li class="p-2">
@@ -207,7 +207,9 @@
       <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">
         <a href="#trending">Trending packages</a>
       </span>
-      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Products</span>
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">
+        <a href="/all-products">Products</a>
+      </span>
 
       <!-- * Category -->
       <div class="relative" (click)="toggleCategoryMenu()">
@@ -220,9 +222,9 @@
         <div class="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded-md py-2 z-10"
           [ngClass]="{ 'hidden': !isCategoryMenuOpen }" (clickOutside)="closeCategoryMenu()">
 
-          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Package Tour</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Cruise</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Attractions & Entertainment</a>
+          <a href="/package-tour" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Package Tour</a>
+          <a href="/cruise" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Cruise</a>
+          <a href="/attraction-and-entertainment" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Attractions & Entertainment</a>
         </div>
       </div>
       <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Why Choose Us?</span>
