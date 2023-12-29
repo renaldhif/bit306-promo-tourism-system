@@ -57,19 +57,25 @@ export class LoginComponent {
           // set user id
           this.authService.setUserId(data.userId);
           console.log('setUserId from login.component.ts: ' + data.userId);
+
+          // simulate delay login through swal
           Swal.fire({
-            title: 'Login Success',
-            text: 'Welcome to the dashboard',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          }).then(() => {
-            // Redirect based on role
-            if (data.role === 'merchant') {
-              this.router.navigate(['/merchant/dashboard']);
-            } else if (data.role === 'admin') {
-              this.router.navigate(['/admin/dashboard']);
-            } else {
-              this.router.navigate(['/']);
+            title: 'Logging in...',
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              //* Redirect based on role
+              if (data.role === 'merchant') {
+                this.router.navigate(['/merchant/dashboard']);
+              } else if (data.role === 'admin') {
+                this.router.navigate(['/admin/dashboard']);
+              } else {
+                this.router.navigate(['/']);
+              }
             }
           });
         },
