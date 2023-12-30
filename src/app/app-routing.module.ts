@@ -45,7 +45,7 @@ const routes: Routes = [
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'product/:id', component: ProductComponent},
   { path: 'all-products', component: AllProductsComponent},
-  { path: 'package-tour', component: PackageTourComponent},
+  { path: 'tour-package', component: PackageTourComponent},
   { path: 'cruise', component: CruiseComponent},
   { path: 'attraction-and-entertainment', component: AttractionEntertainmentComponent},
 
