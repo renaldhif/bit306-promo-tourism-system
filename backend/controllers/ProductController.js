@@ -6,6 +6,7 @@ import { Formidable } from 'formidable';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import User from '../models/UsersModel.js';
 // Implement CRUD operations for the Product model
 
 const __filename = fileURLToPath(import.meta.url);
@@ -243,7 +244,6 @@ const updateProduct = async (req, res) => {
   });
 };
 
-
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -272,7 +272,6 @@ const getProductsByMerchant = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const getAllProducts = async (req, res) => {
   try {
@@ -388,8 +387,7 @@ const getProductsByCategories = async (req, res) => {
 
     // Your logic to fetch products based on categories
     // For demonstration purposes, let's assume you have a Product model and you're using Mongoose
-
-    const products = await Product.find({ category: { $in: category} });
+    const products = await Product.find({ category: { $in: category} }).populate('merchant', 'fullname');
 
     res.status(200).json(products);
   } catch (error) {

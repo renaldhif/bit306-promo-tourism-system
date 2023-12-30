@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema({
   destinations: [String],
   includes: [String],
   image: String,
-  merchant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  // merchant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  merchant: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   created_at: Date,
 });
