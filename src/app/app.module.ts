@@ -47,6 +47,7 @@ import { AllProductsComponent } from './views/all-products/all-products.componen
 import { PackageTourComponent } from './views/product/category/package-tour/package-tour.component';
 import { CruiseComponent } from './views/product/category/cruise/cruise.component';
 import { AttractionEntertainmentComponent } from './views/product/category/attraction-entertainment/attraction-entertainment.component';
+import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { AttractionEntertainmentComponent } from './views/product/category/attra
     PackageTourComponent,
     CruiseComponent,
     AttractionEntertainmentComponent,
+    LoadingIndicatorComponent,
   ],
   imports: [
     BrowserModule,
