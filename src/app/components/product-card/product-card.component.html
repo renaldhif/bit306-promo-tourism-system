@@ -5,7 +5,7 @@
       class="card-cover w-full h-40 object-cover"
     />
     <!-- Content Container -->
-    <div class="p-4 h-56">
+    <div class="p-4 h-[17rem]">
       <!-- TITLE -->
       <h2 class="card-title text-md mb-1 line-clamp-2">{{ product.title }}</h2>
       <!-- CATEGORY -->
@@ -15,10 +15,21 @@
         <i class="fa fa-map-marker text-primary text-sm"></i>
         <p class="ml-2 text-sm text-darkGrey mr-1">{{ product.location }}</p>
       </div>
+      <!-- RATING & SOLD -->
+      <div class="flex mb-2 items-center">
+        <!-- Rating -->
+        <i class="fa fa-star text-yellow-400 text-sm"></i>
+        <p class="ml-2 text-sm text-darkGrey mr-1">{{ product.rating }}</p>
+        <!-- Divider -->
+        <div class="mx-2 w-1 h-1 bg-darkGrey rounded-full"></div>
+        <!-- Sold -->
+        <p class="text-sm text-darkGrey mr-1">{{ product.soldQty == null || product.soldQty === 0 ? '0' : product.soldQty }} Purchased </p>
+      </div>
+      <!-- Days -->
       <!-- RATING -->
       <div class="flex mb-2">
-        <p class="text-sm text-darkGrey mr-1">{{ product.rating }}</p>
-        <i class="fa fa-star text-yellow-400 text-sm"></i>
+        <i class="fa fa-calendar text-darkGrey text-sm"></i>
+        <p class="ml-2 text-sm text-darkGrey mr-1">{{ product.tripDays }} Days</p>
       </div>
       <!-- MERCHANT -->
       <div class="flex items-start justify-start">
