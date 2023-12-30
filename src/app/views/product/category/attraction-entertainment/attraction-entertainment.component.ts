@@ -39,8 +39,7 @@ export class AttractionEntertainmentComponent {
 
   fetchProductsFromAPI() {
     this.isLoading = true;
-    //TODO: Get "ATTRACTION AND ENTERTAINMENT" CATEGORY from backend API
-    this.productService.getAllProducts().subscribe(
+    this.productService.getProductsByCategory('Attractions & Entertainments').subscribe(
       (products: any[]) => {
         // from API
         this.productListAPI = products;
