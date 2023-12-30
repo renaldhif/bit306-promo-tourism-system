@@ -11,5 +11,9 @@ router.patch('/:id', productsController.updateProduct);
 router.delete('/:id', productsController.deleteProduct);
 router.get('/merchant/:merchantId', productsController.getProductsByMerchant);
 router.post('/:productId/reviews', productsController.addReview);
+router.put('/:productId/rating', productsController.updateRating);
+router.put('/:productId/soldQty', productsController.updateSoldQty);
+router.get("/top-5-sold", productsController.getTop5Products);
+router.get("/by-categories/:category", productsController.getProductsByCategories);
 
 export default router;

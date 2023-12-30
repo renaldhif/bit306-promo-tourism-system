@@ -13,15 +13,15 @@ export class ReviewService {
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
+  // Add new review
+  addReview(review: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/reviews`, review);
+  }
+
   // Get reviews by product ID
   getReviewsByProduct(productId: string): Observable<any[]> {
       return this.http.get<any[]>(`${this.apiUrl}/api/reviews/product/${productId}`);
   }
-
-  // Get review details by ID
-  // getReviewDetail(reviewId: string): Observable<any> {
-  //     return this.http.get<any>(`${this.apiUrl}/api/reviews/${reviewId}`);
-  // }
 
    // Get review details by ID along with user details
    getReviewDetail(reviewId: string): Observable<any> {

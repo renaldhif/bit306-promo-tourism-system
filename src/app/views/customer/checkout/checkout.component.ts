@@ -330,6 +330,17 @@ export class CheckoutComponent {
             }
           );
 
+          if (this.productId !== null) {
+            this.productService.updateSoldQty(this.productId, this.quantity).subscribe({
+              next: (response) => {
+                console.log('Sold quantity updated successfully:', response);
+              },
+              error: (error) => {
+                console.error('Error updating sold quantity:', error);
+              }
+            });
+          }
+
           // this.router.navigate(['/customer/checkout', this.productId]);
           Swal.fire({
             title: 'Payment Successful!',

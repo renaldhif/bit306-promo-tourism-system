@@ -34,6 +34,7 @@ const createProduct = async (req, res) => {
       // Assume these values are provided in the request or adjust accordingly
       const rating = 0;
       const ratingQty = 0;
+      const soldQty = 0;
       const destinations = JSON.parse(destination);
       const includes = JSON.parse(whatsIncluded);
       const created_at = new Date();
@@ -87,6 +88,7 @@ const createProduct = async (req, res) => {
         image: imagePath,
         rating,
         ratingQty,
+        soldQty,
         tripDays: tripDuration, // Using tripDuration for tripDays
         destinations,
         includes,
@@ -307,6 +309,95 @@ const addReview = async (req, res) => {
   }
 }
 
+const updateRating = async (req, res) => {
+  try {
+    const { rating } = req.body;
+    const productId = req.params.productId;
+
+    // Fetch the product by ID
+    const product = await Product.findById(productId);
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ product", product)
+    console.log('product rating', product.rating);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ product.rating", product.rating)
+
+    // Calculate overall rating based on updated rating
+    const totalRatings = product.reviews.length + 1;
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ totalRatings", totalRatings)
+    const sumRatings = product.rating + rating;
+    console.log('product rating', product.rating);
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ rating", rating)
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ sumRatings", sumRatings)
+    product.rating = parseFloat(sumRatings / totalRatings);
+
+    product.ratingQty += 1;
+
+    // Save the updated product
+    const updatedProduct = await product.save();
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error("Error updating product rating:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+const updateSoldQty = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    // Fetch the product by ID
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Update the soldQty
+    product.soldQty += 1;
+
+    // Save the updated product
+    const updatedProduct = await product.save();
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error("Error updating product soldQty:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+const getTop5Products = async (req, res) => {
+  try {
+    const top5Products = await Product.find().sort({ soldQty: -1 }).limit(5);
+    res.json(top5Products);
+  } catch (error) {
+    console.error('Error fetching top 5 products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getProductsByCategories = async (req, res) => {
+  try {
+    const { category } = req.params;
+
+    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ categories", category)
+
+    // Your logic to fetch products based on categories
+    // For demonstration purposes, let's assume you have a Product model and you're using Mongoose
+
+    const products = await Product.find({ category: { $in: category} });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products by categories:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 export default {
   createProduct,
   getProducts,
@@ -315,5 +406,9 @@ export default {
   deleteProduct,
   getProductsByMerchant,
   getAllProducts,
-  addReview
+  addReview,
+  updateRating,
+  updateSoldQty,
+  getTop5Products,
+  getProductsByCategories,
 };

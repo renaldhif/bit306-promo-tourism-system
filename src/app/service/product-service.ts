@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, catchError, forkJoin, map, mergeMap } from "rxjs";
 import { environment } from "env/dev.environtment";
 import { AuthService } from "./auth.service";
@@ -118,6 +118,22 @@ export class ProductService {
 
   addReview(productId: string, reviewId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/products/${productId}/reviews`, { reviewId });
+  }
+
+  updateRating(productId: string, rating: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/products/${productId}/rating`, { rating });
+  }
+
+  updateSoldQty(productId: string, soldQty: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/products/${productId}/soldQty`, { soldQty });
+  }
+
+  getTop5ProductsBySoldQty(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/api/products/top-5-sold`);
+  }
+
+  getProductsByCategory(category: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/api/products/by-categories/${category}`);
   }
 
 }

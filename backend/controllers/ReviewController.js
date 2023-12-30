@@ -1,25 +1,55 @@
 import Review from '../models/ReviewsModel.js';
+import { ObjectId } from 'mongodb';
 // Controller to create a new review
+// const createReview = async (req, res) => {
+//     try {
+//         const { rating, comment, user, product } = req.body;
+
+//         const newReview = new Review({
+//             rating,
+//             comment,
+//             user,
+//             product,
+//             dateCreated: new Date(),
+//         });
+
+//         const savedReview = await newReview.save();
+
+//         res.status(201).json(savedReview);
+//     } catch (error) {
+//         console.error('Error creating review:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
+
 const createReview = async (req, res) => {
     try {
-        const { rating, comment, user, product } = req.body;
+        const reviewData = req.body;
 
-        const newReview = new Review({
-            rating,
-            comment,
-            user,
-            product,
-            dateCreated: new Date(),
-        });
+        // Convert userId to a valid ObjectId if user is present
+        if (reviewData.user) {
+            reviewData.user = new ObjectId(reviewData.user);
+        }
+        if(!reviewData.product) {
+            return res.status(400).json({ error: 'Product ID is required' });
+        }
+        else{
+            reviewData.product = new ObjectId(reviewData.product);
+        }
 
-        const savedReview = await newReview.save();
+        // Convert dateCreated to a Date object
+        reviewData.dateCreated = new Date();
 
-        res.status(201).json(savedReview);
+        // Create the review
+        const newReview = await Review.create(reviewData);
+
+        res.status(201).json(newReview);
     } catch (error) {
         console.error('Error creating review:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 // Controller to get reviews for a specific product
 const getProductReviews = async (req, res) => {
