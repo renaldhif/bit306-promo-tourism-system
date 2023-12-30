@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,9 @@ export class HeaderComponent {
   userDetails: any;
   fullname: string = '';
   initialName: string = '';
-  isLoggedIn: boolean = this.authService.isLoggedIn();
+  // isLoggedIn: boolean = this.authService.isLoggedIn();
+  // * Changed to isAuthenticated() to check whether the token is expired or not
+  isLoggedIn: boolean = this.authService.isAuthenticated();
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router) {}
 
@@ -74,10 +77,23 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.authService.logout();
-    console.log('Logout executed from header.component.ts');
-    console.log('\n======');
-    console.log('navigate to login');
-    this.router.navigate(['/login']);
+    // simulate delay in logout through swal
+    Swal.fire({
+      title: 'Logging out...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer');
+        this.authService.logout();
+        this.router.navigate(['/login']);
+        console.log('Logout executed from header.component.ts');
+        console.log('\n======');
+        console.log('navigate to login');
+      }
+    });
   }
 }

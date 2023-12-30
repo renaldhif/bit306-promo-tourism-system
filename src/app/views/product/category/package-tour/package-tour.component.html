@@ -1,0 +1,61 @@
+<app-header></app-header>
+<div class="px-3 lg:px-0 lg:container mx-auto">
+  <!-- Title -->
+  <div class="text-2xl font-bold mt-8 text-primary">Package Tour</div>
+
+  <!-- * Header: Search and Filter -->
+  <div class="header flex flex-col lg:flex-row justify-center mt-10 mb-4 px-5">
+    <!-- Search Bar -->
+    <div id="search-bar" class="my-5 lg:my-0 lg:ml-6 flex flex-1 gap-x-3">
+      <div class="relative w-full">
+        <i class="fa fa-search text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2 mr-4"></i>
+        <input type="text"
+          class="w-full rounded-lg border-2 border-border pl-10 p-3 text-sm focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+          type="search" [(ngModel)]="searchTerm" (input)="onSearch()" [ngModelOptions]="{ standalone: true }"
+          [placeholder]="inputPlaceholder" />
+      </div>
+    </div>
+
+    <!-- Select option sort -->
+    <div id="select-option-sort" class="my-5 lg:my-0 lg:flex lg:justify-center lg:items-center lg:ml-10 lg:w-1/5">
+      <select
+        class="border-2 border-border rounded-lg p-3 text-sm focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 w-full"
+        [(ngModel)]="sortOptionSelected" [ngModelOptions]="{ standalone: true }" (change)="sortProducts()">
+        <option value="current" disabled>Filter by</option>
+        <option value="lowest-price">Lowest Price</option>
+        <option value="highest-price">Highest Price</option>
+        <option value="lowest-rating">Lowest Rating</option>
+        <option value="highest-rating">Highest Rating</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- * Content products -->
+  <!-- Card Container -->
+  <div class="flex overflow-x-auto p-4 cursor-pointer">
+    <div *ngIf="productListFiltered" class="flex flex-row">
+      <div *ngFor="let product of productListFiltered" class="flex-none">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- * No product found -->
+  <div class="flex flex-col items-center justify-center top-0 left-0 gap-y-3"
+    *ngIf="!isLoading && productListFiltered.length === 0">
+    <div class="bg-blue-50">
+      <img src="../../../assets/images/no-data.jpg" alt="No product found" class="w-96" />
+    </div>
+    <div class="text-2xl font-bold text-gray-600">No product found</div>
+    <div class="text-gray-400">Please try again with another keywords</div>
+  </div>
+
+  <!-- * Loading indicator -->
+  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center" *ngIf="isLoading">
+    <div class="flex gap-2">
+      <div class="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+      <div class="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+      <div class="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+    </div>
+  </div>
+</div>
