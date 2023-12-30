@@ -38,35 +38,10 @@ export class OrderService {
     getOrderByUserId(userId: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/orders/user/${userId}`);
     }
-    // getOrderByUserId(userId: string): Observable<any> {
-    //     return this.http.get<any>(`${this.apiUrl}/api/orders/user/${userId}`).pipe(
-    //       mergeMap((orders: any[]) => {
-    //         const productRequests = orders.map(order =>
-    //             this.productService.getProductById(order.productId).pipe(
-    //                 map(productDetails => {
-    //                 console.log('Product Details:', productDetails); // Log product details
-    //                 return {
-    //                     ...order,
-    //                     product: productDetails
-    //                 };
-    //                 })
-    //             )
-    //         );
-    //         console.log('Product Requests:', productRequests); // Log product requests
-    //         return forkJoin(productRequests).pipe(
-    //           map(products => {
-    //             return {
-    //               ...orders,
-    //               products: products,
-    //             };
-    //           })
-    //         );
-    //       }),
-    //       catchError(error => {
-    //         console.error('Error fetching order details:', error);
-    //         throw error;
-    //       })
-    //     );
-    //   }
+
+    // Update isReviewed field by order ID
+    updateOrderIsReviewed(orderId: string, isReviewed: boolean): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/orders/${orderId}/is-reviewed`,{ isReviewed });
     }
+}
 

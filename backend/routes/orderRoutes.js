@@ -8,5 +8,6 @@ router.patch('/:id', orderController.updateOrder);
 router.get('/', orderController.getAllOrders);
 router.get('/:id', orderController.getOrderById);
 router.get('/user/:id', orderController.getOrderByUserId);
+router.put('/:id/is-reviewed', orderController.updateOrderIsReviewed);
 
 export default router;

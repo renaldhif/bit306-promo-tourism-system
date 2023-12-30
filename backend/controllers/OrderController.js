@@ -41,6 +41,29 @@ const updateOrder = async (req, res) => {
     }
 };
 
+const updateOrderIsReviewed = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const { isReviewed } = req.body;
+
+        // Find the order by ID and update only the isReviewed field
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId,
+            { $set: { isReviewed } },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.json(updatedOrder);
+    } catch (error) {
+        console.error('Error updating order:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find();
@@ -84,5 +107,6 @@ export default {
     updateOrder,
     getAllOrders,
     getOrderById,
-    getOrderByUserId
+    getOrderByUserId,
+    updateOrderIsReviewed,
 };
