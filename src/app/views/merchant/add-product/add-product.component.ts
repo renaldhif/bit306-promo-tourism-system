@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
 import { ProductService } from 'src/app/service/product-service';
 import Swal from 'sweetalert2';
@@ -16,20 +17,21 @@ export class AddProductComponent {
   selectedFile: File | null = null;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private productService: ProductService,
     private authService: AuthService,
-    ) {
+    private route: Router
+  ) {
     this.productForm = this.fb.group({
-      title: '',
-      location: '',
-      tripDuration: '',
-      description: '',
-      destination: this.fb.array([]),
-      whatsIncluded: this.fb.array([]),
-      price: '',
-      category: '',
-      image: null,
+      title: ['', Validators.required],
+      location: ['', Validators.required],
+      tripDuration: ['', Validators.required],
+      description: ['', Validators.required],
+      destination: this.fb.array([], this.validateArrayNotEmpty),
+      whatsIncluded: this.fb.array([], this.validateArrayNotEmpty),
+      price: ['', Validators.required],
+      category: ['', Validators.required],
+      image: [null, Validators.required],
     });
   }
 
@@ -61,12 +63,12 @@ export class AddProductComponent {
   handleFileInput(event: Event) {
     try {
       const fileInput = event.target as HTMLInputElement;
-  
+
       if (fileInput.files && fileInput.files.length) {
         console.log('Entered if statement');
         this.selectedFile = fileInput.files[0];
         // console.log('selectedFile: ' + JSON.stringify(this.selectedFile, null, 2));
-        
+
         if (this.selectedFile.type !== 'image/jpeg' && this.selectedFile.type !== 'image/png') {
           Swal.fire({
             title: 'Error!',
@@ -80,8 +82,8 @@ export class AddProductComponent {
         // else {
         //   console.log('Entered else statement, it is an image');
         //   console.log('selectedFile name: ' + JSON.stringify(this.selectedFile.name, null, 2));
-  
-        //   this.productForm.patchValue({image: this.selectedFile.name,}); 
+
+        //   this.productForm.patchValue({image: this.selectedFile.name,});
         // }
       }
     }
@@ -95,7 +97,10 @@ export class AddProductComponent {
       });
     }
   }
-  
+
+  validateArrayNotEmpty(control: AbstractControl): ValidationErrors | null {
+    return Array.isArray(control.value) && control.value.length && control.value.every(v => v.trim() !== '') ? null : { 'arrayNotEmpty': true };
+  }
 
   onSubmit() {
     const productData = new FormData();
@@ -115,26 +120,44 @@ export class AddProductComponent {
 
     const userId = this.authService.getUserId() as string;
     console.log('userId di add product: ' + userId);
-    
-    this.productService.createProduct(productData, userId).subscribe(
-      (response) => {
-        Swal.fire({
-          title: 'Success!',
-          text: 'Your product has been added.',
-          icon: 'success',
-          confirmButtonText: 'Ok',
-        });
-      },
-      (error) => {
-        console.error('Error adding product:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Something went wrong while adding the product.',
-          icon: 'error',
-          confirmButtonText: 'Ok',
-        });
-      }
-    );
+
+    // validate form
+    if(this.productForm.valid && this.destination != null && this.whatsIncluded != null){
+      this.productService.createProduct(productData, userId).subscribe(
+        (response) => {
+          console.log('Response: ' + JSON.stringify(response, null, 2));
+          console.log('ProductData: ' + JSON.stringify(productData, null, 2));
+
+          Swal.fire({
+            title: 'Success!',
+            text: 'Your product has been added.',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.route.navigate(['/merchant/products']);
+            }
+          });
+        },
+        (error) => {
+          console.error('Error adding product:', error);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Something went wrong while adding the product.',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+        }
+      );
+    }
+    else{
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please fill in all the required fields.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
+    }
   }
 }
 
