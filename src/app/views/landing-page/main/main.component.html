@@ -1,32 +1,12 @@
-<!-- !? Discover Section - Fit screen size -->
-<section class="hero h-screen flex flex-col justify-center items-center text-white bg-cover bg-center bg-no-repeat"
-  style="background-image: url('../../../../assets/images/discover.webp');">
-  <!-- Darken the background -->
-  <div class="absolute inset-0 bg-black opacity-50"></div>
-
-  <!-- Texts -->
-  <h1 class="text-5xl font-extrabold mb-12 lg:mb-8 z-10 text-center">Discover our products and services</h1>
-  <p class="text-xl mb-16 lg:mb-8 text-center px-40 z-10 leading-9">Embark on a journey of exploration as you discover
-    our diverse range of high-quality products and services. From unique offerings to essential solutions, our
-    collection is designed to cater to your needs. Click the 'Discover' button to unlock a world of possibilities and
-    elevate your experience with us</p>
-  <button (click)="scrollToProducts()"
-    class="bg-primary text-white px-6 py-3 rounded-full text-xl font-semibold hover:bg-darkPrimary transition duration-300 transform hover:scale-105">
-    Discover
-  </button>
-
-  <div class="mt-6 animate-bounce text-4xl text-white">&#8595;</div>
-</section>
-
 <!-- !? Product Section -->
 <div id="trending">
   <app-header></app-header>
 
   <!-- //* 5 Featured Products -->
-  <div class="container mx-auto mt-10 flex flex-row justify-between items-center">
-    <p class="font-semibold text-2xl my-3">Trending Packages</p>
+  <div class="lg:container mx-auto mt-10 lg:flex flex-row justify-between items-center">
+    <p class="font-semibold lg:text-2xl lg:ml-0 text-xl my-3 ml-4">Trending Packages</p>
     <div (click)="goToAllProducts()" class="cursor-pointer">
-      <p class="text-primary font-semibold">View all products</p>
+      <p class="text-primary lg:font-semibold lg:ml-0 ml-4">View all products</p>
     </div>
   </div>
 
@@ -34,7 +14,7 @@
     <app-loading-indicator></app-loading-indicator>
   </div>
 
-  <div class="px-4 md:px-10 mx-auto w-full -m-24 mt-2 mb-10 container flex">
+  <div class="px-4 md:px-10 mx-auto w-full -m-24 mt-2 mb-10 lg:container flex">
     <!-- Left Button -->
     <button class="carousel-button left" (click)="scrollCarousel(-1)" *ngIf="!isLoading">
       <i class="fa fa-chevron-left border border-gray-300 rounded-full px-3 py-2 shadow-md text-darkGrey"></i>
@@ -57,4 +37,6 @@
 </div>
 
 <!-- !?Why choose us? -->
-<app-why-choose-us></app-why-choose-us>
+<div id="why-choose-us">
+  <app-why-choose-us></app-why-choose-us>
+</div>

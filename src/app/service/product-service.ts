@@ -129,7 +129,26 @@ export class ProductService {
   }
 
   getTop5ProductsBySoldQty(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/products/top-5-sold`);
+    return this.http.get<any[]>(`${this.apiUrl}/api/products/top-5-sold`).pipe(
+      mergeMap((products: any[]) => {
+        const merchantRequests = products.map(product =>
+          this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
+            map(merchantDetails => {
+              console.log('Merchant Details:', merchantDetails); // Log merchant details
+              return {
+                ...product,
+                merchant: merchantDetails
+              };
+            })
+          )
+        );
+        return forkJoin(merchantRequests);
+      }),
+      catchError(error => {
+        console.error('Error fetching products:', error);
+        throw error;
+      })
+    );
   }
 
   getProductsByCategory(category: string): Observable<any[]> {
