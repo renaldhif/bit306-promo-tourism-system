@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { AuthService } from 'src/app/service/auth.service';
 import { ProductService } from 'src/app/service/product-service';
 import Swal from 'sweetalert2';
 
@@ -14,7 +15,11 @@ export class AddProductComponent {
 
   selectedFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private productService: ProductService) {
+  constructor(
+    private fb: FormBuilder, 
+    private productService: ProductService,
+    private authService: AuthService,
+    ) {
     this.productForm = this.fb.group({
       title: '',
       location: '',
@@ -108,7 +113,10 @@ export class AddProductComponent {
 
     console.log('productData: ' + JSON.stringify(productData, null, 2));
 
-    this.productService.createProduct(productData).subscribe(
+    const userId = this.authService.getUserId() as string;
+    console.log('userId di add product: ' + userId);
+    
+    this.productService.createProduct(productData, userId).subscribe(
       (response) => {
         Swal.fire({
           title: 'Success!',

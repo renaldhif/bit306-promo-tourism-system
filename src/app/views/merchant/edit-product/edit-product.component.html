@@ -26,8 +26,7 @@
       <button type="button" (click)="addDestinationItem()" class="px-4 py-2 bg-blue-500 text-white rounded-lg">
         <span><i class="fa fa-plus mr-3"></i></span>Add Destinations
       </button>
-      <div *ngFor="let destinationCtrl of destination.controls; let i = index">
-        <input [formControlName]="i" type="text" />
+      <div *ngFor="let destinationCtrl of destination.controls; let i = index" class="flex items-center mt-4">
         <input
           [formControlName]="i"
           type="text"
@@ -52,8 +51,7 @@
         class="px-4 py-2 bg-blue-500 text-white rounded-lg">
         <span><i class="fa fa-plus mr-3"></i></span>Add What's Included Items
       </button>
-      <div *ngFor="let includeCtrl of whatsIncluded.controls; let i = index">
-        <input [formControlName]="i" type="text" />
+      <div *ngFor="let includeCtrl of whatsIncluded.controls; let i = index" class="flex items-center mt-4">
         <input
           [formControlName]="i"
           type="text"

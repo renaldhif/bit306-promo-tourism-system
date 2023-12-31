@@ -22,6 +22,7 @@ const createProduct = async (req, res) => {
 
     try {
       // Extract field values
+      const {userId} = req.params;
       const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
       const location = Array.isArray(fields.location) ? fields.location[0] : fields.location;
       const tripDuration = Array.isArray(fields.tripDuration) ? fields.tripDuration[0] : fields.tripDuration;
@@ -73,7 +74,7 @@ const createProduct = async (req, res) => {
       }
 
       // Assume the merchant ID is provided in the request or adjust accordingly
-      const merchant = '657b2ed6f0013990de3bca53';
+      const merchant = new ObjectId(userId);
 
       // Create a new product
       const product = new Product({
@@ -138,25 +139,6 @@ const getProductById = async (req, res) => {
   }
 };
 
-// const updateProduct = async (req, res) => {
-//   try {
-//     const productId = req.params.id;
-//     const updatedProduct = await Product.findByIdAndUpdate(
-//       productId,
-//       { $set: req.body },
-//       { new: true }
-//     );
-
-//     if (!updatedProduct) {
-//       return res.status(404).json({ error: 'Product not found' });
-//     }
-
-//     res.status(200).json(updatedProduct);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
 const updateProduct = async (req, res) => {
   const form = new Formidable();
 
@@ -174,7 +156,6 @@ const updateProduct = async (req, res) => {
       const existingProduct = await Product.findById(productId);
       console.log('EXISTING PRODUCT before', existingProduct);
 
-
       if (!existingProduct) {
         return res.status(404).json({ error: 'Product not found' });
       }
@@ -188,23 +169,11 @@ const updateProduct = async (req, res) => {
       existingProduct.category = Array.isArray(fields.category) ? fields.category[0] : fields.category || existingProduct.category;
 
       // Update the arrays (destinations and includes)
-      // existingProduct.destination = fields.destination ? JSON.parse(fields.destination) : existingProduct.destination;
-      // existingProduct.whatsIncluded = fields.whatsIncluded ? JSON.parse(fields.whatsIncluded) : existingProduct.whatsIncluded;
-
-
       existingProduct.destinations = Array.isArray(fields.destination) ? fields.destination : JSON.parse(fields.destination || '[]');
-
       existingProduct.includes = Array.isArray(fields.whatsIncluded) ? fields.whatsIncluded : JSON.parse(fields.whatsIncluded || '[]');
 
-      existingProduct.image = Array.isArray(fields.image) ? fields.image[0] : fields.image || existingProduct.image;
-
-      console.log('IMAGE WOY', existingProduct.image);
-
-      let imagePath = '';
-      let newFilename = '';
-
+      // Handle image update only if a new image is submitted
       if (files.image && files.image.length > 0) {
-        console.log("JALAN DISINI")
         const imageFile = files.image[0];
 
         // Check file type (you may want to enhance this check based on your requirements)
@@ -214,23 +183,17 @@ const updateProduct = async (req, res) => {
         }
 
         const oldPath = imageFile.filepath;
-        console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ oldPath", oldPath)
-
         const originalFilename = imageFile.originalFilename;
-        console.log("🚀 ~ file: ProductController.js:102 ~ formidable.parse ~ originalFilename:", originalFilename)
 
         // Generate new filename
-        newFilename = `${existingProduct.title.replace(/\s+/g, '_')}_${originalFilename}`;
+        const newFilename = `${existingProduct.title.replace(/\s+/g, '_')}_${originalFilename}`;
         const newPath = path.join(__dirname, '../uploads/images', newFilename);
 
         // Move the file
         fs.renameSync(oldPath, newPath);
         // Generate a relative URL for the image
-        imagePath = `/uploads/images/${newFilename}`;
-        console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ imagePath", imagePath)
-        existingProduct.image = imagePath;
+        existingProduct.image = `/uploads/images/${newFilename}`;
       }
-
 
       // Save the updated product in the database
       console.log('EXISTING PRODUCT NOW', existingProduct);
@@ -242,6 +205,7 @@ const updateProduct = async (req, res) => {
     }
   });
 };
+
 
 
 const deleteProduct = async (req, res) => {
