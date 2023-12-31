@@ -9,5 +9,6 @@ router.get('/', orderController.getAllOrders);
 router.get('/:id', orderController.getOrderById);
 router.get('/user/:id', orderController.getOrderByUserId);
 router.put('/:id/is-reviewed', orderController.updateOrderIsReviewed);
+router.get('/revenue/:merchantId', orderController.getMerchantRevenue);
 
 export default router;

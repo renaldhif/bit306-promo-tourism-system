@@ -113,6 +113,50 @@ const getOrderByUserId = async (req, res) => {
     }
 }
 
+const getMerchantRevenue = async (req, res) => {
+    try {
+      const { merchantId } = req.params;
+      console.log('merchantId', merchantId);
+  
+      const orders = await Order.aggregate([
+        { $unwind: "$products" },
+        {
+          $lookup: {
+            from: "products", // replace with your actual Product collection name
+            localField: "products.productId",
+            foreignField: "_id",
+            as: "productData"
+          }
+        },
+        { $unwind: "$productData" },
+        {
+          $match: {
+            "productData.merchant": new ObjectId(merchantId),
+            status: "completed"
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            totalAmount: 1
+          }
+        }
+      ]);
+  
+      let totalRevenue = 0;
+      orders.forEach(order => {
+        console.log('Order total amount:', order.totalAmount);
+        totalRevenue += order.totalAmount;
+      });
+  
+      res.json({ totalRevenue });
+    } catch (error) {
+      console.error('Error fetching merchant revenue:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+
 export default {
     createOrder,
     updateOrder,
@@ -120,4 +164,5 @@ export default {
     getOrderById,
     getOrderByUserId,
     updateOrderIsReviewed,
+    getMerchantRevenue
 };
