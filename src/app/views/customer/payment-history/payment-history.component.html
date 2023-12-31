@@ -29,7 +29,7 @@
       <!-- Header Container -->
       <div
         class="rounded-t mb-0 px-4 py-3 flex flex-row justify-between items-center border border-b-gray-200 bg-slate-100 lg:justify-start lg:items-start">
-        <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment._id }}</h2>
+        <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment.orderID }}</h2>
         <h2 class="text-sm text-gray-500 mx-6">{{ payment.created_at | date }}</h2>
         <div class="border rounded-lg h-6 w-20 flex items-center justify-center" [ngClass]="
           payment.status === 'Paid' ? 'bg-green-100 border-green-300 text-green-700' :

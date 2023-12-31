@@ -25,6 +25,9 @@ const contactInformationSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+  orderID: {
+    type: String,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users', // Reference to the User model

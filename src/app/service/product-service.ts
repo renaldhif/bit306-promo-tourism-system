@@ -62,41 +62,8 @@ export class ProductService {
     );
   }
 
-  // getProductById(id: string): Observable<any> {
-  //   console.log('Product ID in service:', id); // Log product ID
-  //   return this.http.get<any>(`${this.apiUrl}/api/products/${id}`).pipe(
-  //     mergeMap(product => {
-  //       // Fetch merchant details
-  //       const merchantDetails$ = this.userService.getUserDetails(product.merchant);
-
-  //       // Fetch reviews associated with the product
-  //       const reviews$ = this.reviewService.getReviewsByProduct(id);
-
-  //       // Combine the observables using forkJoin
-  //       return forkJoin({
-  //         product: merchantDetails$,
-  //         reviews: reviews$
-  //       }).pipe(
-  //         map(({ product, reviews }) => {
-  //           console.log('Merchant Details:', product.merchant); // Log merchant details
-  //           console.log('Reviews:', reviews); // Log reviews
-  //           return {
-  //             ...product,
-  //             merchant: product.merchant,
-  //             reviews: reviews
-  //           };
-  //         })
-  //       );
-  //     }),
-  //     catchError(error => {
-  //       console.error('Error fetching product details:', error);
-  //       throw error;
-  //     })
-  //   );
-  // }
-
-  createProduct(productData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/products/`, productData);
+  createProduct(productData: FormData, userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/products/${userId}`, productData);
   }
 
   updateProduct(id: string, updatedProductData: FormData): Observable<any> {

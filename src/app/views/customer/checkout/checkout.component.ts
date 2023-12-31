@@ -195,6 +195,7 @@ export class CheckoutComponent {
       console.log('User ID from checkout.component.ts: ' + userId);
 
       const orderData = {
+        orderID: '',
         user: userId,
         contactInformation: {
           name: formData.name,
