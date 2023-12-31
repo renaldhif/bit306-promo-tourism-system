@@ -32,7 +32,7 @@ export class PackageTourComponent {
   fetchProductsFromAPI() {
     this.isLoading = true;
     //TODO: Get "PACKAGE TOUR" CATEGORY from backend API
-    this.productService.getAllProducts().subscribe(
+    this.productService.getProductsByCategory("Tour Package").subscribe(
       (products: any[]) => {
         // from API
         this.productListAPI = products;

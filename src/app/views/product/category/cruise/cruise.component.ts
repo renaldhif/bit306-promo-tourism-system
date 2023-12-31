@@ -39,15 +39,17 @@ export class CruiseComponent {
 
   fetchProductsFromAPI() {
     this.isLoading = true;
-    //TODO: Get "CRUISE" CATEGORY from backend API
-    this.productService.getAllProducts().subscribe(
+    this.productService.getProductsByCategory('Cruise').subscribe(
       (products: any[]) => {
         // from API
         this.productListAPI = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:47 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
+        console.log("🚀 ~ file: cruise.component.ts:46 ~ CruiseComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
         // filtered
         this.productListFiltered = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:50 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
+        console.log("🚀 ~ file: cruise.component.ts:49 ~ CruiseComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
+
+        // ! DEBUG:
+        console.log('DEBUG fetchProductsFromAPI Merchant Name:', this.productListAPI[0].merchant.fullname);
 
         this.isLoading = false;
       },
