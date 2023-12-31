@@ -1,7 +1,15 @@
 <app-merchant-sidebar></app-merchant-sidebar>
-<div class="py-4 lg:py-6 bg-primary">
-  <h1 class="text-3xl font-semibold ml-8 lg:mb-4 lg:ml-72  text-white">Add a Product</h1>
+
+<!-- Header -->
+<div class="py-4 lg:py-6 bg-primary flex items-center">
+  <div class="flex items-center justify-center text-white ml-8 py-2  lg:ml-72">
+    <a routerLink="/merchant/products">
+      <i class="fa fa-arrow-left mr-10 fa-lg"></i>
+    </a>
+    <h1 class="text-3xl font-semibold ml-4 lg:ml-2 text-white">Add Product</h1>
+  </div>
 </div>
+
 <div class="container mx-auto mt-12 lg:mx-auto">
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="lg:ml-60 mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-400">
     <!-- Title -->
@@ -112,7 +120,7 @@
         formControlName="image"
         type="file"
         accept="image/*"
-        class="cursor-pointer block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-400" 
+        class="cursor-pointer block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-400"
         (change)="handleFileInput($event)"
         />
     </div>

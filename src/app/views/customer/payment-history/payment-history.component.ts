@@ -20,6 +20,11 @@ export class PaymentHistoryComponent {
   payment: any;
   // paymentsDummy: any = [];
   paymentsData: any = [];
+  paymentsFilteredData: any = [];
+
+  currentFilter: string = 'All';
+  isLoading: boolean = false;
+  isFetched: boolean = false;
 
   constructor(
     private router: Router,
@@ -30,50 +35,61 @@ export class PaymentHistoryComponent {
     private productService: ProductService
   ) {
     const idParam = this.route.snapshot.paramMap.get('id');
-  this.paymentId = idParam ? parseInt(idParam, 10) : null;
+    this.paymentId = idParam ? parseInt(idParam, 10) : null;
   }
 
   ngOnInit(): void {
     const userID = this.authService.getUserId();
-  
+
     if (userID) {
+      this.isLoading = true;
       this.orderService.getOrderByUserId(userID).subscribe({
         next: (data) => {
           this.paymentsData = data;
           console.log('PAYMENT DATA ' + JSON.stringify(this.paymentsData, null, 2));
-  
-          // Loop through paymentsData
-          this.paymentsData.forEach((payment: any) => {
-            // Extract product IDs from the products array
-            const productIds = payment.products.map((product: any) => product.productId);
-  
-            // Fetch product details for each product ID
-            const productRequests = productIds.map((productId: string) => {
-              return this.productService.getProductById(productId);
+          if (this.paymentsData.length === 0) {
+            this.isLoading = false;
+            this.isFetched = true;
+          }
+          else {
+            // Loop through paymentsData
+            this.paymentsData.forEach((payment: any) => {
+              // Extract product IDs from the products array
+              const productIds = payment.products.map((product: any) => product.productId);
+
+              // Fetch product details for each product ID
+              const productRequests = productIds.map((productId: string) => {
+                return this.productService.getProductById(productId);
+              });
+
+              // Use forkJoin to handle multiple requests concurrently
+              forkJoin(productRequests).subscribe({
+                next: (products: any) => {
+                  // Attach product details to the corresponding payment
+                  payment.products = products;
+                  console.log('COBA PAYMENT DATA ' + payment._id);
+                  console.log('is reviewd ' + payment.isReviewed);
+
+                  // * FILTER PAYMENT BY STATUS
+                  this.updateFilteredPayments();
+                  this.isLoading = false;
+                  this.isFetched = true;
+                },
+                error: (error) => {
+                  console.log(error);
+                }
+              });
             });
-  
-            // Use forkJoin to handle multiple requests concurrently
-            forkJoin(productRequests).subscribe({
-              next: (products: any) => {
-                // Attach product details to the corresponding payment
-                payment.products = products;
-                console.log('COBA PAYMENT DATA ' + payment._id);
-                console.log('is reviewd ' + payment.isReviewed);
-                
-              },
-              error: (error) => {
-                console.log(error);
-              }
-            });
-          });
+          }
         },
         error: (error) => {
           console.log(error);
         }
       });
     }
+    // this.isLoading = false;
+    // this.isFetched = true;
   }
-
 
   getProductImageURL(imagePath: string | undefined): string {
     if (!imagePath) {
@@ -97,47 +113,6 @@ export class PaymentHistoryComponent {
   }
 
   addReview = (paymentID: Number) => {
-    // Swal.fire({
-    //   title: 'Submit a Review',
-    //   html: `
-    //     <div class="mb-3">
-    //       <label for="starRating" class="block mb-1">Rating:</label>
-    //       <select id="starRating" class="w-full p-2 border rounded-md" required>
-    //         <option value="1">1 Star</option>
-    //         <option value="2">2 Stars</option>
-    //         <option value="3">3 Stars</option>
-    //         <option value="4">4 Stars</option>
-    //         <option value="5">5 Stars</option>
-    //       </select>
-    //     </div>
-    //     <div>
-    //       <label for="reviewText" class="block mb-1">Review:</label>
-    //       <textarea id="reviewText" class="w-full p-2 border rounded-md" rows="5" required placeholder="Write your review here..."></textarea>
-    //     </div>
-    //   `,
-    //   showCancelButton: true,
-    //   confirmButtonText: 'Submit',
-    //   cancelButtonText: 'Cancel',
-    //   focusConfirm: false,
-    //   preConfirm: () => {
-    //     const selectedRating = (document.getElementById('starRating') as HTMLSelectElement).value;
-    //     const reviewText = (document.getElementById('reviewText') as HTMLTextAreaElement).value;
-    //     if (!reviewText) {
-    //       Swal.showValidationMessage('Please enter your review.');
-    //       return false; // Prevent closing the modal
-    //     } else if (selectedRating === '0') {
-    //       Swal.showValidationMessage('Please select a rating.');
-    //       return false; // Prevent closing the modal
-    //     } else {
-    //       Swal.fire({
-    //         title: 'Success',
-    //         text: 'Review submitted with rating ' + selectedRating + ' and review text: ' + reviewText,
-    //         icon: 'success',
-    //       })
-    //       return true;
-    //     }
-    //   },
-    // });
     this.router.navigate(['/customer/add-review', paymentID]);
   }
 
@@ -145,8 +120,21 @@ export class PaymentHistoryComponent {
     this.router.navigate(['/customer/checkout', paymentID]);
   }
 
-  filterByStatus = (status: String) => {
-    this.router.navigate(['/payment-history', { status: status }]);
+  // filterByStatus = (status: String) => {
+  //   this.router.navigate(['/payment-history', { status: status }]);
+  // }
+
+  setFilter(filter: string) {
+    this.currentFilter = filter;
+    this.updateFilteredPayments();
+  }
+
+  updateFilteredPayments() {
+    if (this.currentFilter === 'All') {
+      this.paymentsFilteredData = this.paymentsData;
+    } else {
+      this.paymentsFilteredData = this.paymentsData.filter((payment: any) => payment.status === this.currentFilter);
+    }
   }
 
 }
