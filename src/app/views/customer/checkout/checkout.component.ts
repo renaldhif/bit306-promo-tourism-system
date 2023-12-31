@@ -214,7 +214,7 @@ export class CheckoutComponent {
           paymentMethod: '', //will be updated later
           amount: this.totalPrice,
         },
-        status: 'pending', // set the initial status
+        status: 'Waiting', // set the initial status //! Note by RE: Pending to Waiting
         isReviewed: false,
         notes: formData.notes,
         date_created: new Date(),
@@ -314,7 +314,8 @@ export class CheckoutComponent {
               paymentMethod: 'PayPal', //!CHECK THIS ONE
               amount: this.totalPrice,
             },
-            status: 'completed',
+            //! Completed to Paid
+            status: 'Paid',
             paypalData: data,
             paypalDetails: details,
           };
