@@ -43,5 +43,10 @@ export class OrderService {
     updateOrderIsReviewed(orderId: string, isReviewed: boolean): Observable<any> {
         return this.http.put<any>(`${this.apiUrl}/api/orders/${orderId}/is-reviewed`,{ isReviewed });
     }
+
+    //get merchant revenue
+    getMerchantRevenue(merchantId: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/orders/revenue/${merchantId}`);
+    }
 }
 
