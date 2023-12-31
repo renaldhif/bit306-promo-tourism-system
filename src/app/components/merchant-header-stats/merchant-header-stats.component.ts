@@ -40,22 +40,19 @@ export class MerchantHeaderStatsComponent {
 
   // logout
   logout = () => {
+    // simulate delay in logout through swal
     Swal.fire({
-      title: 'Logout',
-      text: "Are you sure you want to logout?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4ade80',
-      cancelButtonColor: '#f87171',
-      confirmButtonText: 'Yes, logout!'
+      title: 'Logging out...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.dismiss === Swal.DismissReason.timer) {
         this.authService.logout();
-        console.log('Logout executed from MERCHANT merchant-header-stats.component.ts');
-        console.log('\n======');
-        console.log('navigate to login');
         this.router.navigate(['/login']);
       }
-    })
+    });
   }
 }
