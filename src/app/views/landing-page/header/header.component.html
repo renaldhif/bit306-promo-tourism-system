@@ -1,9 +1,9 @@
 <div class="bg-whiteBackground">
   <div class="border py-3 px-4">
     <!-- Header -->
-    <div class="lg:flex justify-between">
+    <div class="flex lg:justify-between justify-between items-center ">
       <!-- Logo -->
-      <div class="flex items-center justify-between">
+      <div class="">
         <!-- Large logo while lg -->
         <a routerLink="">
           <img src="../../../../assets/icons/ic_logo.png" width="280" alt="logo-large" class="hidden lg:block">
@@ -11,77 +11,42 @@
 
         <!-- Small logo while in mobile view -->
         <a routerLink="">
-          <img src="../../../../assets/icons/ic_logo_sm.png" width="50" alt="logo-small" class="lg:hidden mr-3">
+          <img src="../../../../assets/icons/ic_logo_sm.png" width="50" alt="logo-small" class="lg:hidden mr-3 block">
         </a>
-
-        <!-- Small Searchbar -->
-        <!-- <div id="search-bar-test" class="my-5 lg:hidden flex-1 gap-x-3">
-          <input type="text"
-            class="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-            [placeholder]="inputPlaceholder" />
-        </div> -->
-
-        <div class="flex">
-          <!-- Small Payment -->
-          <a routerLink="/customer/payment-history">
-            <div class="ml-2 flex lg:hidden cursor-pointer items-center gap-x-1 rounded-md p-2 hover:bg-gray-100">
-              <i class="fa fa-money"></i>
-            </div>
-          </a>
-
-          <!-- Small Merchant -->
-          <a routerLink="/join-merchant">
-            <div class="flex lg:hidden cursor-pointer items-center gap-x-1 rounded-md p-2 hover:bg-gray-100">
-              <div class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512">
-                  <path
-                    d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z" />
-                </svg>
-              </div>
-            </div>
-          </a>
-
-          <!-- Show Hamburger button while in mobile view -->
-          <div class="ml-2 flex justfy-between items-center lg:hidden">
-            <button id="menu-toggle" class="h-8 w-8 focus:outline-none border border-border rounded-md p-1"
-              (click)="toggleMobileMenu()">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                </path>
-              </svg>
-            </button>
-          </div>
-        </div>
       </div>
 
-      <!-- SEARCHBAR -->
-      <!-- <div id="search-bar" class="hidden my-5 lg:my-0 lg:w-full lg:ml-6 lg:flex flex-1 gap-x-3">
-        <input type="text"
-          class="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-          [placeholder]="inputPlaceholder" />
-      </div> -->
-
-      <div class="ml-2 flex">
+      <div class="ml-2 flex items-center">
         <!-- Payment -->
         <a routerLink="/customer/payment-history">
           <div
-            class="h-11 hidden lg:flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover">
+            class="lg:h-11 lg:flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover">
             <i class="fa fa-money text-textPrimary"></i>
-            <span class="text-sm font-medium">Payment</span>
+            <span class="text-sm font-medium hidden lg:block">Payment</span>
           </div>
         </a>
 
         <!-- Merchant -->
-        <div class="hidden lg:flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover">
+        <div class="lg:flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-backgroundHover">
           <a routerLink="/join-merchant" class="flex items-center">
             <div class="relative inline-flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512" class="mr-1">
                 <path
                   d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z" />
               </svg>
-              <span class="text-sm font-medium">Merchant</span>
+              <span class="text-sm font-medium hidden lg:block">Merchant</span>
             </div>
           </a>
+        </div>
+
+        <!-- Show Hamburger button while in mobile view -->
+        <div class="ml-2 flex justfy-between items-center lg:hidden">
+          <button id="menu-toggle" class="h-8 w-8 focus:outline-none border border-border rounded-md p-1"
+            (click)="toggleMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+              </path>
+            </svg>
+          </button>
         </div>
 
         <!-- Show Login if not authenticated -->
@@ -179,7 +144,8 @@
         </li>
         <!-- Menu 3 -->
         <li class="p-2">
-          <a href="/attraction-and-entertainment" class="block text-sm text-textPrimary hover:text-primary">Attractions & Entertainment</a>
+          <a href="/attraction-and-entertainment" class="block text-sm text-textPrimary hover:text-primary">Attractions
+            & Entertainment</a>
         </li>
         <!-- Menu 4 -->
         <li class="p-2">
@@ -191,7 +157,7 @@
         </li>
 
         <li class="p-2">
-          <a href="#" class="block text-sm text-textPrimary hover:text-primary">Why Choose Us?</a>
+          <a href="#why-choose-us" class="block text-sm text-textPrimary hover:text-primary">Why Choose Us?</a>
         </li>
 
         <li class="p-2">
@@ -224,10 +190,13 @@
 
           <a href="/tour-package" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Tour Package</a>
           <a href="/cruise" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Cruise</a>
-          <a href="/attraction-and-entertainment" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Attractions & Entertainment</a>
+          <a href="/attraction-and-entertainment"
+            class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Attractions & Entertainment</a>
         </div>
       </div>
-      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">Why Choose Us?</span>
+      <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover" (click)="navigateTo('why-choose-us')">
+        Why Choose Us?
+      </span>
       <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-backgroundHover">About Us</span>
     </div>
 
