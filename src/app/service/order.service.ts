@@ -48,5 +48,15 @@ export class OrderService {
     getMerchantRevenue(merchantId: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/orders/revenue/${merchantId}`);
     }
+
+    //get product analytics
+    getProductAnalytics(merchantId: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/orders/product-analytics/${merchantId}`);
+    }
+
+    //get customer purchasing power in each merchant
+    getCustomerPurchasingPower(merchantId: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/orders/customer-purchasing-power/${merchantId}`);
+    }
 }
 
