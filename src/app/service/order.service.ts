@@ -63,7 +63,6 @@ export class OrderService {
     getCustomerPurchasingPower(merchantId: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/orders/customer-purchasing-power/${merchantId}`);
     }
-
     //get revenue for current month
     getRevenueForCurrentMonth(merchantId: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/orders/revenue-current-month/${merchantId}`);
