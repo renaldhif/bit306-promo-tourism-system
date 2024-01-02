@@ -135,6 +135,13 @@ export class PaymentHistoryComponent {
     } else {
       this.paymentsFilteredData = this.paymentsData.filter((payment: any) => payment.status === this.currentFilter);
     }
+
+     // Sort by newest transaction
+    this.paymentsFilteredData.sort((a: any, b: any) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB.getTime() - dateA.getTime(); // This will sort in descending order
+    });
   }
 
 }

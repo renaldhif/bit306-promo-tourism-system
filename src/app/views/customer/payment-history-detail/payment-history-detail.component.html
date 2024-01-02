@@ -1,18 +1,15 @@
 <app-header></app-header>
 <div class="container mx-auto">
   <div class="flex justify-end mt-8 mr-6">
-    <button
-      class="bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:bg-primary-dark"
-      (click)="downloadInvoice()"
-    >
+    <button class="bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:bg-primary-dark"
+      (click)="downloadInvoice()">
       <i class="fa fa-download mr-2"></i> Download Invoice
     </button>
-</div>
+  </div>
 
-<div id="invoice-content" class="bg-white p-6 mx-auto container">
-
+  <div id="invoice-content" class="bg-white p-6 mx-auto lg:container">
     <!-- First Row: Customer Information -->
-    <div class="w-full border border-gray-400 shadow-lg rounded-lg my-5 flex-col mx-auto p-8">
+    <div class="w-full lg:w-full border border-gray-400 shadow-lg rounded-lg my-5 mx-auto p-8">
       <h2 class="text-2xl font-semibold mb-4">Customer Information</h2>
       <div class="mb-2.5">
         <p class="text-gray-600">Customer Name:</p>
@@ -29,109 +26,130 @@
     </div>
 
     <!-- Second Row: Payment Information -->
-    <div class="flex mb-6">
+    <div class="flex flex-col lg:flex-row mb-6">
       <!-- Left Side: Payment Information -->
-      <div class="w-1/2 border border-gray-400 shadow-lg rounded-lg p-8 mr-5">
+      <div class="w-full lg:w-1/2 border border-gray-400 shadow-lg rounded-lg p-8 mr-0 lg:mr-5 mb-5 lg:mb-0">
         <h2 class="text-2xl font-semibold mb-4">Payment Information</h2>
         <div class="mb-2.5">
           <p class="text-gray-600">Payment Method:</p>
           <div class="inline-flex">
-            <img
-              [src]="getPaymentMethodIcon(paymentDetails.payment.paymentMethod)"
-              alt="{{ paymentDetails.payment.paymentMethod }}"
-              class="w-16 h-8 mr-2 object-contain"
-            >
+            <img [src]="getPaymentMethodIcon(paymentDetails.payment.paymentMethod)"
+              alt="{{ paymentDetails.payment.paymentMethod }}" class="w-16 h-8 mr-2 object-contain">
             <p class="font-semibold">{{ convertPaymentMethodName(paymentDetails.payment.paymentMethod) }}</p>
           </div>
         </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Status:</p>
-        <p class="font-semibold" [ngClass]="
+        <div class="mb-2.5">
+          <p class="text-gray-600">Status:</p>
+          <p class="font-semibold" [ngClass]="
           paymentDetails.status === 'Paid'
           ? ' text-green-700'
           : paymentDetails.status === 'Failed'
           ? ' text-red-700'
-          :' text-orange-500'"
-        >
-          {{ paymentDetails.status }}
-        </p>
+          :' text-orange-500'">
+            {{ paymentDetails.status }}
+          </p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Total Amount:</p>
+          <p class="font-semibold">{{ paymentDetails.totalAmount | currency:'MYR ':'symbol' }}</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Quantity:</p>
+          <p class="font-semibold">{{ paymentDetails.totalQuantity }}</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600 mb-1">Notes:</p>
+          <p class="italic bg-slate-100 text-gray-600 p-2">"{{ paymentDetails.notes }}"</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Payment Date:</p>
+          <p class="font-semibold">{{ paymentDetails.date_created | date: 'medium' }}</p>
+        </div>
       </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Total Amount:</p>
-        <p class="font-semibold">{{ paymentDetails.totalAmount | currency:'MYR ':'symbol' }}</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Quantity:</p>
-        <p class="font-semibold">{{ paymentDetails.quantity }}</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600 mb-1">Notes:</p>
-        <p class="italic bg-slate-100 text-gray-600 p-2">"{{ paymentDetails.notes }}"</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Payment Date:</p>
-        <p class="font-semibold">{{ paymentDetails.date_created | date: 'medium' }}</p>
+
+      <!-- Right Side: Merchant Details -->
+      <div class="w-full lg:w-1/2 border border-gray-400 shadow-lg rounded-lg p-8 ml-0 lg:ml-5">
+        <h2 class="text-2xl font-semibold mb-4">Merchant Information</h2>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Merchant Name:</p>
+          <p class="font-semibold">{{ paymentDetails.products[0].merchant.fullname }}</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Merchant Address:</p>
+          <p class="font-semibold">{{ paymentDetails.products[0].merchant.address}}</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Merchant Phone:</p>
+          <p class="font-semibold">{{ paymentDetails.products[0].merchant.phoneNum }}</p>
+        </div>
+        <div class="mb-2.5">
+          <p class="text-gray-600">Merchant Email:</p>
+          <p class="font-semibold">{{ paymentDetails.products[0].merchant.email }}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Right Side: Merchant Details -->
-    <div class="w-1/2 border border-gray-400 shadow-lg rounded-lg p-8 ml-5">
-      <h2 class="text-2xl font-semibold mb-4">Merchant Information</h2>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Merchant Name:</p>
-        <p class="font-semibold">{{ paymentDetails.products[0].merchant.fullname }}</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Merchant Address:</p>
-        <p class="font-semibold">{{ paymentDetails.products[0].merchant.address}}</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Merchant Phone:</p>
-        <p class="font-semibold">{{ paymentDetails.products[0].merchant.phoneNum }}</p>
-      </div>
-      <div class="mb-2.5">
-        <p class="text-gray-600">Merchant Email:</p>
-        <p class="font-semibold">{{ paymentDetails.products[0].merchant.email }}</p>
+    <!-- Third Row: Product Details -->
+    <div class="w-full lg:w-full border border-gray-400 shadow-lg rounded-lg my-5 mx-auto">
+      <h2 class="text-2xl font-semibold mt-10 ml-10">Product Details</h2>
+      <div class="flex flex-col md:flex-row p-10">
+        <!-- Product Image -->
+        <div class="md:w-1/3 md:pr-10 mb-4 md:mb-0">
+          <img src="{{ getProductImageURL(paymentDetails.products[0].image) }}"
+            alt="{{ paymentDetails.products[0].title}}" class="w-[400px] h-[400px] object-cover rounded-lg shadow-md">
+        </div>
+        <!-- Product Information -->
+        <div class="w-2/3">
+          <!-- Title -->
+          <h1 class="text-2xl font-semibold">{{ paymentDetails.products[0].title }}</h1>
+
+          <!-- Price -->
+          <div class="flex my-3 items-center justify-start">
+            <i class="fa fa-money text-primary "></i>
+            <p class="ml-2 mr-1 font-bold">{{ paymentDetails.products[0].price | currency:'MYR ':'symbol' }}</p>
+          </div>
+
+          <!-- Location -->
+          <div class="flex my-3 items-center justify-start">
+            <i class="fa fa-map-marker text-primary "></i>
+            <p class="ml-2 text-gray-500 mr-1">{{ paymentDetails.products[0].location }}</p>
+          </div>
+
+          <!-- category -->
+          <div class="flex my-2 gap-x-2">
+            <p class="text-gray-500">Category: </p>
+            <p>{{ paymentDetails.products[0].category }}</p>
+          </div>
+
+          <!-- Trip Days -->
+          <div class="flex my-2 gap-x-2">
+            <p class="text-gray-500">Trip days: </p>
+            <p>{{ paymentDetails.products[0].tripDays }} Days</p>
+          </div>
+
+          <!-- Description -->
+          <div class="mt-2">
+            <p class="text-gray-500">Description: </p>
+            <p>{{ paymentDetails.products[0].description }}</p>
+          </div>
+
+          <!-- Destinations -->
+          <p class="mt-4 text-primary font-semibold">Destinations: </p>
+          <ul>
+            <li *ngFor="let destination of paymentDetails.products[0].destinations | keyvalue" class="text-gray-600">
+              <i class="fa fa-map-marker text-primary ml-5 mr-2 my-2"></i> {{ destination.value }}
+            </li>
+          </ul>
+
+          <!-- What's Included -->
+          <p class="mt-4 text-primary font-semibold">What's included? </p>
+          <ul>
+            <li *ngFor="let include of paymentDetails.products[0].includes | keyvalue" class="text-gray-600">
+              <i class="fa fa-check text-primary ml-5 mr-2 my-2"></i>
+              {{ include.value }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Third Row: Product Details -->
-  <div class="w-full border border-gray-400 shadow-lg rounded-lg my-5 flex-col mx-auto">
-    <h2 class="text-2xl font-semibold mt-10 ml-10">Product Details</h2>
-    <div class="flex p-10">
-      <!-- Product Image -->
-      <div class="w-1/3 pr-6">
-        <img src="{{ getProductImageURL(paymentDetails.products[0].image) }}" alt="{{ paymentDetails.products[0].title}}"
-          class="w-full rounded-lg shadow-md">
-      </div>
-      <!-- Product Information -->
-      <div class="w-2/3">
-        <h2 class="text-xl font-semibold mb-2.5">{{ paymentDetails.products[0].title }}</h2>
-
-        <p class="font-semibold mb-2.5">{{ paymentDetails.products[0].price | currency:'MYR ':'symbol' }}</p>
-
-        <p class="text-gray-600 mb-2.5">{{ paymentDetails.products[0].description }}</p>
-
-        <p class="text-gray-600 mb-2.5 mr-2">
-          <i class="fa fa-map-marker text-primary"></i> {{ paymentDetails.products[0].location }}
-        </p>
-
-        <p class="text-gray-600 font-semibold">Destinations:</p>
-        <ul class="mt-2">
-          <li *ngFor="let destination of paymentDetails.products[0].destinations | keyvalue" class="text-gray-600">
-            <i class="fa fa-map-marker text-primary ml-5 mr-2 my-2"></i> {{ destination.value }}
-          </li>
-        </ul>
-
-        <p class="text-gray-600 font-semibold mt-3">Includes:</p>
-        <ul class="mt-2">
-          <li *ngFor="let include of paymentDetails.products[0].includes | keyvalue" class="text-gray-600">
-            <i class="fa fa-check text-primary ml-5 mr-2 my-2"></i>
-            {{ include.value }}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>

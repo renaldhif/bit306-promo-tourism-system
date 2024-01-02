@@ -40,7 +40,9 @@ export class CheckoutComponent {
     if (this.productId !== null) {
       //* PayPal init config
       this.orderItem = this.productService.getProductById(this.productId);
-      this.initPaypalConfig();
+
+      // this.initPaypalConfig();
+      console.log('================================');
       console.log('get usd price', this.totalPriceUSD);
     }
   }
@@ -230,6 +232,7 @@ export class CheckoutComponent {
         console.log('debug onSubmit - getUSDPrice - pricePerItemUSD: ', this.pricePerItemUSD);
         this.showPayPalButton = true;
         this.isLoading = false;
+        this.initPaypalConfig();
       });
 
       // Call your order service to create the order
@@ -261,6 +264,11 @@ export class CheckoutComponent {
 
   //* PAYPAL
   public initPaypalConfig(): void {
+    console.log(`this quantity ${this.quantity}`);
+
+    const itemPrice = this.pricePerItemUSD?.toFixed(2);
+    const totalPrice = (this.pricePerItemUSD * this.quantity)?.toFixed(2);
+
     this.payPalConfig = {
       currency: 'USD',
       clientId: environment.paypalClientId,
@@ -271,12 +279,11 @@ export class CheckoutComponent {
             {
               amount: {
                 currency_code: 'USD',
-                value: this.totalPriceUSD?.toString(),
+                value: totalPrice,
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    // value: this.totalPriceUSD?.toString(),
-                    value: (this.pricePerItemUSD * this.quantity)?.toFixed(2),
+                    value: totalPrice,
                   }
                 }
               },
@@ -287,8 +294,7 @@ export class CheckoutComponent {
                   category: 'DIGITAL_GOODS',
                   unit_amount: {
                     currency_code: 'USD',
-                    // value: this.pricePerItemUSD?.toString(),
-                    value: this.pricePerItemUSD?.toFixed(2),
+                    value: itemPrice,
                   },
                 },
               ],
@@ -305,6 +311,7 @@ export class CheckoutComponent {
         shape: 'pill',
         // size: 'small',
       },
+
       onApprove: (data: any, actions: any) => {
         console.log('onApprove - transaction was approved, but not authorized', data, actions);
         actions.order.get().then((details: any) => {
@@ -353,7 +360,7 @@ export class CheckoutComponent {
             cancelButtonText: 'Go to Payment Page'
           }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/']);
             } else {
               this.router.navigate(['customer/payment-history']);
             }
