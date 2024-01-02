@@ -17,8 +17,8 @@
     <div class="w-full bg-transparent p-4 sm:flex-row sm:flex-nowrap sm:justify-start lg:flex">
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
-          statSubtitle="Products"
-          statTitle="5"
+          statSubtitle="Total Products"
+          statTitle="{{ productLength }}"
           statIconName="fa fa-map"
           statIconColor="bg-primary"
         >
@@ -26,8 +26,8 @@
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
-          statSubtitle="Revenues"
-          statTitle="MYR 5000"
+          statSubtitle="Total Revenues"
+          statTitle="MYR {{ revenue }}"
           statIconName="fa fa-money"
           statIconColor="bg-green-400"
         >
@@ -35,18 +35,18 @@
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
-          statSubtitle="Orders"
-          statTitle="4"
-          statIconName="fa fa-shopping-cart"
+          statSubtitle="Revenue This Month"
+          statTitle="MYR {{ revenueCurrentMonth }}"
+          statIconName="fa fa-percent"
           statIconColor="bg-orange-400"
         >
         </app-card-stats>
       </div>
       <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
         <app-card-stats
-          statSubtitle="Card 4"
-          statTitle="1"
-          statIconName="fa fa-user-times"
+          statSubtitle="Total Orders"
+          statTitle="{{ orderLength }}"
+          statIconName="fa fa-shopping-cart"
           statIconColor="bg-red-400"
         >
         </app-card-stats>

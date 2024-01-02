@@ -8,8 +8,10 @@ router.patch('/:id', orderController.updateOrder);
 router.get('/', orderController.getAllOrders);
 router.get('/:id', orderController.getOrderById);
 router.get('/user/:id', orderController.getOrderByUserId);
+router.get('/merchant/:id', orderController.getOrdersByMerchantId);
 router.put('/:id/is-reviewed', orderController.updateOrderIsReviewed);
 router.get('/revenue/:merchantId', orderController.getMerchantRevenue);
+router.get('/revenue-current-month/:merchantId', orderController.getMerchantRevenueThisMonth);
 router.get('/product-analytics/:merchantId', orderController.getProductAnalytics);
 router.get('/customer-purchasing-power/:merchantId', orderController.getCustomerPurchasingPower);
 
