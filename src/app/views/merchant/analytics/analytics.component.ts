@@ -85,8 +85,8 @@ export class AnalyticsComponent {
     const customers = await this.orderService.getCustomerPurchasingPower(this.merchantId).toPromise();
     if (customers.length > 0) {
       customers.forEach((customer: any) => {
-        this.customerLabels.push(customer.fullname);
-        this.customerData.push(customer.totalSpent);
+        this.customerLabels.push(customer.name);
+        this.customerData.push(customer.totalAmount);
       });
     } else if (customers.length === 0 || null) {
       // this.isCustomerDataEmpty = true;
@@ -140,16 +140,22 @@ export class AnalyticsComponent {
     });
   }
 
-  createChartCustomerPurchasingPower(chartId: string, chartLabel: string, data: any) {
-    const barChart = document.getElementById('customerPurchasingPower') as HTMLCanvasElement;
+  createChartCustomerPurchasingPower(chartId: string, chartLabel: string, data: any[]) {
+    const barChart = document.getElementById(chartId) as HTMLCanvasElement;
     if (!barChart) return;
+
+    // const labels = data.map(customer => customer.name);
+    // const amounts = data.map(customer => customer.totalAmount);
+
     new Chart(barChart, {
       type: 'bar',
       data: {
-        labels: [data.name],
+        // labels: labels,
+        labels: this.customerLabels,
         datasets: [{
           label: chartLabel,
-          data: [data.totalAmount],
+          // data: amounts,
+          data,
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)'
           ],

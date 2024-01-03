@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Rejection Notification</title>
+<style>
+    body { font-family: Arial, sans-serif; }
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background: #f9f9f9;
+    }
+    .header {
+        background: #ff6b6b;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+    }
+    .content {
+        margin: 20px 0;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Account Rejection</h1>
+    </div>
+    <div class="content">
+        <p>Dear {{fullname}},</p>
+        <p>We regret to inform you that your merchant account application has been reviewed and <strong>not approved</strong>.</p>
+        <p>We appreciate your understanding.</p>
+        <p>Best regards,</p>
+        <p>Promo Tourism Officer</p>
+    </div>
+</div>
+</body>
+</html>

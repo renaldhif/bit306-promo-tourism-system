@@ -15,7 +15,6 @@ export class MerchantListComponent {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
-  // merchantsDummy: any[] = [];
   merchantList: any[] = [];
   constructor(
     private router:Router,
@@ -34,11 +33,10 @@ export class MerchantListComponent {
       this.dtTrigger.next(null as any);
     });
   }
-  // Swal
+
   onShowMerchantDetail = (merchantID: string) => {
     this.router.navigate(['/admin/view-merchant-detail', merchantID]);
   }
-
 
   onAcceptMerchant = (merchantID: string) => {
     Swal.fire({
@@ -52,7 +50,6 @@ export class MerchantListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('merchantID to be accepted: ', merchantID);
         this.adminService.verifyMerchant(merchantID).subscribe(() => {
           Swal.fire(
             'Accepted!',
@@ -78,11 +75,10 @@ export class MerchantListComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('merchantID to be rejected: ', merchantID);
         this.adminService.rejectMerchant(merchantID).subscribe(() => {
           Swal.fire(
-            'Accepted!',
-            'Merchant has been accepted.',
+            'Rejected!',
+            'Merchant has been rejected.',
             'success'
           ).then(() => {
             window.location.reload();

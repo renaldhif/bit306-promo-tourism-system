@@ -188,7 +188,7 @@ export class RegisterComponent {
             this.merchantService.registerMerchant(formData).subscribe((response: any) => {
               Swal.fire({
                 title: 'Merchant Account Successfully Created!',
-                text: 'Please check your email to see your password to be able to login to our system. Please remember that you have to change your password upon your first login!',
+                text: 'Please wait for the admin to approve your account to send your password.',
                 icon: 'success',
                 confirmButtonText: 'OK',
               }).then((result) => {

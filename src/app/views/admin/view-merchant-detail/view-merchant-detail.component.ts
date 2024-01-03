@@ -32,26 +32,21 @@ export class ViewMerchantDetailComponent {
   }
 
   ngOnInit(): void {
-    console.log('merchantID passed in: ', this.merchantId);
+
     if (this.merchantId) {
       this.adminService.getMerchantDetail(this.merchantId).subscribe(res => {
         this.merchant = res;
-        console.log('merchant detail: ', this.merchant);
-
         // Check if documentPath is valid before constructing URL
         const documentPath = this.merchant.document;
         if (documentPath) {
           const baseUrl = environment.apiUrl;
           this.fullDocumentUrl = baseUrl + documentPath;
-          console.log('full document url: ', this.fullDocumentUrl);
         }
       });
     }
   }
 
   viewMerchantFile = () => {
-    console.log('Opening file:', this.fullDocumentUrl);
-
     if (!this.fullDocumentUrl || this.fullDocumentUrl.includes('null')) {
       Swal.fire({
         icon: 'error',
@@ -59,13 +54,12 @@ export class ViewMerchantDetailComponent {
         text: 'It seems the document is not available, or there might be an issue with the file'
       });
     } else {
+      // Open document in new tab
       window.open(this.fullDocumentUrl, '_blank');
     }
   }
 
   viewMerchantAnalytics = () => {
-    console.log('Opening merchant analytics page');
     this.router.navigate(['/admin/analytics', this.merchantId]);
   }
-
 }

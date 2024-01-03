@@ -20,7 +20,6 @@ router.post('/register', async (req, res) => {
 
   formidable.parse(req, async (err, fields, files) => {
     if (err) {
-      console.log('Error parsing form data: ', err);
       return res.status(400).json({ message: 'Error parsing form data' });
     }
 
@@ -59,11 +58,8 @@ router.post('/register', async (req, res) => {
       // Handle file upload
       if (files.document && files.document.length > 0) {
         const file = files.document[0];
-        console.log('file object: ', file);
 
         if (file.mimetype !== 'application/pdf') {
-          console.log('file is not pdf from backend!');
-          console.log('file mimetype: ', file.mimetype);
           return res.status(400).json({ message: 'Only PDF files are allowed' });
         }
 
@@ -78,33 +74,7 @@ router.post('/register', async (req, res) => {
         fs.renameSync(oldPath, newPath);
         // Generate a relative URL for the file
         documentPath = `/uploads/documents/${newFilename}`;
-
-        // Optional: Log to check if documentData is not null or empty
-        console.log('filename: ', newFilename);
-        console.log('documentPath: ', documentPath);
-        // console.log('documentData: ', documentData.length); // Check if data is read
       }
-
-      // Create a new user (merchant)
-      //! Doesnt work with formidable
-      // const user = new User({
-      //   fullname: req.body.fullname,
-      //   email: req.body.email,
-      //   password: hashedPassword,
-      //   userRole: req.body.userRole,
-      //   phoneNum: req.body.phoneNum,
-      //   status: status,
-      //   address: req.body.address || null,
-      //   merchantDescription: req.body.merchantDescription || null,
-      //   // document: req.body.document || null,
-      //   document: documentData,
-      //   // filename: req.body.filename || null,
-      //   filename: filename,
-      //   description: req.body.description || null,
-      //   isMerchantChangedPassword: req.body.isMerchantChangedPassword || false,
-      //   resetPasswordToken: req.body.resetPasswordToken || null,
-      //   createdAt: req.body.createdAt || new Date(),
-      // });
 
       // Create a new user (merchant)
       const user = new User({
@@ -128,33 +98,7 @@ router.post('/register', async (req, res) => {
 
       // Save the user in the database
       const newMerchant = await user.save();
-
-      //! DEBUG FULL NAME
-      console.log('full name: ', fullname);
-      // Send email with the generated password
-      const emailTemplatePath = path.join(__dirname, '../templates/merchantPasswordEmailTemplate.html');
-      const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
-      const customizedTemplate = emailTemplate
-        .replace('{{fullname}}', fullname)
-        .replace('{{password}}', generatedPassword);
-
-      const mailOptions = {
-        from: process.env.MAILTRAP_SENDER,
-        to: user.email,
-        subject: 'Your Merchant Account Password',
-        html: customizedTemplate
-      };
-
-      //* Send mail
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent to: ', user.email);
-      } catch (error) {
-        console.error('Error sending email:', error);
-      }
-
       res.status(201).json({ message: 'User created successfully', user: newMerchant });
-
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -173,7 +117,7 @@ router.get('/total-products/:merchantId', async (req, res) => {
     const totalProducts = await User.aggregate([
       {
         $match: {
-          userRole: 'merchant', // Filter for userRole 'merchant'
+          userRole: 'merchant',
           _id: requestedMerchantId
         }
       },
@@ -183,7 +127,6 @@ router.get('/total-products/:merchantId', async (req, res) => {
         }
       }
     ]);
-
     res.status(200).json(totalProducts);
   } catch (error) {
     res.status(500).json({ message: 'Error getting total products' });
@@ -198,7 +141,7 @@ router.get('/total-revenue/:merchantId', async (req, res) => {
     const totalRevenue = await User.aggregate([
       {
         $match: {
-          userRole: 'merchant', // Filter for userRole 'merchant'
+          userRole: 'merchant',
           _id: requestedMerchantId
         }
       },
@@ -208,7 +151,6 @@ router.get('/total-revenue/:merchantId', async (req, res) => {
         }
       }
     ]);
-
     res.status(200).json(totalRevenue);
   } catch (error) {
     res.status(500).json({ message: 'Error getting total revenue' });
@@ -223,7 +165,7 @@ router.get('/total-product-sold/:merchantId', async (req, res) => {
     const totalProductSold = await User.aggregate([
       {
         $match: {
-          userRole: 'merchant', // Filter for userRole 'merchant'
+          userRole: 'merchant',
           _id: requestedMerchantId
         }
       },
@@ -233,7 +175,6 @@ router.get('/total-product-sold/:merchantId', async (req, res) => {
         }
       }
     ]);
-
     res.status(200).json(totalProductSold);
   } catch (error) {
     res.status(500).json({ message: 'Error getting total product sold' });
@@ -273,7 +214,6 @@ router.get('/analytics/total-product-sold/:merchantId/:year/', async (req, res) 
         }
       }
     ]);
-
     res.status(200).json(totalProductSold);
   } catch (error) {
     res.status(500).json({ message: 'Error getting total product sold' });
