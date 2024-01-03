@@ -62,22 +62,18 @@ export class EditProductComponent implements OnInit {
       description: product.description,
       price: product.price,
       category: product.category,
-      // Do not set 'image' here as it is a file input
     });
 
     // Populate destinations
     const destinationArray = this.productForm.get('destination') as FormArray;
-    // destinationArray.clear(); // Clear existing items
     if (Array.isArray(product.destinations)) {
       product.destinations.forEach((dest: string) => {
         destinationArray.push(this.fb.control(dest));
-        console.log('dest: ' + dest);
       });
     }
 
     // Populate whatsIncluded
     const includedArray = this.productForm.get('whatsIncluded') as FormArray;
-    // includedArray.clear(); // Clear existing items
     if (Array.isArray(product.includes)) {
       product.includes.forEach((item: string) => {
         includedArray.push(this.fb.control(item));
@@ -90,9 +86,7 @@ export class EditProductComponent implements OnInit {
       const fileInput = event.target as HTMLInputElement;
 
       if (fileInput.files && fileInput.files.length) {
-        console.log('Entered if statement');
         this.selectedFile = fileInput.files[0];
-        // console.log('selectedFile: ' + JSON.stringify(this.selectedFile, null, 2));
 
         if (this.selectedFile.type !== 'image/jpeg' && this.selectedFile.type !== 'image/png') {
           Swal.fire({
@@ -103,8 +97,6 @@ export class EditProductComponent implements OnInit {
           });
           // return;
         }
-        console.log('filename: ' + JSON.stringify(this.selectedFile.name, null, 2));
-
       }
     }
     catch (error) {
@@ -118,7 +110,6 @@ export class EditProductComponent implements OnInit {
     }
   }
 
-  // Helper methods to add and remove items from FormArray
   addDestinationItem() {
     this.destination.push(this.fb.control(''));
   }
@@ -149,7 +140,6 @@ export class EditProductComponent implements OnInit {
       if (key === 'destination' || key === 'whatsIncluded') {
         const arrayValues = this.productForm.value[key];
         if (Array.isArray(arrayValues)) {
-          console.log(arrayValues.length)
           for (let i = 0; i < arrayValues.length; i++) {
             productData.append(key, arrayValues[i]);
           }
@@ -164,8 +154,6 @@ export class EditProductComponent implements OnInit {
     if (this.selectedFile) {
       productData.append('image', this.selectedFile, this.selectedFile.name);
     }
-
-    console.log('product data image: ' + productData.get('image'));
 
     this.productService.updateProduct(this.productId, productData).subscribe(
       (response) => {
@@ -187,8 +175,4 @@ export class EditProductComponent implements OnInit {
       }
     );
   }
-
-  
-  
 }
-
