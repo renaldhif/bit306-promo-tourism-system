@@ -1,8 +1,17 @@
 import express from 'express';
 import User from '../models/UsersModel.js';
+import bcrypt from 'bcrypt';
+import fs from 'fs';
+import transporter from '../utils/mailer.js';
+import randomstring from 'randomstring';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Formidable } from 'formidable';
 
 
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // GET all merchants
 router.get('/merchant-list', async (req, res) => {
@@ -37,10 +46,38 @@ router.get('/merchant/:id', async (req, res) => {
 // Verify Merchant status from 'pending' to 'verified'
 router.put('/merchant/verify/:id', async (req, res) => {
   try {
-    const merchant = await User.findByIdAndUpdate(req.params.id, { status: 'verified' }, { new: true });
+    // Generate random password and hash it
+    const generatedPassword = randomstring.generate({ length: 12, charset: 'alphabetic' });
+    const newHashedPassword = await bcrypt.hash(generatedPassword, 10);
+    console.log('newHashedPassword', newHashedPassword);
+
+    const merchant = await User.findByIdAndUpdate(req.params.id, { status: 'verified', password: newHashedPassword }, { new: true });
+
+    // Send the password to the merchant's email
+    const emailTemplatePath = path.join(__dirname, '../templates/merchantPasswordEmailTemplate.html');
+    const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
+    const customizedTemplate = emailTemplate
+      .replace('{{fullname}}', merchant.fullname)
+      .replace('{{password}}', generatedPassword);
+
+    const mailOptions = {
+      from: process.env.MAILTRAP_SENDER,
+      to: merchant.email,
+      subject: 'Your Merchant Account Password',
+      html: customizedTemplate
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     res.status(200).json(merchant);
   } catch (error) {
-    res.status(500).json({ message: 'Error verifying merchant' });
+    res.status(500).json({ message: 'Error verifying merchant', error: error.message });
   }
 });
 
@@ -48,6 +85,25 @@ router.put('/merchant/verify/:id', async (req, res) => {
 router.put('/merchant/reject/:id', async (req, res) => {
   try {
     const merchant = await User.findByIdAndUpdate(req.params.id, { status: 'rejected' }, { new: true });
+    // Send the password to the merchant's email
+    const rejectTemplatePath = path.join(__dirname, '../templates/merchantRejectedEmailtemplate.html');
+    const emailTemplate = fs.readFileSync(rejectTemplatePath, 'utf8');
+    const customizedTemplate = emailTemplate.replace('{{fullname}}', merchant.fullname)
+
+    const mailOptions = {
+      from: process.env.MAILTRAP_SENDER,
+      to: merchant.email,
+      subject: 'Account Rejection Notification',
+      html: customizedTemplate
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
     res.status(200).json(merchant);
   } catch (error) {
     res.status(500).json({ message: 'Error rejecting merchant' });
@@ -71,120 +127,6 @@ router.get('/merchant/count/all', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error getting merchant counts' });
-  }
-});
-
-// // GET all verified merchant counts
-// router.get('/merchant/count/verified', async (req, res) => {
-//   try {
-//     const merchants = await User.find({ userRole: 'merchant', status: 'verified' });
-//     res.status(200).json(merchants);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error getting verified merchants' });
-//   }
-// });
-
-// // Get all pending merchant counts
-// router.get('/merchant/count/pending', async (req, res) => {
-//   try {
-//     const merchants = await User.find({ userRole: 'merchant', status: 'pending' });
-//     res.status(200).json(merchants);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error getting pending merchants' });
-//   }
-// });
-
-// // Get Rejected merchants count
-// router.get('/merchant/count/rejected', async (req, res) => {
-//   try {
-//     const merchants = await User.find({ userRole: 'merchant', status: 'rejected' });
-//     res.status(200).json(merchants);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error getting rejected merchants' });
-//   }
-// });
-
-// merchant data by month
-// used for chart analytics
-router.get('/analytics/merchants-by-month/:year', async (req, res) => {
-  // Default to current year
-  // const requestedYear = parseInt(req.query.year) || new Date().getFullYear();
-  const requestedYear = parseInt(req.params.year);
-  console.log('merchant adminRoutes requestedYear', requestedYear);
-
-  try {
-    const merchantData = await User.aggregate([
-      {
-        $match: {
-          userRole: 'merchant', // Filter for userRole 'merchant'
-          createdAt: {
-            $gte: new Date(`${requestedYear}-01-01`),
-            $lt: new Date(`${requestedYear + 1}-01-01`)
-          } // Filter for the requested year
-        }
-      },
-      {
-        $project: {
-          month: { $month: "$createdAt" },
-          year: { $year: "$createdAt" }
-        }
-      },
-      {
-        $group: {
-          _id: { month: "$month", year: "$year" },
-          count: { $sum: 1 }
-        }
-      },
-      {
-        $sort: { "_id.year": 1, "_id.month": 1 }
-      }
-    ]);
-
-    res.json(merchantData);
-    console.log("🚀 ~ file: adminRoutes.js:142 ~ router.get ~ merchantData:", merchantData)
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// customer data by month
-router.get('/analytics/customers-by-month/:year', async (req, res) => {
-  // Default to current year
-  // const requestedYear = parseInt(req.query.year) || new Date().getFullYear();
-  const requestedYear = parseInt(req.params.year);
-
-  try {
-    const customerData = await User.aggregate([
-      {
-        $match: {
-          userRole: 'customer', // Filter for userRole 'merchant'
-          createdAt: {
-            $gte: new Date(`${requestedYear}-01-01`),
-            $lt: new Date(`${requestedYear + 1}-01-01`)
-          } // Filter for the requested year
-        }
-      },
-      {
-        $project: {
-          month: { $month: "$createdAt" },
-          year: { $year: "$createdAt" }
-        }
-      },
-      {
-        $group: {
-          _id: { month: "$month", year: "$year" },
-          count: { $sum: 1 }
-        }
-      },
-      {
-        $sort: { "_id.year": 1, "_id.month": 1 }
-      }
-    ]);
-
-    res.json(customerData);
-    console.log("🚀 ~ file: adminRoutes.js:181 ~ router.get ~ customerData:", customerData)
-  } catch (err) {
-    res.status(500).json({ message: err.message });
   }
 });
 
