@@ -15,6 +15,7 @@ export class ChangePasswordComponent {
   changePasswordForm: FormGroup;
   passwordFieldType: string = 'password';
   repasswordFieldType: string = 'password';
+  buttonClicked = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,11 +37,7 @@ export class ChangePasswordComponent {
     this.repasswordFieldType = this.repasswordFieldType === 'password' ? 'text' : 'password';
   }
 
-  buttonClicked = false;
-
   onSubmit() {
-    console.log('On Submit clicked');
-
     if (this.changePasswordForm.invalid) {
       Swal.fire({
         icon: 'error',
@@ -49,8 +46,8 @@ export class ChangePasswordComponent {
       });
     }
 
+    // Handle password mismatch
     if (this.changePasswordForm.value.password !== this.changePasswordForm.value.repassword) {
-      // Handle password mismatch here
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -59,6 +56,7 @@ export class ChangePasswordComponent {
       return;
     }
 
+    // isValid
     if (this.changePasswordForm.valid) {
       const email = this.changePasswordForm.value.email;
       const newPassword = this.changePasswordForm.value.password;
@@ -75,7 +73,6 @@ export class ChangePasswordComponent {
           });
         },
         error: (error) => {
-          // Handle the error response here
           Swal.fire({
             icon: 'error',
             title: 'Failed to Change Password',

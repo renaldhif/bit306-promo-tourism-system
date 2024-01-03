@@ -60,9 +60,7 @@ export class RegisterComponent {
   ngOnInit(): void {
     // Retrieve the user's role from the route parameter
     this.route.queryParams.subscribe((params) => {
-      console.log('Route params', params['role']);
       this.userRole = params['role']; // 'customer' or 'merchant'
-      console.log('User role', this.userRole);
     });
   }
 
@@ -143,12 +141,8 @@ export class RegisterComponent {
           icon: 'error',
           confirmButtonText: 'OK',
         });
-        // Reset the file input
-        // input.value = '';
-        // this.selectedFile = null;
       }
       else {
-        console.log('file is pdf. with original file name is: ' + this.selectedFile.name);
         this.merchantRegistrationForm.patchValue({ filename: this.selectedFile.name });
       }
     }
@@ -159,17 +153,12 @@ export class RegisterComponent {
     const repassword = this.selectedForm.get('repassword')?.value;
     if (password !== repassword) {
       this.selectedForm.get('repassword')?.setErrors({ mismatch: true });
-      console.log('password mismatch');
       return false;
     }
-    console.log('password match, return false');
     return true;
   }
 
   registerMerchant() {
-    console.log('Register button pressed');
-    console.log('Is the form valid?' + this.selectedForm.valid);
-
     if (this.selectedForm.valid) {
       const inputValues = { ...this.selectedForm.value };
 
@@ -186,10 +175,7 @@ export class RegisterComponent {
         });
 
         const email = this.selectedForm.value.email;
-        console.log('email is: ' + email);
         this.authService.isEmailTaken(email).subscribe((response) => {
-          console.log('valiadtion email taken from merchant');
-          console.log('Response this.authService.isEmailTaken', response);
           if (response.isEmailTaken) {
             Swal.fire({
               title: 'Email Exists',
@@ -199,10 +185,7 @@ export class RegisterComponent {
             });
           }
           else {
-            // Call the service with FormData
             this.merchantService.registerMerchant(formData).subscribe((response: any) => {
-              console.log('Response this.merchantService.registerMerchant', response);
-              // Swal message for merchant
               Swal.fire({
                 title: 'Merchant Account Successfully Created!',
                 text: 'Please check your email to see your password to be able to login to our system. Please remember that you have to change your password upon your first login!',
@@ -219,8 +202,6 @@ export class RegisterComponent {
       }
     }
     else {
-      console.log('Register Merchant fields are not valid');
-
       // Handle merchant form validation errors
       if (this.selectedForm.get('fullname')?.hasError('required')
         || this.selectedForm.get('email')?.hasError('required')
@@ -259,21 +240,12 @@ export class RegisterComponent {
   }
 
   registerCustomer() {
-    console.log('RegisterCustomer BEGINS');
-    console.log('Is the form valid?' + this.selectedForm.valid);
-    console.log('customerRegistrationForm is: ' + this.customerRegistrationForm);
-    console.log('customerRegistrationForm isValid?: ' + this.customerRegistrationForm.valid);
-
     if (this.userRole === 'customer' && this.customerRegistrationForm.valid && this.isPasswordMatch()) {
       const customerData = { ...this.customerRegistrationForm.value };
-      console.log('customerData is: ' + customerData);
-
       // Check if the email already exists
       const email = this.selectedForm.value.email;
-      console.log('email is: ' + email);
+
       this.authService.isEmailTaken(email).subscribe((response) => {
-        console.log('valiadtion email taken from customer');
-        console.log('Response this.authService.isEmailTaken', response);
         if (response.isEmailTaken) {
           Swal.fire({
             title: 'Email Exists',
@@ -283,13 +255,7 @@ export class RegisterComponent {
           });
         }
         else {
-          console.log('Registering for customer...');
-
-          console.log('password: ' + customerData.password);
-          console.log('repassword: ' + customerData.repassword);
-
           this.authService.register(customerData).subscribe((response: any) => {
-            console.log('Response this.authService.register', response);
             Swal.fire({
               title: 'Success!',
               text: 'Your account has been created successfully.\nWelcome to Promo Tourism!',
@@ -348,7 +314,6 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    console.log('Register button pressed');
     this.userRole === 'merchant' ? this.registerMerchant() : this.registerCustomer();
   }
 }

@@ -37,9 +37,6 @@ export class LoginComponent {
   buttonClicked = false;
 
   onSubmit() {
-    console.log('Login button pressed');
-    console.log('Is valid? ' + this.loginForm.valid);
-
     this.buttonClicked = true;
 
     if (this.loginForm.valid) {
@@ -50,13 +47,10 @@ export class LoginComponent {
         next: (data) => {
           // set token
           this.authService.setToken(data.token);
-          console.log('setToken from login.component.ts: ' + data.token);
           // set role
           this.authService.setUserRole(data.role);
-          console.log('setRole from login.component.ts: ' + data.role);
           // set user id
           this.authService.setUserId(data.userId);
-          console.log('setUserId from login.component.ts: ' + data.userId);
 
           // simulate delay login through swal
           Swal.fire({
@@ -80,7 +74,6 @@ export class LoginComponent {
           });
         },
         error: (error) => {
-          // console.error('Login error:', error);
           const errorMessage = error.error && error.error.message ? error.error.message : 'Login failed. Please try again.';
           Swal.fire({
             title: 'Login Failed',
@@ -108,7 +101,6 @@ export class LoginComponent {
           confirmButtonText: 'OK'
         });
       } else {
-        // this.error = 'Login failed. Invalid email or password.';
         Swal.fire({
           title: 'Login Failed',
           text: 'Invalid email or password',
@@ -118,6 +110,4 @@ export class LoginComponent {
       }
     }
   }
-
-
 }

@@ -12,8 +12,6 @@ import Swal from 'sweetalert2';
 })
 export class AddProductComponent {
   productForm: FormGroup;
-  // selectedFileName: string = 'No file selected';
-
   selectedFile: File | null = null;
 
   constructor(
@@ -35,7 +33,6 @@ export class AddProductComponent {
     });
   }
 
-  // Helper methods to add and remove items from FormArray
   addDestinationItem() {
     this.destination.push(this.fb.control(''));
   }
@@ -65,9 +62,7 @@ export class AddProductComponent {
       const fileInput = event.target as HTMLInputElement;
 
       if (fileInput.files && fileInput.files.length) {
-        console.log('Entered if statement');
         this.selectedFile = fileInput.files[0];
-        // console.log('selectedFile: ' + JSON.stringify(this.selectedFile, null, 2));
 
         if (this.selectedFile.type !== 'image/jpeg' && this.selectedFile.type !== 'image/png') {
           Swal.fire({
@@ -79,12 +74,6 @@ export class AddProductComponent {
           // return;
         }
         console.log('filename: ' + JSON.stringify(this.selectedFile.name, null, 2));
-        // else {
-        //   console.log('Entered else statement, it is an image');
-        //   console.log('selectedFile name: ' + JSON.stringify(this.selectedFile.name, null, 2));
-
-        //   this.productForm.patchValue({image: this.selectedFile.name,});
-        // }
       }
     }
     catch (error) {
@@ -116,18 +105,12 @@ export class AddProductComponent {
       productData.append('image', this.selectedFile, this.selectedFile.name);
     }
 
-    console.log('productData: ' + JSON.stringify(productData, null, 2));
-
     const userId = this.authService.getUserId() as string;
-    console.log('userId di add product: ' + userId);
 
     // validate form
     if(this.productForm.valid && this.destination != null && this.whatsIncluded != null){
       this.productService.createProduct(productData, userId).subscribe(
         (response) => {
-          console.log('Response: ' + JSON.stringify(response, null, 2));
-          console.log('ProductData: ' + JSON.stringify(productData, null, 2));
-
           Swal.fire({
             title: 'Success!',
             text: 'Your product has been added.',
@@ -140,7 +123,6 @@ export class AddProductComponent {
           });
         },
         (error) => {
-          console.error('Error adding product:', error);
           Swal.fire({
             title: 'Error!',
             text: 'Something went wrong while adding the product.',
