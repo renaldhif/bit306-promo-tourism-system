@@ -178,7 +178,7 @@ export class PaymentHistoryDetailComponent {
   convertPaymentMethodName(paymentMethod: string): string {
     if (paymentMethod === 'paypal') {
       return 'PayPal';
-    } else if (paymentMethod === 'creditcard') {
+    } else if (paymentMethod === 'card') {
       return 'Credit Card';
     }
     return '';
@@ -188,7 +188,7 @@ export class PaymentHistoryDetailComponent {
     console.log('PAYMENT METHODNYA APA', paymentMethod);
     if (paymentMethod === 'PayPal') {
       return '../../../../assets/icons/ic_paypal.svg';
-    } else if (paymentMethod === 'creditcard') {
+    } else if (paymentMethod === 'card') {
       return '../../../../assets/icons/ic_creditcard.png';
     }
     return '';
