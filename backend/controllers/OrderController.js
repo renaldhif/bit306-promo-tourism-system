@@ -102,15 +102,54 @@ const getOrderById = async (req, res) => {
 };
 
 const getOrderByUserId = async (req, res) => {
-    try {
-        const userId = req.params.id;
-        const orders = await Order.find({ user: userId });
-        res.json(orders);
+  try {
+    const userId = req.params.id;
+    const orders = await Order.find({ user: userId });
+    res.json(orders);
+  }
+  catch (error) {
+    console.error('Error fetching order by user ID:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+const getOrdersByMerchantId = async (req, res) => {
+  try {
+    const merchantId = req.params.id;
+
+    const orders = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productData"
+        }
+      },
+      { $unwind: "$productData" },
+      {
+        $match: {
+          "productData.merchant": new ObjectId(merchantId)
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+        }
+      }
+    ]);
+
+    orders.forEach(order => {
+      console.log('Order product:', order.productData.title);
     }
-    catch (error) {
-        console.error('Error fetching order by user ID:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    );
+
+    res.json(orders);
+  } catch (error) {
+    console.error('Error fetching orders by merchant ID:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 const getMerchantRevenue = async (req, res) => {
@@ -122,7 +161,7 @@ const getMerchantRevenue = async (req, res) => {
         { $unwind: "$products" },
         {
           $lookup: {
-            from: "products", // replace with your actual Product collection name
+            from: "products",
             localField: "products.productId",
             foreignField: "_id",
             as: "productData"
@@ -156,57 +195,144 @@ const getMerchantRevenue = async (req, res) => {
     }
   };
 
-  const getProductAnalytics = async (req, res) => {
-    try {
-      const { merchantId } = req.params;
-  
-      const productAnalytics = await Order.aggregate([
-        { $unwind: "$products" },
-        {
-          $lookup: {
-            from: "products", // replace with your actual Product collection name
-            localField: "products.productId",
-            foreignField: "_id",
-            as: "productData"
-          }
-        },
-        { $unwind: "$productData" },
-        {
-          $match: {
-            "productData.merchant": new ObjectId(merchantId),
+const getProductAnalytics = async (req, res) => {
+  try {
+    const { merchantId } = req.params;
 
-          }
-        },
-        {
-          $group: {
-            _id: "$productData._id",
-            title: { $first: "$productData.title" },
-            soldQty: { $first: "$productData.soldQty" }
+    const productAnalytics = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productData"
+        }
+      },
+      { $unwind: "$productData" },
+      {
+        $match: {
+          "productData.merchant": new ObjectId(merchantId),
+
+        }
+      },
+      {
+        $group: {
+          _id: "$productData._id",
+          title: { $first: "$productData.title" },
+          soldQty: { $first: "$productData.soldQty" }
+        }
+      }
+    ]);
+
+    console.log('productAnalytics', productAnalytics.length);
+    productAnalytics.forEach(product => {
+      console.log('Product sold qty:', product.soldQty);
+    });
+
+    res.json(productAnalytics);
+  } catch (error) {
+    console.error('Error fetching product analytics:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getCustomerPurchasingPower = async (req, res) => {
+  try {
+    const { merchantId } = req.params;
+
+    const customerPurchasingPower = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productData"
+        }
+      },
+      { $unwind: "$productData" },
+      {
+        $match: {
+          "productData.merchant": new ObjectId(merchantId),
+          status: "Paid"
+        }
+      },
+      {
+        $group: {
+          _id: "$user",
+          totalAmount: { $sum: "$totalAmount" }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "userData"
+        }
+      },
+      { $unwind: "$userData" },
+      {
+        $group: {
+          _id: null,
+          customers: {
+            $push: {
+              name: "$userData.fullname",
+              totalAmount: "$totalAmount"
+            }
           }
         }
-      ]);
+      },
+      {
+        $project: {
+          _id: 0,
+          customers: {
+            $map: {
+              input: "$customers",
+              as: "customer",
+              in: {
+                name: { $concat: ["Customer ", { $toString: { $add: [{ $indexOfArray: ["$customers", "$$customer"] }, 1] } }] },
+                totalAmount: "$$customer.totalAmount"
+              }
+            }
+          }
+        }
+      },
+      { $unwind: "$customers" },
+      { $replaceRoot: { newRoot: "$customers" } },
+      { $limit: 5 } 
+    ]);
 
-      console.log('productAnalytics', productAnalytics.length);
-      productAnalytics.forEach(product => {
-        console.log('Product sold qty:', product.soldQty);
-      });
-  
-      res.json(productAnalytics);
-    } catch (error) {
-      console.error('Error fetching product analytics:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  };
+    console.log('customerPurchasingPower', customerPurchasingPower.length);
+    customerPurchasingPower.forEach(customer => {
+      console.log('Customer name:', customer.name);
+      console.log('Customer total amount:', customer.totalAmount);
+    });
 
-  const getCustomerPurchasingPower = async (req, res) => {
+    res.json(customerPurchasingPower);
+  }
+  catch (error) {
+    console.error('Error fetching customer purchasing power:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+  const getMerchantRevenueThisMonth = async (req, res) => {
     try {
       const { merchantId } = req.params;
-
-        const customerPurchasingPower = await Order.aggregate([
+      console.log('merchantId', merchantId);
+  
+      // Get the first and last day of the current month
+      const date = new Date();
+      const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  
+      const orders = await Order.aggregate([
         { $unwind: "$products" },
         {
           $lookup: {
-            from: "products", // replace with your actual Product collection name
+            from: "products", 
             localField: "products.productId",
             foreignField: "_id",
             as: "productData"
@@ -216,48 +342,29 @@ const getMerchantRevenue = async (req, res) => {
         {
           $match: {
             "productData.merchant": new ObjectId(merchantId),
-            status: "Paid"
+            status: "Paid",
+            createdAt: { $gte: firstDay, $lte: lastDay } // Filter orders created this month
           }
         },
-        {
-          $group: {
-            _id: "$user",
-            totalAmount: { $sum: "$totalAmount" }
-          }
-        },
-        {
-          $lookup: {
-            from: "users", // replace with your actual User collection name
-            localField: "_id",
-            foreignField: "_id",
-            as: "userData"
-          }
-        },
-        { $unwind: "$userData" },
         {
           $project: {
             _id: 0,
-            name: "$userData.fullname",
             totalAmount: 1
           }
         }
-        ]);
-
-        console.log('customerPurchasingPower', customerPurchasingPower.length);
-        customerPurchasingPower.forEach(customer => {
-        console.log('Customer name:', customer.fullname);
-        console.log('Customer total amount:', customer.totalAmount);
-        }
-        );
-
-        res.json(customerPurchasingPower);
-    }
-    catch (error) {
-      console.error('Error fetching customer purchasing power:', error);
+      ]);
+  
+      let totalRevenue = 0;
+      orders.forEach(order => {
+        totalRevenue += order.totalAmount;
+      });
+  
+      res.json({ totalRevenue });
+    } catch (error) {
+      console.error('Error fetching merchant revenue:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-    };
-  
+  };
 
 
 export default {
@@ -269,5 +376,7 @@ export default {
     updateOrderIsReviewed,
     getMerchantRevenue,
     getProductAnalytics,
-    getCustomerPurchasingPower
+    getCustomerPurchasingPower,
+    getOrdersByMerchantId,
+    getMerchantRevenueThisMonth
 };

@@ -369,8 +369,23 @@ export class CheckoutComponent {
       },
       onCancel: (data: any, actions: any) => {
         console.log('OnCancel', data, actions);
-        // this.showCancel = true;
-
+      
+        const updatedOrderData = {
+          status: 'Failed',
+        };
+      
+        // Update the order status to 'Failed'
+        this.orderService.updateOrder(this.orderID, updatedOrderData).subscribe(
+          (updatedOrder) => {
+            console.log('Order updated successfully:', updatedOrder);
+            // ... any additional logic after updating the order
+          },
+          (error) => {
+            console.error('Error updating order:', error);
+            // ... handle error
+          }
+        );
+      
         this.router.navigate(['/customer/checkout', this.productId]);
       },
       onError: (err: any) => {

@@ -163,50 +163,61 @@ export class AddReviewComponent {
     console.log('Review Data:', reviewData);
 
     // Call the addReview service method from ReviewService to submit the review
-    this.reviewService.addReview(reviewData).subscribe({
-      next: (response) => {
-        console.log('Review submitted successfully:', response);
-        // thankyou message
-        Swal.fire({
-          title: 'Thank you!',
-          text: 'Your review has been submitted successfully!',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then((result) => {
-          this.productService.addReview(this.order.products[0]._id, response._id).subscribe({
-            next: (response) => {
-              console.log('Review submitted to product successfully:', response);
-            },
-            error: (error) => {
-              console.error('Error submitting review:', error);
-            }
-          });
-          if (result.isConfirmed) {
-            this.productService.updateRating(this.order.products[0]._id, reviewData.rating).subscribe({
+    if(this.ratingForm.valid){
+      this.reviewService.addReview(reviewData).subscribe({
+        next: (response) => {
+          console.log('Review submitted successfully:', response);
+          // thankyou message
+          Swal.fire({
+            title: 'Thank you!',
+            text: 'Your review has been submitted successfully!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            this.productService.addReview(this.order.products[0]._id, response._id).subscribe({
               next: (response) => {
-                console.log('Rating updated successfully:', response);
+                console.log('Review submitted to product successfully:', response);
               },
               error: (error) => {
                 console.error('Error submitting review:', error);
               }
             });
-            this.router.navigate(['/customer/payment-history']);
-          }
-          this.orderService.updateOrderIsReviewed(this.orderId, true).subscribe({
-            next: (response) => {
-              console.log('Order updated successfully:', response);
-            },
-            error: (error) => {
-              console.error('Error submitting review:', error);
+            if (result.isConfirmed) {
+              this.productService.updateRating(this.order.products[0]._id, reviewData.rating).subscribe({
+                next: (response) => {
+                  console.log('Rating updated successfully:', response);
+                },
+                error: (error) => {
+                  console.error('Error submitting review:', error);
+                }
+              });
+              // this.router.navigate(['/customer/payment-history']);
+              window.location.href = '/customer/payment-history';
             }
-          });
-        })
-      },
-      error: (error) => {
-        console.error('Error submitting review:', error);
-      }
-    
-    });
+          })
+        },
+        error: (error) => {
+          console.error('Error submitting review:', error);
+        }
+      
+      });
+      this.orderService.updateOrderIsReviewed(this.orderId, true).subscribe({
+        next: (response) => {
+          console.log('Order updated successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error submitting review:', error);
+        }
+      });
+    }
+    else{
+      Swal.fire({
+        title: 'Oops...!',
+        text: 'Please fill the star rating!',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
+    }
     //get the review id for the review submitted above
     console.log('Review ID:', this.reviewId);
 
