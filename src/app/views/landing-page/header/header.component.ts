@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -18,7 +18,12 @@ export class HeaderComponent {
   // * Changed to isAuthenticated() to check whether the token is expired or not
   isLoggedIn: boolean = this.authService.isAuthenticated();
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -42,8 +47,14 @@ export class HeaderComponent {
         }
       });
     }
-  }
 
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        const element = document.querySelector('#' + fragment);
+        if (element) element.scrollIntoView();
+      }
+    });
+  }
   // Temporary placeholder text
   inputPlaceholder: string = 'Search for best package deals';
 
@@ -55,8 +66,28 @@ export class HeaderComponent {
   // toggle category menu
   isCategoryMenuOpen: boolean = false;
 
-  // You can set the value dynamically based on your application logic
-  // For example, in a method or an event handler
+  navigateTo(sectionId: string) {
+    this.router.navigate(['/']).then(() => {
+      setTimeout(() => {
+        const element = document.querySelector('#' + sectionId);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    });
+  }
+
+  // smoothScroll(){
+  //   const productSection = document.getElementById('why-choose-us');
+
+  //   if (productSection) {
+  //     const offset = 0; // Offset height of the header
+  //     const topPosition = productSection.getBoundingClientRect().top + window.scrollY;
+  //     window.scrollTo({
+  //       top: topPosition + offset,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // }
+
   updateInputValue() {
     this.inputValue = 'New Value';
   }

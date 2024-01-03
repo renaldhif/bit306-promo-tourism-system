@@ -1,23 +1,49 @@
 <app-merchant-sidebar></app-merchant-sidebar>
-
 <div class="relative md:ml-64 bg-blueGray-100">
-  <h2 class="text-start text-2xl font-bold mt-5 ml-5">Analytics</h2>
+  <app-merchant-header-stats></app-merchant-header-stats>
 
-  <!-- Revenue -->
-  <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Revenues</p>
-    <canvas id="revenueChart"></canvas>
-  </div>
+  <!-- Analytic Card -->
+  <div class="py-7 px-4 rounded-xl -mt-24">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-whiteBackground">
+      <!-- Header with Title with Button Options -->
+      <div class="flex justify-between items-center m-8">
+        <h2 class="text-2xl font-bold text-primary">Analytics</h2>
+        <div>
+          <button [ngClass]="{
+              'bg-blue-500 text-white': selectedOption === 'productSold',
+              'bg-white text-primary': selectedOption !== 'productSold'
+            }" class="font-bold py-2 px-4 rounded mr-2 border border-primary shadow-lg"
+            (click)="selectOption('productSold')">Product Sold</button>
+          <button [ngClass]="{
+              'bg-blue-500 text-white': selectedOption === 'customerPurchasingPower',
+              'bg-white text-primary': selectedOption !== 'customerPurchasingPower'
+            }" class="font-bold py-2 px-4 rounded border border-primary shadow-lg"
+            (click)="selectOption('customerPurchasingPower')">Customer Purchasing Power</button>
+        </div>
+      </div>
 
-  <!-- Products -->
-  <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Products</p>
-    <canvas id="productsChart"></canvas>
-  </div>
+      <!-- Merchant selected info -->
+      <!-- <div class="px-8 flex flex-row items-center">
+        <div class="text-xl font-bold">Viewing Analytics for</div>
+        <span class="text-primary underline ml-2 font-bold text-xl">
+          <a href="/admin/view-merchant-detail/{{ merchantId }}">{{ merchantName }}</a>
+        </span>
+      </div> -->
 
-  <!-- Orders -->
-  <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Orders</p>
-    <canvas id="ordersChart"></canvas>
+      <!-- Loading -->
+      <app-loading-indicator *ngIf="isLoading && !isFetched"></app-loading-indicator>
+
+      <!-- Product Sold -->
+      <div class="w-1/2 mx-auto my-7" *ngIf="selectedOption === 'productSold'">
+        <p class="text-center text-xl mb-4">Product Sold</p>
+        <canvas id="productSold"></canvas>
+      </div>
+
+      <!-- Customer purchasing power -->
+      <div class="w-1/2 mx-auto my-7" *ngIf="selectedOption === 'customerPurchasingPower'">
+        <p class="text-center text-xl mb-4">Customer Purchasing Power</p>
+        <canvas id="customerPurchasingPower"></canvas>
+      </div>
+
+    </div>
   </div>
-</div>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import {Chart, registerables} from 'chart.js/auto';
-import { AdminService } from '../../../service/admin.service';
-Chart.register(...registerables);
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Chart, registerables } from 'chart.js/auto';
+import { OrderService } from 'src/app/service/order.service';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/app/service/user.service';
 @Component({
   selector: 'app-admin-analytics',
   templateUrl: './admin-analytics.component.html',
@@ -9,124 +10,82 @@ Chart.register(...registerables);
 })
 export class AdminAnalyticsComponent {
 
-  // currentYear: number = new Date().getFullYear();
-  totalMerchantsChart?: any;
-  totalCustomersChart?: any;
+  selectedOption: string = 'productSold';
 
-  selectedYear?: number;
-  years: number[] = [];
-  currentYear: number = 2024;
-  startYear = 2023;
+  // get merchant id from query params
+  merchantId: string = '';
+  merchantName: string = '';
 
-  // total merchants from Jan to Dec
-  totalMerchants: number[] = new Array(12).fill(0);
-  totalCustomers: number[] = new Array(12).fill(0);
+  // product sold
+  label: string[] = [];
+  data: any[] = [];
 
-  // verifiedMerchants = [5, 7, 10, 15];
-  // pendingMerchants = [0, 2, 4, 4];
-  // rejectedMerchants = [0, 1, 1, 1];
+  // customer purchasing power
+  customerLabels: string[] = [];
+  customerData: number[] = [];
 
-  constructor(private adminService: AdminService) {}
+
+  constructor(
+    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private cdr: ChangeDetectorRef,
+  ) { }
+
   ngOnInit() {
-    // const currentYear = new Date().getFullYear();
-    const currentYear = this.currentYear;
-    console.log("currentYear admin-analytics.component:", currentYear)
-    for (let year = this.startYear; year <= this.currentYear; year++) {
-      this.years.push(year);
+    this.merchantId = this.route.snapshot.paramMap.get('id')!;
+    console.log('merchant id: ', this.merchantId);
+
+    // get merchant name
+    this.userService.getUserDetailsWithoutAuth(this.merchantId).subscribe((merchant) => {
+      this.merchantName = merchant.fullname;
+    });
+
+    // get product analytics
+    this.orderService.getProductAnalytics(this.merchantId).subscribe((products) => {
+      products.forEach((product: any) => {
+        this.label.push(product.title);
+        this.data.push(product.soldQty);
+      });
+      this.createChartProductSold('productSold', 'Sold Quantity', this.data);
+    });
+
+    // get customer purchasing power
+    this.orderService.getCustomerPurchasingPower(this.merchantId).subscribe((customers) => {
+      customers.forEach((customer: any) => {
+        this.customerLabels.push(customer.fullname);
+        this.customerData.push(customer.totalSpent);
+      });
+      this.createChartCustomerPurchasingPower('customerPurchasingPower', 'Customer Purchasing Power', this.customerData);
+    });
+  }
+
+  selectOption(option: string) {
+    this.selectedOption = option;
+    this.cdr.detectChanges(); // this is needed here, otherwise the chart will not be rendered
+    if (option === 'productSold') {
+      this.createChartProductSold('productSold', 'Sold Quantity', this.data);
+      this.selectedOption = 'productSold';
+    } else if (option === 'customerPurchasingPower') {
+      this.createChartCustomerPurchasingPower('customerPurchasingPower', 'Customer Purchasing Power', this.customerData);
+      this.selectedOption = 'customerPurchasingPower';
     }
-
-    // this.fetchMerchantData(currentYear);
-    // this.fetchCustomerData(currentYear);
-    // this.createChart('totalMerchantsChart', 'Total Merchants', this.totalMerchants);
-    // this.createChart('verifiedMerchantsChart', 'Verified Merchants', this.verifiedMerchants);
-    // this.createChart('pendingMerchantsChart', 'Pending Merchants', this.pendingMerchants);
-    // this.createChart('rejectedMerchantsChart', 'Rejected Merchants', this.rejectedMerchants);
   }
 
-  // fetchMerchantData() {
-  //   this.adminService.getMerchantsByMonth().subscribe(data => {
-  //     this.processMerchantData(data);
-  //     console.log("🚀 ~ file: admin-analytics.component.ts:30 ~ AdminAnalyticsComponent ~ this.adminService.getMerchantsByMonth ~ data:", data)
-
-
-  //     this.createChart('totalMerchantsChart', 'Total Merchants', this.totalMerchants);
-  //   });
-  // }
-
-  onYearChange(event: Event) {
-    const selectedYear = parseInt((event.target as HTMLSelectElement).value, 10);
-    this.selectedYear = selectedYear;
-    console.log('selectedYear:', selectedYear);
-    this.fetchMerchantData(selectedYear);
-    this.fetchCustomerData(selectedYear);
-  }
-
-  //* MERCHANTs
-
-  fetchMerchantData(year: number) {
-    this.selectedYear = year;
-    this.adminService.getMerchantsByMonth(year).subscribe(data => {
-      this.processMerchantData(data);
-      console.log("🚀 ~ file: admin-analytics.component.ts:45 ~ AdminAnalyticsComponent ~ this.adminService.getMerchantsByMonth ~ data:", data)
-
-      if (this.totalMerchantsChart) {
-        this.totalMerchantsChart.destroy();
-      }
-      else{
-        this.createChart('totalMerchantsChart', 'Total Merchants', this.totalMerchants);
-      }
-    });
-  }
-
-  processMerchantData(data: any[]) {
-    data.forEach(item => {
-      if (item._id.year === new Date().getFullYear()) {
-        // Assuming months are 1-indexed (January is 1)
-        this.totalMerchants[item._id.month - 1] = item.count;
-      }
-    });
-  }
-
-  //* CUSTOMERs
-
-  fetchCustomerData(year: number) {
-    this.adminService.getCustomersByMonth(year).subscribe(data => {
-      this.processCustomerData(data);
-      console.log("🚀 ~ file: admin-analytics.component.ts:63 ~ AdminAnalyticsComponent ~ this.adminService.getCustomersByMonth ~ data:", data)
-
-      console.log('check this.totalCustomers:', this.totalCustomers);
-      if (this.totalCustomersChart) {
-        this.destroyChartById(1);
-      }
-      else{
-        this.totalCustomersChart = this.createChart('totalCustomersChart', 'Total Customers', this.totalCustomers);
-      }
-    });
-  }
-
-  processCustomerData(data: any[]) {
-    data.forEach(item => {
-      if (item._id.year === new Date().getFullYear()) {
-        // Assuming months are 1-indexed (January is 1)
-        this.totalCustomers[item._id.month - 1] = item.count;
-      }
-    });
-  }
-
-  createChart(chartId: string, label: string, data: number[]) {
-    const barChart = document.getElementById(chartId) as HTMLCanvasElement;
+  createChartProductSold(chartId: string, label: string, data: any[]) {
+    const barChart = document.getElementById('productSold') as HTMLCanvasElement;
     if (!barChart) return;
 
     new Chart(barChart, {
       type: 'bar',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: this.label,
         datasets: [{
-          label,
+          label: 'Sold Quantity',
           data,
-          backgroundColor: '#60a5fa',
-          borderColor: '#3b82f6',
-          borderWidth: 1
+          backgroundColor: '#93c5fd',
+          borderColor: '#2563eb',
+          borderWidth: 2
         }]
       },
       options: {
@@ -140,12 +99,32 @@ export class AdminAnalyticsComponent {
     });
   }
 
-  destroyChartById(chartId: any) {
-    console.log('chartId passed to destroy:', chartId);
-
-    const chart = document.getElementById(chartId) as HTMLCanvasElement;
-    if (chart) {
-      chart.remove();
-    }
+  createChartCustomerPurchasingPower(chartId: string, chartLabel: string, data: any) {
+    const barChart = document.getElementById('customerPurchasingPower') as HTMLCanvasElement;
+    if (!barChart) return;
+    new Chart(barChart, {
+      type: 'bar',
+      data: {
+        labels: [data.name],
+        datasets: [{
+          label: chartLabel,
+          data: [data.totalAmount],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 }

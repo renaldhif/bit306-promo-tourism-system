@@ -5,53 +5,42 @@
   <!-- Analytic Card -->
   <div class="py-7 px-4 rounded-xl -mt-24">
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-whiteBackground">
-      <!-- Header with Title and Select Year -->
+      <!-- Header with Title with Button Options -->
       <div class="flex justify-between items-center m-8">
-        <h2 class="text-2xl font-bold">Analytics</h2>
-
-        <!-- Select Year -->
-        <select [value]="selectedYear" (change)="onYearChange($event)"
-          class="w-1/4 rounded-lg border-2 border-blueGray-300 focus:outline-none focus:border-blue-500 text-base px-4 py-2"
-          id="year">
-          <!-- Select year default value -->
-          <option value="" selected>Select Year</option>
-          <!-- Loop year -->
-          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
+        <h2 class="text-2xl font-bold text-primary">Analytics</h2>
+        <div>
+          <button [ngClass]="{
+              'bg-blue-500 text-white': selectedOption === 'productSold',
+              'bg-white text-primary': selectedOption !== 'productSold'
+            }" class="font-bold py-2 px-4 rounded mr-2 border border-primary shadow-lg"
+            (click)="selectOption('productSold')">Product Sold</button>
+          <button [ngClass]="{
+              'bg-blue-500 text-white': selectedOption === 'customerPurchasingPower',
+              'bg-white text-primary': selectedOption !== 'customerPurchasingPower'
+            }" class="font-bold py-2 px-4 rounded border border-primary shadow-lg"
+            (click)="selectOption('customerPurchasingPower')">Customer Purchasing Power</button>
+        </div>
       </div>
 
-      <div *ngIf="selectedYear">
-        <!-- Total merchants -->
-      <div class="w-2/3 mx-auto my-7">
-        <p class="text-center text-xl mb-4">Total Merchants</p>
-        <canvas id="totalMerchantsChart"></canvas>
+      <!-- Merchant selected info -->
+      <div class="px-8 flex flex-row items-center">
+        <div class="text-xl font-bold">Viewing Analytics for</div>
+        <span class="text-primary underline ml-2 font-bold text-xl">
+          <a href="/admin/view-merchant-detail/{{ merchantId }}">{{ merchantName }}</a>
+        </span>
       </div>
 
-      <!-- Total customers -->
-      <div class="w-2/3 mx-auto my-7">
-        <p class="text-center text-xl mb-4">Total Customers</p>
-        <canvas id="totalCustomersChart"></canvas>
+      <!-- Product Sold -->
+      <div class="w-1/2 mx-auto my-7" *ngIf="selectedOption === 'productSold'">
+        <p class="text-center text-xl mb-4">Product Sold</p>
+        <canvas id="productSold"></canvas>
       </div>
+
+      <!-- Customer purchasing power -->
+      <div class="w-1/2 mx-auto my-7" *ngIf="selectedOption === 'customerPurchasingPower'">
+        <p class="text-center text-xl mb-4">Customer Purchasing Power</p>
+        <canvas id="customerPurchasingPower"></canvas>
       </div>
     </div>
   </div>
-
-
-  <!-- Verified Merchants -->
-  <!-- <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Verified Merchants</p>
-    <canvas id="verifiedMerchantsChart"></canvas>
-  </div> -->
-
-  <!-- Pending Merchants -->
-  <!-- <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Pending Merchants</p>
-    <canvas id="pendingMerchantsChart"></canvas>
-  </div> -->
-
-  <!-- Rejected Merchants -->
-  <!-- <div class="w-1/2 mx-auto my-10">
-    <p class="text-center text-xl font-bold">Rejected Merchants</p>
-    <canvas id="rejectedMerchantsChart"></canvas>
-  </div> -->
 </div>

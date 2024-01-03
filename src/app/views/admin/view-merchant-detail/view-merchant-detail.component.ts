@@ -65,7 +65,7 @@ export class ViewMerchantDetailComponent {
 
   viewMerchantAnalytics = () => {
     console.log('Opening merchant analytics page');
-    this.router.navigate(['/admin/analytics', this.merchantId, RouterLinkActive,]);
+    this.router.navigate(['/admin/analytics', this.merchantId]);
   }
 
 }

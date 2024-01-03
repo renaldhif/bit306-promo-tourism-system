@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import { Router } from '@angular/router';
+import { ProductService } from 'src/app/service/product-service';
+import { OrderService } from 'src/app/service/order.service';
 
 @Component({
   selector: 'app-merchant-header-stats',
@@ -13,8 +15,14 @@ export class MerchantHeaderStatsComponent {
   userDetails: any;
   name: string = 'Merchant ';
   isLoggedIn: boolean = this.authService.isLoggedIn();
+  products: any[] = [];
+  productLength: number = 0;
+  orders: any[] = [];
+  orderLength: number = 0;
+  revenueCurrentMonth: number = 0;
+  revenue: number = 0;
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) {}
+  constructor(private userService: UserService, private authService: AuthService, private router: Router, private productService: ProductService, private orderService: OrderService) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -35,27 +43,63 @@ export class MerchantHeaderStatsComponent {
           console.log(error);
         }
       });
+      this.productService.getProductsByMerchant(userId).subscribe({
+        next: (data) => {
+          this.products = data;
+          this.productLength = this.products.length;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+      this.orderService.getOrderByMerchantId(userId).subscribe({
+        next: (data) => {
+          this.orders = data;
+          this.orderLength = this.orders.length;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+      this.orderService.getRevenueForCurrentMonth(userId).subscribe({
+        next: (data) => {
+          console.log('Revenue for current month: ' + data.totalRevenue);
+
+          this.revenueCurrentMonth = data.totalRevenue;
+          console.log('Revenue for current month HGDEGSDJSHJU : ' + this.revenueCurrentMonth);
+
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+      this.orderService.getMerchantRevenue(userId).subscribe({
+        next: (data) => {
+          console.log('Revenue: ' + data.totalRevenue);
+          this.revenue = data.totalRevenue;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
     }
   }
 
   // logout
   logout = () => {
+    // simulate delay in logout through swal
     Swal.fire({
-      title: 'Logout',
-      text: "Are you sure you want to logout?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4ade80',
-      cancelButtonColor: '#f87171',
-      confirmButtonText: 'Yes, logout!'
+      title: 'Logging out...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.dismiss === Swal.DismissReason.timer) {
         this.authService.logout();
-        console.log('Logout executed from MERCHANT merchant-header-stats.component.ts');
-        console.log('\n======');
-        console.log('navigate to login');
         this.router.navigate(['/login']);
       }
-    })
+    });
   }
 }

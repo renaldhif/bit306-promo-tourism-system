@@ -1,98 +1,124 @@
 <app-header></app-header>
-<div class="px-4 md:px-10 mx-auto w-full -m-24 mt-8 mb-10 container">
-  <h3 class="font-semibold text-lg my-3"> Payment History </h3>
+<div class="px-4 md:px-10 mx-auto w-full -m-24 mt-8 mb-10 container min-h-screen">
+  <h3 class="font-semibold text-2xl text-primary mt-3 mb-6"> Payment History </h3>
 
-  <!-- Filter Buttons -->
   <div class="flex-row justify-between">
-    <div class="flex flex-row mb-4">
-      <button class="border rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4 w-16"
-        (click)="filterByStatus('All')">
-        <p class="text-sm font-normal text-textPrimary">All</p>
+    <!-- Filter Buttons -->
+    <div class="flex flex-row mb-8">
+      <button class="border-2 rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4 w-16"
+        [class.bg-blue-100]="currentFilter === 'All'" [class.border-blue-300]="currentFilter === 'All'"
+        (click)="setFilter('All')">
+        <p class="text-sm font-normal" [class.text-primary]="currentFilter === 'All'"
+          [class.text-textPrimary]="currentFilter !== 'All'">All</p>
       </button>
-      <button class="mx-4 border rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
-        (click)="filterByStatus('Paid')">
-        <p class="text-sm font-normal text-textPrimary">Paid</p>
+      <button class="mx-4 border-2 rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
+        [class.bg-blue-100]="currentFilter === 'Paid'" [class.border-blue-300]="currentFilter === 'Paid'"
+        (click)="setFilter('Paid')">
+        <p class="text-sm font-normal" [class.text-primary]="currentFilter === 'Paid'"
+          [class.text-textPrimary]="currentFilter !== 'Paid'">Paid</p>
       </button>
-      <button class="border rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
-        (click)="filterByStatus('Waiting')">
-        <p class="text-sm font-normal text-textPrimary">Waiting</p>
+      <button class="border-2 rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
+        [class.bg-blue-100]="currentFilter === 'Waiting'" [class.border-blue-300]="currentFilter === 'Waiting'"
+        (click)="setFilter('Waiting')">
+        <p class="text-sm font-normal" [class.text-primary]="currentFilter === 'Waiting'"
+          [class.text-textPrimary]="currentFilter !== 'Waiting'">Waiting</p>
       </button>
-      <button class="ml-4 border rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
-        (click)="filterByStatus('Failed')">
-        <p class="text-sm font-normal text-textPrimary">Failed</p>
+      <button class="ml-4 border-2 rounded-xl hover:bg-slate-100 text-white font-bold py-2 px-4"
+        [class.bg-blue-100]="currentFilter === 'Failed'" [class.border-blue-300]="currentFilter === 'Failed'"
+        (click)="setFilter('Failed')">
+        <p class="text-sm font-normal" [class.text-primary]="currentFilter === 'Failed'"
+          [class.text-textPrimary]="currentFilter !== 'Failed'">Failed</p>
       </button>
     </div>
 
+    <!-- Loading Indicator -->
+    <div class="my-[13.5rem]" *ngIf="isLoading && !isFetched">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+
     <!-- Transaction Card -->
-    <div *ngFor="let payment of paymentsData"
-      class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-100 border border-slate-300">
-      <!-- Header Container -->
-      <div
-        class="rounded-t mb-0 px-4 py-3 flex flex-row justify-between items-center border border-b-gray-200 bg-slate-100 lg:justify-start lg:items-start">
-        <h2 class="font-semibold text-sm text-gray-500">Payment ID {{ payment.orderID }}</h2>
-        <h2 class="text-sm text-gray-500 mx-6">{{ payment.created_at | date }}</h2>
-        <div class="border rounded-lg h-6 w-20 flex items-center justify-center" [ngClass]="
+    <div *ngIf="paymentsFilteredData">
+      <div *ngFor="let payment of paymentsFilteredData"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-100 border border-slate-300">
+        <!-- Header Container -->
+        <div
+          class="rounded-t mb-0 px-4 py-3 flex flex-row justify-start items-center border border-b-gray-200 bg-slate-100 gap-x-5">
+          <h2 class="font-semibold text-gray-500 ml-4">{{ payment.orderID }}</h2>
+          <div class="h-2 w-2 bg-darkGrey rounded-full mr-1 justify-center items-center"></div>
+          <h2 class="text-base text-gray-500">{{ payment.createdAt | date }}</h2>
+          <div class="border rounded-lg h-6 w-20 flex items-center justify-center" [ngClass]="
           payment.status === 'Paid' ? 'bg-green-100 border-green-300 text-green-700' :
           payment.status === 'Failed' ? 'bg-red-100 border-red-300 text-red-700' :
           'bg-yellow-100 border-yellow-300 text-orange-500'">
-          <p class="text-sm">{{ payment.status }}</p>
+            <p class="text-sm">{{ payment.status }}</p>
+          </div>
         </div>
-      </div>
 
-      <!-- Content Container -->
-      <div class="bg-white rounded-b-lg">
+        <!-- Content Container -->
+        <div class="bg-white rounded-b-lg">
 
-        <!-- Product Container -->
-        <div class="my-4 mx-8 flex flex-col md:flex-row ">
+          <!-- Product Container -->
+          <div class="my-4 mx-8 flex flex-col md:flex-row">
 
-          <!-- Image Container -->
-          <div class="flex flex-row justify-center items-center ml-8 lg:ml-0">
-            <div class="flex-shrink-0 h-32 w-32 bg-slate-400 rounded-lg mr-8">
+            <!-- Image Container -->
+            <div class="flex flex-row justify-center items-center ml-8 lg:ml-0">
+              <div class="flex-shrink-0 h-32 w-32 bg-slate-400 rounded-lg mr-8">
+                <ng-container *ngFor="let product of payment.products">
+                  <img src="{{ getProductImageURL(product.image) }}" alt="Product {{ product._id }} photo"
+                    class="h-full w-full object-cover rounded-lg">
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Product Detail Container -->
+            <div class="mt-4 md:mt-0">
               <ng-container *ngFor="let product of payment.products">
-                <img src="{{ getProductImageURL(product.image) }}" alt="Product {{ product._id }} photo"
-                class="h-full w-full object-cover rounded-lg">
+                <h2 class="font-semibold text-lg text-textPrimary">{{ product.title }}</h2>
+                <h2 class="mt-2 text-sm text-gray-500">{{ product.description }}</h2>
+                <h2 class="mt-4 text-sm font-bold text-gray-600">{{ product.price | currency:'MYR ' }}</h2>
+              </ng-container>
+            </div>
+
+            <!-- Action Container -->
+            <div class="flex flex-col mt-4 md:ml-auto md:mt-0 items-center justify-center gap-y-5">
+              <!-- View Details -->
+              <button class="w-36 h-11 ml-4 border border-primary text-white font-bold py-2 px-4 rounded-xl"
+                (click)="viewDetail(payment._id)">
+                <p class="text-primary">View Detail</p>
+              </button>
+
+              <ng-container *ngIf="payment.status === 'Paid' && payment.isReviewed == false">
+                <!-- Add review -->
+                <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
+                  (click)="addReview(payment._id)">
+                  <p class="text-white">Add Review</p>
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="payment.status === 'waiting'">
+                <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
+                  (click)="payNow(payment.id)">
+                  <p class="text-white">Pay Now</p>
+                </button>
+              </ng-container>
+
+              <!-- Hide the button for Cancelled status -->
+              <ng-container *ngIf="payment.status === 'Failed'">
               </ng-container>
             </div>
           </div>
-
-          <!-- Product Detail Container -->
-          <div class="mt-4 md:mt-0">
-            <ng-container *ngFor="let product of payment.products">
-              <h2 class="font-semibold text-lg text-textPrimary">{{ product.title }}</h2>
-              <h2 class="mt-2 text-sm text-gray-500">{{ product.description }}</h2>
-              <h2 class="mt-4 text-sm font-bold text-gray-600">{{ product.price | currency:'MYR ' }}</h2>
-            </ng-container>
-          </div>
-
-          <!-- Action Container -->
-          <div class="flex flex-col mt-4 md:ml-auto md:mt-0 items-center justify-center gap-y-5">
-            <!-- View Details -->
-            <button class="w-36 h-11 ml-4 border border-primary text-white font-bold py-2 px-4 rounded-xl"
-              (click)="viewDetail(payment._id)">
-              <p class="text-primary">View Detail</p>
-            </button>
-
-            <ng-container *ngIf="payment.status === 'completed' && payment.isReviewed == false">
-              <!-- Add review -->
-              <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
-                (click)="addReview(payment._id)">
-                <p class="text-white">Add Review</p>
-              </button>
-            </ng-container>
-
-            <ng-container *ngIf="payment.status === 'waiting'">
-              <button class="w-36 h-11 ml-4 bg-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-darkPrimary"
-                (click)="payNow(payment.id)">
-                <p class="text-white">Pay Now</p>
-              </button>
-            </ng-container>
-
-            <!-- Hide the button for Cancelled status -->
-            <ng-container *ngIf="payment.status === 'Failed'">
-            </ng-container>
-          </div>
         </div>
       </div>
+    </div>
+
+    <!-- No Data Filter -->
+    <div class="flex flex-col items-center justify-center top-0 left-0 gap-y-3"
+      *ngIf="!isLoading && isFetched && paymentsFilteredData.length === 0">
+      <div class="bg-blue-50">
+        <img src="../../../assets/images/no-data.jpg" alt="No product found" class="w-96" />
+      </div>
+      <div class="text-2xl font-bold text-gray-600">No payment found</div>
+      <div class="text-gray-400">No payment found for this status</div>
     </div>
   </div>
 </div>

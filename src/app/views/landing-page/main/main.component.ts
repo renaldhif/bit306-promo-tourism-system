@@ -19,18 +19,17 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    //TODO: Get 5 products from the backend API
-    this.productService.getAllProducts().subscribe(
+    this.productService.getTop5ProductsBySoldQty().subscribe(
       (products: any[]) => {
         this.productList = products;
         this.isLoading = false;
 
         // Timeout 3s for scrolling if the user hasn't clicked on the button
-        setTimeout(() => {
-          if (!this.buttonClicked) {
-            this.scrollToProducts();
-          }
-        }, 3000);
+        // setTimeout(() => {
+        //   if (!this.buttonClicked) {
+        //     this.scrollToProducts();
+        //   }
+        // }, 3000);
       },
       (error) => {
         console.error('Error fetching products:', error);
@@ -55,23 +54,23 @@ export class MainComponent implements OnInit {
     }
   }
 
-  scrollToProducts() {
-    this.buttonClicked = true;
-    const productSection = document.getElementById('trending');
+  // scrollToProducts() {
+  //   this.buttonClicked = true;
+  //   const productSection = document.getElementById('trending');
 
-    if (productSection) {
-      const offset = 0; // Offset height of the header
-      const topPosition = productSection.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: topPosition + offset,
-        behavior: 'smooth',
-      });
-    }
-  }
+  //   if (productSection) {
+  //     const offset = 0; // Offset height of the header
+  //     const topPosition = productSection.getBoundingClientRect().top + window.scrollY;
+  //     window.scrollTo({
+  //       top: topPosition + offset,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // }
 
-  cancelScrollTimeout() {
-    clearTimeout(this.scrollTimeout);
-  }
+  // cancelScrollTimeout() {
+  //   clearTimeout(this.scrollTimeout);
+  // }
 
   scrollCarousel(direction: number) {
     const container = document.querySelector('.overflow-x-auto');
