@@ -18,13 +18,6 @@ export class MerchantSidebarComponent {
     this.collapseShow = classes;
   }
 
-  // toggleMobileNav() {
-  //   console.log('CURRENT collape show: ' + this.collapseShow);
-  //   this.collapseShow = !this.collapseShow;
-  //   console.log('UPDATED collape show: ' + this.collapseShow);
-  //   this.isMobileNavOpen = !this.isMobileNavOpen;
-  // }
-
   goToPage(path: string){
     this.router.navigate([path]);
   }

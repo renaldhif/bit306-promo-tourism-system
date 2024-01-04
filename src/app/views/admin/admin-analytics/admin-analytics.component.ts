@@ -34,7 +34,6 @@ export class AdminAnalyticsComponent {
 
   ngOnInit() {
     this.merchantId = this.route.snapshot.paramMap.get('id')!;
-    console.log('merchant id: ', this.merchantId);
 
     // get merchant name
     this.userService.getUserDetailsWithoutAuth(this.merchantId).subscribe((merchant) => {

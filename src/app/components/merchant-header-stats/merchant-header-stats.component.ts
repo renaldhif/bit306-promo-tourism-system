@@ -26,18 +26,11 @@ export class MerchantHeaderStatsComponent {
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
-    console.log('User ID from header.component.ts: ' + userId);
     if (userId) {
       this.userService.getUserDetails(userId).subscribe({
         next: (data) => {
-          console.log('====isLoggedIn MERCHANT===');
-          console.log('Is logged in? ' + this.isLoggedIn);
-          console.log('\n==============');
           this.userDetails = data;
-          console.log('User details from MERCHANT merchant-header-stats.component.ts ' + JSON.stringify(this.userDetails, null, 2));
-          console.log('==========');
           this.name = this.userDetails.fullname;
-          console.log('Fullname from header.component.ts: ' + this.name);
         },
         error: (error) => {
           console.log(error);
@@ -63,11 +56,7 @@ export class MerchantHeaderStatsComponent {
       });
       this.orderService.getRevenueForCurrentMonth(userId).subscribe({
         next: (data) => {
-          console.log('Revenue for current month: ' + data.totalRevenue);
-
           this.revenueCurrentMonth = data.totalRevenue;
-          console.log('Revenue for current month HGDEGSDJSHJU : ' + this.revenueCurrentMonth);
-
         },
         error: (error) => {
           console.log(error);
@@ -75,7 +64,6 @@ export class MerchantHeaderStatsComponent {
       });
       this.orderService.getMerchantRevenue(userId).subscribe({
         next: (data) => {
-          console.log('Revenue: ' + data.totalRevenue);
           this.revenue = data.totalRevenue;
         },
         error: (error) => {

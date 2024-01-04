@@ -26,10 +26,6 @@ export class AttractionEntertainmentComponent {
     // private formBuilder: FormBuilder
   ) {
     this.fetchProductsFromAPI();
-    // this.productForm = this.formBuilder.group({
-    //   title: ['', Validators.required],
-    //   price: ['', Validators.required],
-    // });
   }
 
   ngOnInit(): void {
@@ -43,10 +39,8 @@ export class AttractionEntertainmentComponent {
       (products: any[]) => {
         // from API
         this.productListAPI = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:47 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
         // filtered
         this.productListFiltered = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:50 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
 
         this.isLoading = false;
       },
@@ -63,7 +57,6 @@ export class AttractionEntertainmentComponent {
 
   onSearch() {
     // Apply search
-    console.log("Current Search Term: ", this.searchTerm);
     if (this.searchTerm) {
       const searchTermLower = this.searchTerm.toLowerCase();
       this.productListFiltered = this.productListAPI.filter((product) =>
@@ -73,32 +66,6 @@ export class AttractionEntertainmentComponent {
       // reset to productListAPI if searchTerm is empty
       this.productListFiltered = [...this.productListAPI];
     }
-
-    // Apply filter
-    // if (this.selectedFilterOption !== 'all') {
-    //   this.productListFiltered = this.productListFiltered.filter(
-    //     (product) => product.category === this.selectedFilterOption
-    //   );
-    // }
-
-    // Apply sort
-    // switch (this.sortOptionSelected) {
-    //   case 'highest-price':
-    //     this.productListFiltered.sort((a, b) => a.price - b.price);
-    //     break;
-    //   case 'lowest-price"':
-    //     this.productListFiltered.sort((a, b) => b.price - a.price);
-    //     break;
-    //   case 'lowest-rating':
-    //     this.productListFiltered.sort((a, b) => a.rating - b.rating);
-    //     break;
-    //   case 'highest-rating':
-    //     this.productListFiltered.sort((a, b) => b.rating - a.rating);
-    //     break;
-    //   default:
-    //     // If 'default' is selected, no additional sorting is needed
-    //     break;
-    // }
   }
 
   sortProducts() {

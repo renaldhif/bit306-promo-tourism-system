@@ -39,19 +39,15 @@ export class ProductDetailComponent implements OnInit {
           // Fetch reviews using getReviewDetail from ReviewService
           this.reviews = [];
           let reviewCount = product.reviews.length;
-          console.log('review count' + reviewCount);
 
           if (reviewCount === 0) {
             this.isReviewEmpty = true;
           }
-          console.log('product review' + JSON.stringify(product.reviews));
+
           product.reviews.forEach((reviewId: string) => {
             this.reviewService.getReviewDetail(reviewId).subscribe(
               (review) => {
-                console.log('review' + JSON.stringify(review));
                 this.reviews.push(review);
-                console.log('this review' + JSON.stringify(this.reviews));
-                console.log('this review' + this.reviews[0].rating);
                 // Check if all reviews have been fetched
                 if (this.reviews.length === reviewCount) {
                   this.isReviewEmpty = false;
@@ -70,7 +66,6 @@ export class ProductDetailComponent implements OnInit {
         (error) => {
           this.isLoading = false;
           console.error('Error fetching product details:', error);
-          // Handle the error, e.g., show an error message to the user
         }
       );
     } else {
@@ -93,7 +88,6 @@ export class ProductDetailComponent implements OnInit {
     if (imagePath.startsWith('http')) {
       return imagePath; // It's already an absolute URL
     } else {
-      // Assuming there is a base URL for your images
       const baseURL = environment.apiUrl;
       return baseURL + imagePath;
     }

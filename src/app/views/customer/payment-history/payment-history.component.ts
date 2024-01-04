@@ -46,7 +46,6 @@ export class PaymentHistoryComponent {
       this.orderService.getOrderByUserId(userID).subscribe({
         next: (data) => {
           this.paymentsData = data;
-          console.log('PAYMENT DATA ' + JSON.stringify(this.paymentsData, null, 2));
           if (this.paymentsData.length === 0) {
             this.isLoading = false;
             this.isFetched = true;
@@ -67,8 +66,6 @@ export class PaymentHistoryComponent {
                 next: (products: any) => {
                   // Attach product details to the corresponding payment
                   payment.products = products;
-                  console.log('COBA PAYMENT DATA ' + payment._id);
-                  console.log('is reviewd ' + payment.isReviewed);
 
                   // * FILTER PAYMENT BY STATUS
                   this.updateFilteredPayments();
@@ -119,10 +116,6 @@ export class PaymentHistoryComponent {
   payNow = (paymentID: Number) => {
     this.router.navigate(['/customer/checkout', paymentID]);
   }
-
-  // filterByStatus = (status: String) => {
-  //   this.router.navigate(['/payment-history', { status: status }]);
-  // }
 
   setFilter(filter: string) {
     this.currentFilter = filter;

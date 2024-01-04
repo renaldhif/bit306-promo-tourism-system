@@ -48,8 +48,6 @@ export class AnalyticsComponent {
       this.userService.getUserDetails(userId).subscribe((merchant) => {
         this.merchantId = merchant._id;
         this.merchantName = merchant.fullname;
-        console.log('merchant id ngOnInit Analytics Merchant: ', this.merchantId);
-        console.log('merchant name ngOnInit Analytics Merchant: ', this.merchantName);
 
         // get product analytics
         this.fetchProductAnalytics();

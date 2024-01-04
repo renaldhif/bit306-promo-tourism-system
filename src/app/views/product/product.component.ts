@@ -29,13 +29,7 @@ export class ProductComponent {
     private reviewService: ReviewService
   ) {
     const idParam = this.route.snapshot.paramMap.get('id');
-    console.log(idParam);
-    // this.productId = idParam ? parseInt(idParam, 10) : null;
     this.productId = idParam;
-
-    // this.quantity = this.quantityService.getQuantity();
-    console.log('this product id' + this.productId);
-
   }
 
   ngOnInit(): void {
@@ -48,14 +42,10 @@ export class ProductComponent {
 
           // Fetch reviews using getReviewDetail from ReviewService
           this.reviews = [];
-          console.log('product review' + JSON.stringify(product.reviews));
           product.reviews.forEach((reviewId: string) => {
             this.reviewService.getReviewDetail(reviewId).subscribe(
               (review) => {
-                console.log('review' + JSON.stringify(review));
                 this.reviews.push(review);
-                console.log('this review' + JSON.stringify(this.reviews));
-                console.log('this review' + this.reviews[0].rating);
               },
               (error) => {
                 console.error('Error fetching review details:', error);

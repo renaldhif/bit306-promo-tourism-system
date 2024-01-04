@@ -41,14 +41,11 @@ export class AddReviewComponent {
 
   ngOnInit(): void {
     this.getOrderDetails(this.orderId);
-    console.log("🚀 ~ file: add-review.component.ts:43 ~ AddReviewComponent ~ ngOnInit ~ this.getOrderDetails(this.orderId);:", this.order);
   }
 
   onRatingChange() {
     this.ratingForm.get('rating')?.setValue(this.selectedRating);
     this.setRatingDescription(this.selectedRating);
-
-    console.log(this.ratingForm.value);
   }
 
   get rating() {
@@ -86,9 +83,7 @@ export class AddReviewComponent {
   getOrderDetails(id: string): void {
     this.orderService.getOrderById(id).subscribe(
       order => {
-        // Do something with the order details here
         this.order = order;
-        console.log('Order Details:', JSON.stringify(this.order, null, 2));
 
         // Extract product IDs from the products array
         const productIds = this.order.products.map((product: any) => product.productId);
@@ -103,7 +98,6 @@ export class AddReviewComponent {
           next: (products: any) => {
             // Attach product details to the corresponding order
             this.order.products = products;
-            console.log('Order with Product Details:', JSON.stringify(this.order, null, 2));
           },
           error: (error) => {
             console.log(error);
@@ -132,35 +126,14 @@ export class AddReviewComponent {
     }
   }
 
-  // onSubmit() {
-  //   console.log(JSON.stringify(this.ratingForm.value,null,2));
-  //   // thankyou message
-  //   Swal.fire({
-  //     title: 'Thank you!',
-  //     text: 'Your review has been submitted successfully!',
-  //     icon: 'success',
-  //     confirmButtonText: 'OK'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.router.navigate(['/customer/payment-history']);
-  //     }
-  //   })
-  // }
   onSubmit() {
     // Create a review object with the data from the form
     const reviewData = {
       rating: this.ratingForm.value.rating,
       comment: this.ratingForm.value.comments,
-      user: this.order.user, 
+      user: this.order.user,
       product: this.order.products[0]._id,
     };
-
-    console.log(
-      'LALALALAL', this.order.products[0]._id
-    )
-
-
-    console.log('Review Data:', reviewData);
 
     // Call the addReview service method from ReviewService to submit the review
     if(this.ratingForm.valid){
@@ -199,7 +172,7 @@ export class AddReviewComponent {
         error: (error) => {
           console.error('Error submitting review:', error);
         }
-      
+
       });
       this.orderService.updateOrderIsReviewed(this.orderId, true).subscribe({
         next: (response) => {
@@ -218,8 +191,5 @@ export class AddReviewComponent {
         confirmButtonText: 'OK'
       })
     }
-    //get the review id for the review submitted above
-    console.log('Review ID:', this.reviewId);
-
   }
 }

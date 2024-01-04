@@ -30,18 +30,11 @@ export class HeaderStatsComponent {
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
-    console.log('User ID from header-stats.component.ts: ' + userId);
     if (userId) {
       this.userService.getUserDetails(userId).subscribe({
         next: (data) => {
-          console.log('====isLoggedIn ADMIN OFFICER===');
-          console.log('Is logged in? ' + this.isLoggedIn);
-          console.log('\n==============');
           this.userDetails = data;
-          console.log('User details from ADMIN OFFICER header-stats.component.ts ' + JSON.stringify(this.userDetails, null, 2));
-          console.log('==========');
           this.name = this.userDetails.fullname;
-          console.log('Fullname from ADMIN OFFICER header-stats.component.ts: ' + this.name);
         },
         error: (error) => {
           console.log(error);
@@ -50,8 +43,6 @@ export class HeaderStatsComponent {
 
       this.AdminService.getAllMerchantCount().subscribe({
         next: (data: any) => {
-          console.log('data: ' + JSON.stringify(data, null, 2));
-
           // set data merchants
           this.merchantTotal = data.merchants.toString();
           this.verifiedMerchantTotal = data.verifiedMerchants.toString();
