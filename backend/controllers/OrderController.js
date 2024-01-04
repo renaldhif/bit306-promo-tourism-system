@@ -266,7 +266,7 @@ const getCustomerPurchasingPower = async (req, res) => {
       },
       {
         $lookup: {
-          from: "users",
+          from: "users", 
           localField: "_id",
           foreignField: "_id",
           as: "userData"
@@ -274,33 +274,12 @@ const getCustomerPurchasingPower = async (req, res) => {
       },
       { $unwind: "$userData" },
       {
-        $group: {
-          _id: null,
-          customers: {
-            $push: {
-              name: "$userData.fullname",
-              totalAmount: "$totalAmount"
-            }
-          }
-        }
-      },
-      {
         $project: {
           _id: 0,
-          customers: {
-            $map: {
-              input: "$customers",
-              as: "customer",
-              in: {
-                name: { $concat: ["Customer ", { $toString: { $add: [{ $indexOfArray: ["$customers", "$$customer"] }, 1] } }] },
-                totalAmount: "$$customer.totalAmount"
-              }
-            }
-          }
+          name: "$userData.fullname",
+          totalAmount: 1
         }
       },
-      { $unwind: "$customers" },
-      { $replaceRoot: { newRoot: "$customers" } },
       { $limit: 5 } 
     ]);
 
@@ -316,7 +295,7 @@ const getCustomerPurchasingPower = async (req, res) => {
     console.error('Error fetching customer purchasing power:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
 
   const getMerchantRevenueThisMonth = async (req, res) => {
     try {
