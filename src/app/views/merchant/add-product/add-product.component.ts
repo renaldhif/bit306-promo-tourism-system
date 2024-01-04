@@ -123,6 +123,7 @@ export class AddProductComponent {
           });
         },
         (error) => {
+          console.error('Error adding product:', error);
           Swal.fire({
             title: 'Error!',
             text: 'Something went wrong while adding the product.',
