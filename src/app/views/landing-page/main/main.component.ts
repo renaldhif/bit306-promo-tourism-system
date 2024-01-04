@@ -23,13 +23,6 @@ export class MainComponent implements OnInit {
       (products: any[]) => {
         this.productList = products;
         this.isLoading = false;
-
-        // Timeout 3s for scrolling if the user hasn't clicked on the button
-        // setTimeout(() => {
-        //   if (!this.buttonClicked) {
-        //     this.scrollToProducts();
-        //   }
-        // }, 3000);
       },
       (error) => {
         console.error('Error fetching products:', error);
@@ -54,24 +47,6 @@ export class MainComponent implements OnInit {
     }
   }
 
-  // scrollToProducts() {
-  //   this.buttonClicked = true;
-  //   const productSection = document.getElementById('trending');
-
-  //   if (productSection) {
-  //     const offset = 0; // Offset height of the header
-  //     const topPosition = productSection.getBoundingClientRect().top + window.scrollY;
-  //     window.scrollTo({
-  //       top: topPosition + offset,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // }
-
-  // cancelScrollTimeout() {
-  //   clearTimeout(this.scrollTimeout);
-  // }
-
   scrollCarousel(direction: number) {
     const container = document.querySelector('.overflow-x-auto');
     if (container) {
@@ -84,8 +59,6 @@ export class MainComponent implements OnInit {
 
   goToProductDetail(productID: string) {
     // Fetch the product details by ID
-    console.log('product list' + JSON.stringify(this.productList));
-    console.log('productID: ' + productID);
     this.productService.getProductById(productID).subscribe(
       (productDetails: any) => {
         // Navigate to the product detail page with the fetched product details
@@ -93,7 +66,6 @@ export class MainComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        // Handle the error, e.g., show an error message to the user
       }
     );
   }

@@ -49,7 +49,6 @@ router.put('/merchant/verify/:id', async (req, res) => {
     // Generate random password and hash it
     const generatedPassword = randomstring.generate({ length: 12, charset: 'alphabetic' });
     const newHashedPassword = await bcrypt.hash(generatedPassword, 10);
-    console.log('newHashedPassword', newHashedPassword);
 
     const merchant = await User.findByIdAndUpdate(req.params.id, { status: 'verified', password: newHashedPassword }, { new: true });
 

@@ -31,7 +31,6 @@ export class PaymentHistoryDetailComponent {
             // Redirect or show an error message
           } else {
             this.paymentDetails = payment;
-            console.log('PAYMENT DETAILS ' + JSON.stringify(this.paymentDetails, null, 2));
 
             // Extract product IDs from the products array
             const productIds = this.paymentDetails.products.map((product: any) => product.productId);
@@ -46,8 +45,6 @@ export class PaymentHistoryDetailComponent {
               next: (products: any) => {
                 // Attach product details to the corresponding payment
                 this.paymentDetails.products = products;
-                console.log('COBA PAYMENT DATA ' + JSON.stringify(this.paymentDetails, null, 2));
-                console.log('is reviewed ' + this.paymentDetails.isReviewed);
               },
               error: (error) => {
                 console.log(error);
@@ -62,16 +59,12 @@ export class PaymentHistoryDetailComponent {
       );
     }
 
-    console.log('=====DEBUG=====');
-    console.log(JSON.stringify(this.paymentDetails, null, 2));
     // Check if payment and its properties are defined before accessing them
     if (this.paymentDetails?.products) {
       console.log(this.paymentDetails.products);
     } else {
       console.log('Payment product is not defined.');
     }
-
-    console.log('\n=========');
 
     // Check if payment and its properties are defined before accessing them
     if (this.paymentDetails?.products[0]?.merchant) {
@@ -80,44 +73,6 @@ export class PaymentHistoryDetailComponent {
       console.log('Payment merchant is not defined.');
     }
   }
-  // ngOnInit(): void {
-  //   if (this.paymentId !== null) {
-  //     this.orderService.getOrderById(this.paymentId).subscribe(
-  //       (payment) => {
-  //         if (!payment) {
-  //           // Handle the case where the product is not found
-  //           console.error('Payment not found.');
-  //           // Redirect or show an error message
-  //         } else {
-  //           this.paymentDetails = payment;
-  //           console.log('PAYMENT DETAILS ' + JSON.stringify(this.paymentDetails, null, 2));
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching payment details:', error);
-  //         // Handle the error, e.g., show an error message to the user
-  //       }
-  //     );
-  //   }
-
-  //   console.log('=====DEBUG=====');
-  //   console.log(JSON.stringify(this.paymentDetails, null, 2));
-  //   // Check if payment and its properties are defined before accessing them
-  //   if (this.paymentDetails?.products) {
-  //     console.log(this.paymentDetails.products);
-  //   } else {
-  //     console.log('Payment product is not defined.');
-  //   }
-
-  //   console.log('\n=========');
-
-  //   // Check if payment and its properties are defined before accessing them
-  //   if (this.paymentDetails?.products[0]?.merchant) {
-  //     console.log(this.paymentDetails.products[0].merchant);
-  //   } else {
-  //     console.log('Payment merchant is not defined.');
-  //   }
-  // }
 
   constructor(
     private route: ActivatedRoute,
@@ -185,7 +140,6 @@ export class PaymentHistoryDetailComponent {
   }
 
   getPaymentMethodIcon(paymentMethod: string): string {
-    console.log('PAYMENT METHODNYA APA', paymentMethod);
     if (paymentMethod === 'PayPal') {
       return '../../../../assets/icons/ic_paypal.svg';
     } else if (paymentMethod === 'card') {

@@ -2,63 +2,75 @@
 
 <!-- Header -->
 <div class="py-4 lg:py-6 bg-primary flex items-center">
-
-  <div class="flex items-center justify-center text-white ml-8 py-2  lg:ml-72">
+  <div class="flex items-center justify-center text-white ml-8 py-2 lg:ml-72">
     <a routerLink="/merchant/products">
       <i class="fa fa-arrow-left mr-10 fa-lg"></i>
     </a>
-    <h1 class="text-3xl font-semibold ml-4 lg:ml-2 text-white">Product Details</h1>
+    <h1 class="text-3xl font-semibold ml-4 lg:ml-2 text-white">
+      Product Details
+    </h1>
   </div>
 </div>
 
+<!-- Loading indicator -->
+<div class="flex justify-center items-center h-screen lg:ml-72" *ngIf="isLoading">
+  <app-loading-indicator></app-loading-indicator>
+</div>
 
 <!-- Product Detail Container -->
-<div class="container my-10 lg:ml-72 flex">
+<div class="container my-10 lg:ml-72 flex" *ngIf="!isLoading">
   <!-- !? IMAGE CONTAINER (1/4 width) -->
   <div class="w-full md:w-1/3 lg:w-1/4 justify-center items-start lg:flex">
-    <img [src]="getProductImageURL(product.image)" alt="Product Photo" class="w-[400px] h-[400px] object-cover rounded-lg">
+    <img
+      [src]="getProductImageURL(product?.image)"
+      alt="Product Photo"
+      class="w-[400px] h-[400px] object-cover rounded-lg"
+    />
   </div>
 
   <!-- !? DETAIL CONTAINER (2/3 width) -->
-  <div class="w-full md:w-1/3 lg:w-2/4 ml-0 md:ml-8 lg:mx-8 justify-center items-start mt-5 md:mt-0">
-
+  <div
+    class="w-full md:w-1/3 lg:w-2/4 ml-0 md:ml-8 lg:mx-8 justify-center items-start mt-5 md:mt-0"
+  >
     <!-- Title -->
-    <h1 class="text-2xl font-semibold">{{ product.title }}</h1>
+    <h1 class="text-2xl font-semibold">{{ product?.title }}</h1>
 
     <!-- Location -->
     <div class="flex my-3 items-center justify-start">
-      <i class="fa fa-map-marker text-primary "></i>
-      <p class="ml-2 text-gray-500 mr-1">{{ product.location }}</p>
+      <i class="fa fa-map-marker text-primary"></i>
+      <p class="ml-2 text-gray-500 mr-1">{{ product?.location }}</p>
     </div>
 
     <!-- Rating -->
     <div class="flex my-2 items-center justify-start">
-      <p class="mr-2 text-gray-500">Rating: </p>
-      <p class="mr-1">{{ product.rating }}</p>
+      <p class="mr-2 text-gray-500">Rating:</p>
+      <p class="mr-1">{{ product?.rating }}</p>
       <i class="fa fa-star text-yellow-400"></i>
-      <p class="ml-4 text-slate-400">{{ product.ratingQty ? '(' + product.ratingQty + ')' : '' }}</p>
+      <p class="ml-4 text-slate-400">
+        {{ product?.ratingQty ? "(" + product.ratingQty + ")" : "" }}
+      </p>
     </div>
 
     <!-- category -->
     <div class="flex my-2 gap-x-2">
-      <p class="text-gray-500">Category: </p>
-      <p>{{ product.category }}</p>
+      <p class="text-gray-500">Category:</p>
+      <p>{{ product?.category }}</p>
     </div>
 
     <!-- Trip Days -->
     <div class="flex my-2 gap-x-2">
-      <p class="text-gray-500">Trip days: </p>
-      <p>{{ product.tripDays }} Days</p>
+      <p class="text-gray-500">Trip days:</p>
+      <p>{{ product?.tripDays }} Days</p>
     </div>
 
     <!-- Description -->
     <div class="mt-2">
-      <p class="text-gray-500">Description: </p>
-      <p>{{ product.description }}</p>
+      <p class="text-gray-500">Description:</p>
+      <p>{{ product?.description }}</p>
     </div>
 
     <!-- Destinations -->
-    <p class="mt-4 text-primary font-semibold">Destinations </p>
+    <p class="mt-4 text-primary font-semibold">Destinations</p>
     <ul>
       <li *ngFor="let key of destinationsKeys">
         <p class="text-darkGrey my-2">
@@ -69,7 +81,7 @@
     </ul>
 
     <!-- What's Included -->
-    <p class="mt-4 text-primary font-semibold">What's included? </p>
+    <p class="mt-4 text-primary font-semibold">What's included?</p>
     <ul>
       <li *ngFor="let include of includes">
         <p class="my-2">
@@ -78,28 +90,24 @@
         </p>
       </li>
     </ul>
-
-    <!-- Divider -->
-    <div class="mt-8">
-      <hr>
-    </div>
-
-    <!-- Detail Merchant Container -->
-    <div>
-      <!-- merchant name -->
-      <h2 class="mt-3 text-lg font-semibold text-gray-600">{{ product.merchant.name }}</h2>
-      <!-- description -->
-      <p class="mt-2 text-textPrimary">{{ product.merchant.description }}</p>
-    </div>
-
   </div>
-
 </div>
 
 <!-- Reviews -->
-<div class="container mx-auto md:ml-80 lg:ml-80 w-2/3">
-  <h2 class="text-2xl font-semibold text-primary mb-4">Reviews ({{ reviews.length }})</h2>
-  <div *ngFor="let review of reviews" class="bg-white shadow-lg rounded-lg overflow-hidden w-full mx-auto mb-4 border border-gray-300">
+<div class="container mx-auto md:ml-80 lg:ml-80 w-2/3" *ngIf="!isLoading">
+  <h2 class="text-2xl font-semibold text-primary mb-4">
+    Reviews ({{ reviews.length }})
+  </h2>
+  <!-- No Review Yet -->
+  <div *ngIf="isReviewEmpty && !isLoading" class="container mx-auto md:ml-80 lg:ml-80 w-2/3">
+    <h2 class="text-2xl font-semibold text-primary mb-4">
+      This product has no reviews yet.
+    </h2>
+  </div>
+  <div
+    *ngFor="let review of reviews"
+    class="bg-white shadow-lg rounded-lg overflow-hidden w-full mx-auto mb-4 border border-gray-300"
+  >
     <!-- Review Card Container -->
     <div class="p-4">
       <!-- Customer Full Name -->
@@ -117,6 +125,9 @@
       </p>
 
       <!-- Date Created -->
-      <p class="text-gray-500 text-sm mt-2">Posted on {{ review.dateCreated | date: 'longDate' }}</p>
+      <p class="text-gray-500 text-sm mt-2">
+        Posted on {{ review.dateCreated | date : "longDate" }}
+      </p>
     </div>
   </div>
+</div>

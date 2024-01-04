@@ -40,10 +40,6 @@ export class CheckoutComponent {
     if (this.productId !== null) {
       //* PayPal init config
       this.orderItem = this.productService.getProductById(this.productId);
-
-      // this.initPaypalConfig();
-      console.log('================================');
-      console.log('get usd price', this.totalPriceUSD);
     }
   }
 
@@ -73,7 +69,6 @@ export class CheckoutComponent {
         (product) => {
           this.orderItem = product;
           this.getTotalPrice();
-          console.log("🚀 ~ file: checkout.component.ts:57 ~ CheckoutComponent ~ orderItem:", this.orderItem)
         },
         (error) => {
           console.error('Error fetching product details:', error);
@@ -106,8 +101,6 @@ export class CheckoutComponent {
 
   getTotalPrice(): number {
     this.totalPrice = this.orderItem.price * this.quantity;
-    console.log("🚀 ~ file: checkout.component.ts:96 ~ CheckoutComponent ~ getTotalPrice ~ this.totalPrice:", this.totalPrice)
-
     return this.totalPrice;
   }
 
@@ -127,28 +120,6 @@ export class CheckoutComponent {
     }
   }
 
-  // convert to USD using Fixer.io API
-  // getUSDPrice() {
-  //   let usdPrice: number = 0;
-  //   let totalPrice = this.getTotalPrice();
-  //   let fromMYR: string = 'MYR';
-  //   let toUSD: string = 'USD';
-
-  //   fetch(`http://data.fixer.io/api/latest?access_key=${this.apiKey}&symbols=${fromMYR},${toUSD}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       //! API KEY BASE CURRENCY IS EUR, SO WE NEED TO CONVERT FROM MYR TO EUR FIRST
-  //       let priceInEur = totalPrice / data.rates[fromMYR];
-  //       //! THEN CONVERT FROM EUR TO USD
-  //       usdPrice = priceInEur * data.rates[toUSD];
-  //       //* Limit to 2 decimal places
-  //       this.totalPriceUSD = parseFloat(usdPrice.toFixed(2));
-  //       console.log("🚀 ~ file: checkout.component.ts:110 ~ CheckoutComponent ~ getUSDPrice ~ usdPrice", usdPrice)
-  //     })
-  //     .catch(err => console.log(err));
-  // }
-
   getUSDPrice(): Promise<void> {
     return new Promise((resolve, reject) => {
       // let convertTotalPriceToUSD: number = 0;
@@ -167,14 +138,10 @@ export class CheckoutComponent {
           let totalPriceEUR = totalPrice / data.rates[fromMYR];
           let pricePerItemEUR = pricePerItem / data.rates[fromMYR];
           //! THEN CONVERT FROM EUR TO USD
-          // convertTotalPriceToUSD = totalPriceEUR * data.rates[toUSD];
-          // convertPricePerItemToUSD = pricePerItemEUR * data.rates[toUSD];
           let totalPriceUSD = totalPriceEUR * data.rates[toUSD];
           let totalItemPriceUSD = pricePerItemEUR * data.rates[toUSD] * this.quantity;
 
           //* Limit to 2 decimal places
-          // this.totalPriceUSD = parseFloat(convertTotalPriceToUSD.toFixed(2));
-          // this.pricePerItemUSD = parseFloat(convertPricePerItemToUSD.toFixed(2));
           this.totalPriceUSD = parseFloat(totalPriceUSD.toFixed(2));
           this.pricePerItemUSD = parseFloat((totalItemPriceUSD / this.quantity).toFixed(2));
           resolve();
@@ -192,9 +159,7 @@ export class CheckoutComponent {
       this.isLoading = true;
       // Handle form submission and payment method selection
       const formData = this.checkoutForm.value;
-      console.log('formData', formData);
       const userId = this.authService.getUserId();
-      console.log('User ID from checkout.component.ts: ' + userId);
 
       const orderData = {
         orderID: '',
@@ -216,7 +181,7 @@ export class CheckoutComponent {
           paymentMethod: '', //will be updated later
           amount: this.totalPrice,
         },
-        status: 'Waiting', // set the initial status //! Note by RE: Pending to Waiting
+        status: 'Waiting', // set the initial status
         isReviewed: false,
         notes: formData.notes,
         date_created: new Date(),
@@ -224,26 +189,17 @@ export class CheckoutComponent {
         paypalDetails: null, // update this later after the PayPal transaction is completed
 
       };
-
-      console.log('debug onSubmit - orderData: ', orderData);
-
       this.getUSDPrice().then(() => {
-        console.log('debug onSubmit - getUSDPrice - totalPriceUSD: ', this.totalPriceUSD);
-        console.log('debug onSubmit - getUSDPrice - pricePerItemUSD: ', this.pricePerItemUSD);
         this.showPayPalButton = true;
         this.isLoading = false;
         this.initPaypalConfig();
       });
 
-      // Call your order service to create the order
       this.orderService.createOrder(orderData).subscribe(
         (createdOrder) => {
-          console.log('Order created successfully:', createdOrder);
-          // Now you can proceed with showing the PayPal button and other logic
           this.showPayPalButton = true;
           this.isLoading = false;
           this.orderID = createdOrder._id;
-          console.log('debug onSubmit - orderID: ', this.orderID);
         },
         (error) => {
           console.error('Error creating order:', error);
@@ -264,7 +220,6 @@ export class CheckoutComponent {
 
   //* PAYPAL
   public initPaypalConfig(): void {
-    console.log(`this quantity ${this.quantity}`);
 
     const itemPrice = this.pricePerItemUSD?.toFixed(2);
     const totalPrice = (this.pricePerItemUSD * this.quantity)?.toFixed(2);
@@ -313,12 +268,10 @@ export class CheckoutComponent {
       },
 
       onApprove: (data: any, actions: any) => {
-        console.log('onApprove - transaction was approved, but not authorized', data, actions);
         actions.order.get().then((details: any) => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
           const updatedOrderData = {
             payment: {
-              paymentMethod: 'PayPal', //!CHECK THIS ONE
+              paymentMethod: 'PayPal',
               amount: this.totalPrice,
             },
             //! Completed to Paid
@@ -331,11 +284,9 @@ export class CheckoutComponent {
           this.orderService.updateOrder(this.orderID, updatedOrderData).subscribe(
             (updatedOrder) => {
               console.log('Order updated successfully:', updatedOrder);
-              // ... any additional logic after updating the order
             },
             (error) => {
               console.error('Error updating order:', error);
-              // ... handle error
             }
           );
 
@@ -368,7 +319,6 @@ export class CheckoutComponent {
         });
       },
       onClientAuthorization: (data: any) => {
-        //TODO: Create Order onClientAuthorization pass it to backend
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
 
         // this.showSuccess = true;
@@ -377,11 +327,11 @@ export class CheckoutComponent {
       },
       onCancel: (data: any, actions: any) => {
         console.log('OnCancel', data, actions);
-      
+
         const updatedOrderData = {
           status: 'Failed',
         };
-      
+
         // Update the order status to 'Failed'
         this.orderService.updateOrder(this.orderID, updatedOrderData).subscribe(
           (updatedOrder) => {
@@ -393,7 +343,7 @@ export class CheckoutComponent {
             // ... handle error
           }
         );
-      
+
         this.router.navigate(['/customer/checkout', this.productId]);
       },
       onError: (err: any) => {
@@ -403,7 +353,6 @@ export class CheckoutComponent {
       },
       onClick: (data: any, actions: any) => {
         console.log('onClick', data, actions);
-        //TODO: Create Order onClick, callback object: {fundingSource: 'paypal'}. then will be updated on onApprove
       },
     };
   }

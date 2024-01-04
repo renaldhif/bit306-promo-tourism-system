@@ -43,14 +43,8 @@ export class CruiseComponent {
       (products: any[]) => {
         // from API
         this.productListAPI = products;
-        console.log("🚀 ~ file: cruise.component.ts:46 ~ CruiseComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
         // filtered
         this.productListFiltered = products;
-        console.log("🚀 ~ file: cruise.component.ts:49 ~ CruiseComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
-
-        // ! DEBUG:
-        console.log('DEBUG fetchProductsFromAPI Merchant Name:', this.productListAPI[0].merchant.fullname);
-
         this.isLoading = false;
       },
       (error) => {
@@ -76,32 +70,6 @@ export class CruiseComponent {
       // reset to productListAPI if searchTerm is empty
       this.productListFiltered = [...this.productListAPI];
     }
-
-    // Apply filter
-    // if (this.selectedFilterOption !== 'all') {
-    //   this.productListFiltered = this.productListFiltered.filter(
-    //     (product) => product.category === this.selectedFilterOption
-    //   );
-    // }
-
-    // Apply sort
-    // switch (this.sortOptionSelected) {
-    //   case 'highest-price':
-    //     this.productListFiltered.sort((a, b) => a.price - b.price);
-    //     break;
-    //   case 'lowest-price"':
-    //     this.productListFiltered.sort((a, b) => b.price - a.price);
-    //     break;
-    //   case 'lowest-rating':
-    //     this.productListFiltered.sort((a, b) => a.rating - b.rating);
-    //     break;
-    //   case 'highest-rating':
-    //     this.productListFiltered.sort((a, b) => b.rating - a.rating);
-    //     break;
-    //   default:
-    //     // If 'default' is selected, no additional sorting is needed
-    //     break;
-    // }
   }
 
   sortProducts() {

@@ -36,10 +36,8 @@ export class PackageTourComponent {
       (products: any[]) => {
         // from API
         this.productListAPI = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:47 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
         // filtered
         this.productListFiltered = products;
-        console.log("🚀 ~ file: attraction-entertainment.component.ts:50 ~ AttractionEntertainmentComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
 
         this.isLoading = false;
       },

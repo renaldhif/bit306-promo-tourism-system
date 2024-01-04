@@ -41,8 +41,6 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (err) {
     res.status(500).json({ message: err.message });
-    console.log('\n===Error in authRoutes.js -> /register===');
-    console.log('user: ', req.body);
     console.log('\nerror: ', err);
   }
 });
@@ -57,7 +55,6 @@ router.post('/login', async (req, res) => {
     }
     // Check merchant is rejected or not
     if (user.userRole === 'merchant' && user.status === 'rejected') {
-      console.log('\n===Error in authRoutes.js -> /login===');
       console.log('merchant account is rejected');
       return res.status(400).json({ message: 'Your merchant account has been rejected.' });
     }
@@ -80,8 +77,6 @@ router.post('/login', async (req, res) => {
       role: user.userRole,
       userId: user._id
     });
-
-    // res.header('auth-token', token).json({ message: 'Logged in successfully', token: token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -25,7 +25,6 @@ export class ProductService {
         const merchantRequests = products.map(product =>
           this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
             map(merchantDetails => {
-              console.log('Merchant Details:', merchantDetails); // Log merchant details
               return {
                 ...product,
                 merchant: merchantDetails
@@ -47,7 +46,6 @@ export class ProductService {
       mergeMap(product => {
         return this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
           map(merchantDetails => {
-            console.log('Merchant Details:', merchantDetails); // Log merchant details
             return {
               ...product,
               merchant: merchantDetails
@@ -67,7 +65,6 @@ export class ProductService {
   }
 
   updateProduct(id: string, updatedProductData: FormData): Observable<any> {
-    console.log('updatedProductData: ' + updatedProductData.get('destination'));
     return this.http.patch<any>(`${this.apiUrl}/api/products/${id}`, updatedProductData);
   }
 
@@ -101,7 +98,6 @@ export class ProductService {
         const merchantRequests = products.map(product =>
           this.userService.getUserDetailsWithoutAuth(product.merchant).pipe(
             map(merchantDetails => {
-              console.log('Merchant Details:', merchantDetails); // Log merchant details
               return {
                 ...product,
                 merchant: merchantDetails

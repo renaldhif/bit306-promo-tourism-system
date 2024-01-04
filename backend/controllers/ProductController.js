@@ -7,7 +7,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import User from '../models/UsersModel.js';
-// Implement CRUD operations for the Product model
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +16,6 @@ const createProduct = async (req, res) => {
 
   formidable.parse(req, async (err, fields, files) => {
     if (err) {
-      console.log('Error parsing form data: ', err);
       return res.status(400).json({ message: 'Error parsing form data' });
     }
 
@@ -45,23 +43,16 @@ const createProduct = async (req, res) => {
       let imagePath = '';
       let newFilename = '';
 
-      console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ files image", files);
-
       if (files.image && files.image.length > 0) {
-        console.log("JALAN DISINI")
         const imageFile = files.image[0];
 
         // Check file type (you may want to enhance this check based on your requirements)
         if (!imageFile.mimetype.startsWith('image')) {
-          console.log('file mimetype: ', imageFile.mimetype);
           return res.status(400).json({ message: 'Only image files are allowed' });
         }
 
         const oldPath = imageFile.filepath;
-        console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ oldPath", oldPath)
-
         const originalFilename = imageFile.originalFilename;
-        console.log("🚀 ~ file: ProductController.js:102 ~ formidable.parse ~ originalFilename:", originalFilename)
 
         // Generate new filename
         newFilename = `${title.replace(/\s+/g, '_')}_${originalFilename}`;
@@ -71,7 +62,6 @@ const createProduct = async (req, res) => {
         fs.renameSync(oldPath, newPath);
         // Generate a relative URL for the image
         imagePath = `/uploads/images/${newFilename}`;
-        console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ imagePath", imagePath)
       }
 
       // Assume the merchant ID is provided in the request or adjust accordingly
@@ -98,16 +88,11 @@ const createProduct = async (req, res) => {
         created_at,
       });
 
-      console.log('Product: ', product);
-
       // Save the product in the database
       const newProduct = await product.save();
-      console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ newProduct:", newProduct)
-
       res.status(201).json({ message: 'Product created successfully', product: newProduct });
 
     } catch (error) {
-      console.log('Error creating product on productController: ', error);
       res.status(500).json({ message: 'Server error' });
     }
   });
@@ -145,17 +130,14 @@ const updateProduct = async (req, res) => {
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      console.log('Error parsing form data: ', err);
       return res.status(400).json({ message: 'Error parsing form data' });
     }
 
     try {
       const productId = req.params.id;
 
-      console.log('ID WOY', productId);
       // Fetch the existing product
       const existingProduct = await Product.findById(productId);
-      console.log('EXISTING PRODUCT before', existingProduct);
 
       if (!existingProduct) {
         return res.status(404).json({ error: 'Product not found' });
@@ -179,7 +161,6 @@ const updateProduct = async (req, res) => {
 
         // Check file type (you may want to enhance this check based on your requirements)
         if (!imageFile.mimetype.startsWith('image')) {
-          console.log('file mimetype: ', imageFile.mimetype);
           return res.status(400).json({ message: 'Only image files are allowed' });
         }
 
@@ -197,7 +178,6 @@ const updateProduct = async (req, res) => {
       }
 
       // Save the updated product in the database
-      console.log('EXISTING PRODUCT NOW', existingProduct);
       const updatedProduct = await existingProduct.save();
       res.status(200).json(updatedProduct);
     } catch (error) {
@@ -278,24 +258,15 @@ const updateRating = async (req, res) => {
 
     // Fetch the product by ID
     const product = await Product.findById(productId);
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ product", product)
-    console.log('product rating', product.rating);
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ product.rating", product.rating)
-
     // Calculate overall rating based on updated rating
     const totalRatings = product.reviews.length + 1;
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ totalRatings", totalRatings)
     const sumRatings = product.rating + rating;
-    console.log('product rating', product.rating);
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ rating", rating)
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ sumRatings", sumRatings)
     product.rating = parseFloat(sumRatings / totalRatings);
-
     product.ratingQty += 1;
 
     // Save the updated product
@@ -345,11 +316,6 @@ const getTop5Products = async (req, res) => {
 const getProductsByCategories = async (req, res) => {
   try {
     const { category } = req.params;
-
-    console.log("🚀 ~ file: ProductController.js:117 ~ formidable.parse ~ categories", category)
-
-    // Your logic to fetch products based on categories
-    // For demonstration purposes, let's assume you have a Product model and you're using Mongoose
     const products = await Product.find({ category: { $in: category} }).populate('merchant', 'fullname');
 
     res.status(200).json(products);

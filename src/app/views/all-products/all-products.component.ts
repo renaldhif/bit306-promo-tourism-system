@@ -24,13 +24,8 @@ export class AllProductsComponent implements OnInit {
   constructor(
     private router: Router,
     private productService: ProductService,
-    // private formBuilder: FormBuilder
   ) {
     this.fetchProductsFromAPI();
-    // this.productForm = this.formBuilder.group({
-    //   title: ['', Validators.required],
-    //   price: ['', Validators.required],
-    // });
   }
 
   ngOnInit(): void {
@@ -45,12 +40,8 @@ export class AllProductsComponent implements OnInit {
       (products: any[]) => {
         // from API
         this.productListAPI = products;
-        console.log("🚀 ~ file: all-products.component.ts:49 ~ AllProductsComponent ~ fetchProductsFromAPI ~ this.productListAPI:", this.productListAPI)
         // filtered
         this.productListFiltered = products;
-        console.log("🚀 ~ file: all-products.component.ts:52 ~ AllProductsComponent ~ fetchProductsFromAPI ~ this.productListFiltered:", this.productListFiltered)
-        // ! DEBUG
-        console.log("First Product for Inspection: ", products[0]);
 
         this.isLoading = false;
       },
@@ -67,7 +58,6 @@ export class AllProductsComponent implements OnInit {
 
   onSearch() {
     // Apply search
-    console.log("Current Search Term: ", this.searchTerm);
     if (this.searchTerm) {
       const searchTermLower = this.searchTerm.toLowerCase();
       this.productListFiltered = this.productListAPI.filter((product) =>
@@ -77,32 +67,6 @@ export class AllProductsComponent implements OnInit {
       // reset to productListAPI if searchTerm is empty
       this.productListFiltered = [...this.productListAPI];
     }
-
-    // Apply filter
-    // if (this.selectedFilterOption !== 'all') {
-    //   this.productListFiltered = this.productListFiltered.filter(
-    //     (product) => product.category === this.selectedFilterOption
-    //   );
-    // }
-
-    // Apply sort
-    // switch (this.sortOptionSelected) {
-    //   case 'highest-price':
-    //     this.productListFiltered.sort((a, b) => a.price - b.price);
-    //     break;
-    //   case 'lowest-price"':
-    //     this.productListFiltered.sort((a, b) => b.price - a.price);
-    //     break;
-    //   case 'lowest-rating':
-    //     this.productListFiltered.sort((a, b) => a.rating - b.rating);
-    //     break;
-    //   case 'highest-rating':
-    //     this.productListFiltered.sort((a, b) => b.rating - a.rating);
-    //     break;
-    //   default:
-    //     // If 'default' is selected, no additional sorting is needed
-    //     break;
-    // }
   }
 
   sortProducts() {
@@ -127,16 +91,4 @@ export class AllProductsComponent implements OnInit {
         break;
     }
   }
-
-  //method to filter the products
-  // filterProducts() {
-  //   if (this.selectedFilterOption === 'all') {
-  //     this.productListFiltered = [...this.productListAPI];
-  //   } else {
-  //     this.productListFiltered = this.productListAPI.filter(
-  //       (product) => product.category === this.selectedFilterOption
-  //     );
-  //   }
-  // }
-
 }
