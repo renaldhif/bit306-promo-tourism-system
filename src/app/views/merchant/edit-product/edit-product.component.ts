@@ -162,6 +162,8 @@ export class EditProductComponent implements OnInit {
           text: 'Your product has been updated.',
           icon: 'success',
           confirmButtonText: 'Ok',
+        }).then(() => {
+          window.location.href = '/merchant/products';
         });
       },
       (error) => {

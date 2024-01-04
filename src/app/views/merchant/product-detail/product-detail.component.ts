@@ -8,7 +8,7 @@ import { environment } from '../../../../../env/dev.environtment';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.css']
+  styleUrls: ['./product-detail.component.css'],
 })
 export class ProductDetailComponent implements OnInit {
   productId: string | null;
@@ -16,6 +16,8 @@ export class ProductDetailComponent implements OnInit {
   destinationsKeys: string[] = [];
   reviews: any[] = [];
   includes: string[] = [];
+  isReviewEmpty: boolean = true;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +29,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     if (this.productId !== null) {
       this.productService.getProductById(this.productId).subscribe(
         (product) => {
@@ -35,6 +38,12 @@ export class ProductDetailComponent implements OnInit {
 
           // Fetch reviews using getReviewDetail from ReviewService
           this.reviews = [];
+          let reviewCount = product.reviews.length;
+          console.log('review count' + reviewCount);
+
+          if (reviewCount === 0) {
+            this.isReviewEmpty = true;
+          }
           console.log('product review' + JSON.stringify(product.reviews));
           product.reviews.forEach((reviewId: string) => {
             this.reviewService.getReviewDetail(reviewId).subscribe(
@@ -43,21 +52,29 @@ export class ProductDetailComponent implements OnInit {
                 this.reviews.push(review);
                 console.log('this review' + JSON.stringify(this.reviews));
                 console.log('this review' + this.reviews[0].rating);
+                // Check if all reviews have been fetched
+                if (this.reviews.length === reviewCount) {
+                  this.isReviewEmpty = false;
+                }
+                this.isLoading = false;
               },
               (error) => {
+                this.isLoading = false;
                 console.error('Error fetching review details:', error);
               }
             );
           });
-
+          this.isLoading = false;
           this.includes = Object.values(this.product.includes);
         },
         (error) => {
+          this.isLoading = false;
           console.error('Error fetching product details:', error);
           // Handle the error, e.g., show an error message to the user
         }
       );
     } else {
+      this.isLoading = false;
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -82,71 +99,3 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 }
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
-// import { ProductService } from 'src/app/service/product-service';
-
-// @Component({
-//   selector: 'app-product-detail',
-//   templateUrl: './product-detail.component.html',
-//   styleUrls: ['./product-detail.component.css']
-// })
-// export class ProductDetailComponent implements OnInit {
-
-//   productId: number | null;
-//   product: any;
-//   destinationsKeys: string[] = [];
-//   reviews: any[] = [];
-//   includes: string[] = [];
-
-//   constructor(private route: ActivatedRoute, private productService: ProductService) {
-//     const idParam = this.route.snapshot.paramMap.get('id');
-//     this.productId = idParam ? parseInt(idParam, 10) : null;
-//   }
-
-//   // ngOnInit(): void {
-//   //   if (this.productId !== null) {
-//   //     // Use productService.getProductById which returns an observable
-//   //     this.productService.getProductById(this.productId).subscribe(
-//   //       (product) => {
-//   //         this.product = product;
-//   //         this.destinationsKeys = Object.keys(this.product.destinations);
-//   //         this.reviews = Object.values(this.product.reviews);
-//   //         this.includes = Object.values(this.product.includes);
-//   //       },
-//   //       (error) => {
-//   //         console.error('Error fetching product details:', error);
-//   //         // Handle the error, e.g., show an error message to the user
-//   //       }
-//   //     );
-//   //   }
-//   // }
-
-//   ngOnInit(): void {
-//     if (this.productId !== null) {
-//       this.productService.getProductById(this.productId).subscribe(
-//         (product) => {
-//           if (!product) {
-//             // Handle the case where the product is not found
-//             console.error('Product not found.');
-//             // Redirect or show an error message
-//           } else {
-//             this.product = product;
-//             this.destinationsKeys = Object.keys(this.product.destinations);
-//             this.reviews = Object.values(this.product.reviews);
-//             this.includes = Object.values(this.product.includes);
-//           }
-//         },
-//         (error) => {
-//           console.error('Error fetching product details:', error);
-//           // Handle the error, e.g., show an error message to the user
-//         }
-//       );
-//     }
-//   }
-  
-
-// }
-
