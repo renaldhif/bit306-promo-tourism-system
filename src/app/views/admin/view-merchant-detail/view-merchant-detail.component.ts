@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLinkActive } from '@angular/router';
-import { MerchantService } from 'src/app/service/merchant-service';
 import { AdminService } from 'src/app/service/admin.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -23,7 +22,6 @@ export class ViewMerchantDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private merchantService: MerchantService,
     private adminService: AdminService,
     private router: Router
   ) {

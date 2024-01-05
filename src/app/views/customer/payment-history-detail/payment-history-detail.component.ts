@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PaymentService } from 'src/app/service/payment-service';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 import Swal from 'sweetalert2';
 import { OrderService } from 'src/app/service/order.service';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { forkJoin } from 'rxjs';
 import { environment } from 'env/dev.environtment';
 

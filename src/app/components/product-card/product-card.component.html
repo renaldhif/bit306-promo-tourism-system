@@ -19,7 +19,7 @@
       <div class="flex mb-2 items-center">
         <!-- Rating -->
         <i class="fa fa-star text-yellow-400 text-sm"></i>
-        <p class="ml-2 text-sm text-darkGrey mr-1">{{ product.rating }}</p>
+        <p class="ml-2 text-sm text-darkGrey mr-1">{{ product.rating | number:'1.1-1' }}</p>
         <!-- Divider -->
         <div class="mx-2 w-1 h-1 bg-darkGrey rounded-full"></div>
         <!-- Sold -->

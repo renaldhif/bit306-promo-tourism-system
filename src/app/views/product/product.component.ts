@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuantityService } from 'src/app/service/quantity.service';

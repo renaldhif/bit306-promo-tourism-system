@@ -21,7 +21,7 @@
     <!-- Rating -->
     <div class="flex my-2 items-center justify-start">
       <p class="mr-2 text-gray-500">Rating: </p>
-      <p class="mr-1">{{ product.rating }}</p>
+      <p class="mr-1">{{ product.rating | number:'1.1-1' }}</p>
       <i class="fa fa-star text-yellow-400"></i>
       <p class="ml-4 text-slate-400">{{ product.ratingQty ? '(' + product.ratingQty + ')' : '' }}</p>
     </div>

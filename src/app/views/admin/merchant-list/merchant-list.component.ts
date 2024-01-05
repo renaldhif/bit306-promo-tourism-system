@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { MerchantService } from 'src/app/service/merchant-service';
 import { AdminService } from 'src/app/service/admin.service';
 import { Subject } from 'rxjs';
 

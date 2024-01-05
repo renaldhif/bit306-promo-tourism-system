@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import Swal from 'sweetalert2';
 
 @Component({

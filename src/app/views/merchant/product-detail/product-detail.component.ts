@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { ReviewService } from 'src/app/service/review.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../../env/dev.environtment';

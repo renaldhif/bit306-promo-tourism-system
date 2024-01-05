@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, forkJoin, map, mergeMap } from 'rxjs';
 import { environment } from 'env/dev.environtment';
-import { ProductService } from './product-service';
+import { ProductService } from './product.service';
 
 @Injectable({
     providedIn: 'root',

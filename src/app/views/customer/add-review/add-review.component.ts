@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'env/dev.environtment';
 import { forkJoin } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { ReviewService } from 'src/app/service/review.service';
 import Swal from 'sweetalert2';
 
