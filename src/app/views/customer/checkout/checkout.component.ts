@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { Router } from '@angular/router';
 import { QuantityService } from 'src/app/service/quantity.service';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';

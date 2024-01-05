@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import { Router } from '@angular/router';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import { OrderService } from 'src/app/service/order.service';
 
 @Component({

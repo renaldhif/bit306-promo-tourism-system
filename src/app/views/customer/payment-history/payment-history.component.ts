@@ -5,8 +5,7 @@ import { environment } from 'env/dev.environtment';
 import { forkJoin } from 'rxjs';
 import { AuthService } from 'src/app/service/auth.service';
 import { OrderService } from 'src/app/service/order.service';
-import { PaymentService } from 'src/app/service/payment-service';
-import { ProductService } from 'src/app/service/product-service';
+import { ProductService } from 'src/app/service/product.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -29,7 +28,6 @@ export class PaymentHistoryComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private paymentService: PaymentService,
     private orderService: OrderService,
     private authService: AuthService,
     private productService: ProductService
